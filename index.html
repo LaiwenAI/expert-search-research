@@ -20,7 +20,19 @@ async function decryptDocument(raw,remember){
   if(!html.startsWith('<!DOCTYPE html>'))throw Error('invalid');
   html=html.replace('</head>',"<style id=\"reader-layout-fix\">\n.reader-toolbar{position:fixed!important;inset:0 0 auto 0!important;width:100%!important;max-width:none!important;margin:0!important;min-height:44px!important;padding:4px max(18px,calc((100vw - 1220px)/2))!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;flex-wrap:nowrap!important;box-sizing:border-box!important;z-index:1000!important}\n.reader-brand{flex:0 1 auto!important;min-width:0!important;white-space:nowrap!important}\n.reader-controls{display:flex!important;flex-direction:row!important;align-items:center!important;gap:6px!important;flex:0 0 auto!important;white-space:nowrap!important}\n.reader-meta{white-space:nowrap!important;word-break:normal!important;writing-mode:horizontal-tb!important;min-width:max-content!important}\n.reader-btn{width:auto!important;white-space:nowrap!important;writing-mode:horizontal-tb!important}\n.reading-shell{padding-top:44px!important}\n.reader-backtop{position:fixed!important;left:auto!important;top:auto!important;right:22px!important;bottom:22px!important;width:auto!important;max-width:none!important;writing-mode:horizontal-tb!important;white-space:nowrap!important;z-index:1000!important}\n@media(max-width:640px){.reader-toolbar{padding:4px 12px!important;gap:6px!important}.reading-shell{padding-top:44px!important}.reader-meta{display:none!important}.reader-brand{max-width:110px!important}.reader-controls{gap:4px!important}.reader-backtop{right:12px!important;bottom:12px!important}}\n@media print{.reader-toolbar,.reader-backtop{display:none!important}.reading-shell{padding-top:0!important}}\n</style>"+'</head>');
   if(remember)writeSession(enc(raw));
-  document.open();document.write(html);document.close();
+  // Async decryption must replace the document root, not document.write into the gate.
+  const parsed=new DOMParser().parseFromString(html,'text/html');
+  if(!parsed.querySelector('.reading-shell')||!parsed.querySelector('.reader-toolbar'))throw Error('invalid');
+  const nextRoot=document.importNode(parsed.documentElement,true);
+  document.replaceChild(nextRoot,document.documentElement);
+  // DOMParser keeps scripts inert. Recreate them in source order to initialize navigation,
+  // figures, controls, and Giscus in the decrypted document.
+  for(const inert of Array.from(document.querySelectorAll('script'))){
+    const live=document.createElement('script');
+    for(const attr of Array.from(inert.attributes))live.setAttribute(attr.name,attr.value);
+    if(!inert.hasAttribute('src'))live.textContent=inert.textContent;
+    inert.replaceWith(live);
+  }
 }
 form.addEventListener('submit',async e=>{
   e.preventDefault();btn.disabled=true;err.textContent='';btn.textContent='正在解密…';
