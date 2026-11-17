@@ -181,16 +181,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的智能体持续进化与计算效率优化</h1><div class="en">Quality-Preserving and Cost-Efficient Continual Evolution of LLM-based Expert Search Agents</div></header><section id="evidence-update"><h2>实验进展与计划调整（2026-11-18）</h2>
-<p class="lead">本计划保留持续进化的长期方向；近期优先建立可验证的证据驱动专家检索、数据和评价体系，先研究无需训练的方案。现有实验尚未证明在企业专家搜索中同时取得更高精度与端到端提速。</p>
-<table><thead><tr><th>观察</th><th>结论边界与计划调整</th></tr></thead><tbody>
-<tr><td>从原始数据整理出 2,741 条企业需求；固定 1,000 条父需求，生成 5,000 对中英合成查询，其中 4,224 对通过当前同模型筛查，776 对尚未判定。</td><td>筛查通过不等于独立质量标注或专家匹配真值；完整父需求英文翻译和人工评测仍未完成。以企业及近重复需求分组隔离，保留封闭测试集，补充独立双人审核与仲裁。</td></tr>
-<tr><td>约 9.7 万条来源的缓存向量精确评分，CPU 与 GPU 对 2,000 个查询视图的有序结果一致；组件平均耗时约 8.886 ms 与 0.997 ms。</td><td>仅为缓存评分，不含编码、规划、推理和初始化，硬件不同；不能作为端到端提速。保留精确检索强基线；对粗到细候选门控逐项测量召回损失及串行开销。</td></tr>
-<tr><td>5,000 对中英查询的 Top-10 重合约 41.7%；公开评审数据上双语融合的探索性效果在另一批查询上未复现。</td><td>重合度只反映一致性，不能替代相关性；暂不将融合提升作为结论。分别标注语义等价与相关性，在独立验证集选择策略，封闭测试集一次性评估。</td></tr>
-<tr><td>6 个复用查询的候选证据评估复测中，串行与三并发分别为 5.75 s 与 2.65 s，18 对结构化等级一致、6 个最终排序一致；此前试验仅 5 个排序一致。</td><td>仅覆盖固定候选上的模型评估，样本小且存在随机性和执行顺序混杂；引用位置一致不证明证据蕴含。并发作为可选工程优化，需扩大样本、控制限流并验证完整链路与人工质量。</td></tr>
-<tr><td>公开评审数据上的来源容量对照：随机保留每位评审最多 7 篇论文后，严格标签 P@5 从 0.203 降至 0.175；按向量多样性选取同样数量时为 0.175。</td><td>均为复用数据上的探索，评审标签不验证具体来源；简单截断或多样性筛选尚未证明保留关键证据，也未测量实际检索提速。下一步应检验保留来源的证据支持及全链路质量与成本。</td></tr>
-<tr><td>公开评审数据的快速决策比完整推理更快，但准确率有所下降，置信区间不足以证明非劣。</td><td>决策 API 是候选路径，不预设可无损替换推理。预注册非劣界限，比较错误类型、成本及完整查询效果。</td></tr></tbody></table>
-<p>详细方法、实验边界和可复现代码见 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/research/prototype-20261117">研究代码与论文草稿</a>；受限原始数据及模型响应不公开，数据能否发布须逐项确认授权。</p></section>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的智能体持续进化与计算效率优化</h1><div class="en">Quality-Preserving and Cost-Efficient Continual Evolution of LLM-based Expert Search Agents</div></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -278,12 +269,14 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <p><span class="note">上述均为待验证的科研贡献；上游数据归集、画像质量检查、时效性特征与引用核验本身不自动构成新算法，必须通过独立机制和充分实验论证创新性。</span></p><h2>7. 实验设计与评价（Experiments and Evaluation）</h2>
 <p><strong>近期执行原则：</strong>先冻结企业需求分组、索引快照和多系统候选池；在开发集定义判断规则及停止策略，在独立验证集定阈值，再在封闭测试集评估。基线至少包括 BM25、稠密精确检索、混合检索与有／无重排的固定流程；控制相同候选、语料及预算，分别报告索引构建、冷启动、查询编码、检索、证据读取、模型推理与端到端延迟、P50／P95、吞吐和资源成本。现有示意表格和图表中的数值仅用于展示格式，不是实验结果。</p><p><strong>指标研究：</strong>以人工专家级相关性及硬约束成功率为主，分别报告证据支持、引用可核验性、时效、个人贡献是否可判断、跨语言表现与质量—成本曲线；缺失标注和未知贡献保持未知。新的综合指标先定义适用范围、权重和缺失值规则，并检验与独立人工判断的一致性，避免用合成标签证明自身有效。</p>
 <h3>7.1 数据集与评测协议</h3>
+<p class="note">当前数据准备：已构造 5,000 对双语查询，其中 4,224 对通过同模型筛查；筛查不构成人工金标，完整人工评测仍待完成。数据、标注协议和实验代码的详细状态以<a href="https://github.com/LaiwenAI/expert-find-agent/tree/research/prototype-20261117">研究仓库</a>为准。</p>
 <ol><li><strong>真实检索需求</strong>：覆盖从明确的研究方向查询到复杂工程场景，标注任务类型、技术领域、约束、明确程度、知识跨度及是否需要澄清或多步推理。</li>
 <li><strong>教师画像与多源证据</strong>：以教师为数据单元，使用已归集的论文、专利及项目，保留证据类型、来源、时间与完整性信息。</li>
 <li><strong>人工评价</strong>：按需求类型和理解难度标注专家级相关性、硬性约束、近期能力、可辨认的个人贡献线索及证据支持情况，不把成果署名直接视为个人贡献真值。</li>
 <li><strong>学习经验</strong>：采集自然语言反馈、候选曝光与排序、用户点击／收藏／最终选择、对接结果、检索动作轨迹及离线合成样本，并记录每一步计算消耗。</li></ol>
 <p>按需求类型、技术领域与时间划分训练／测试数据，严格隔离同一需求及近重复改写；固定索引快照，另设知识库更新实验。<strong>RQ1–RQ2</strong> 评估需求理解与基于教师画像的可信证据匹配，<strong>RQ3–RQ5</strong> 评估决策效率、反馈学习、长期进化和总成本。</p><h3>7.1.1 P0 Benchmark 标注与发布协议</h3><p><strong>人工标注：</strong>受训且有相关技术背景的标注者对需求类型、约束、专家级匹配与证据独立双人标注，争议仲裁；报告 Cohen’s κ 或 Krippendorff’s α、标签覆盖率及分歧。候选池使用多系统 pooling 并补充随机候选，评估池化偏差。LLM 裁判须用独立人工金标校准，不可由同一方法生成自我评价真值。</p><p><strong>成功检索定义：</strong>主口径为 Top-K 中检出至少一位经人工金标认定满足硬性约束且证据充分的专家。用户选择、联系与合作达成是不同的业务指标，另行报告。单位成功检索总成本为总查询／检索工具／反馈／训练／评估摊销成本除以主口径成功查询数。</p><p><strong>时间与合规：</strong>按需求和科研成果时间严格切分训练、验证、测试，固定索引快照并独立评估知识库更新。企业需求及教师数据先审查授权和脱敏范围；公开数据与受控评测分离。个人贡献缺少人工真值时只做分析性子实验。</p>
 <h3 id="experiment-results">7.2 方法对比（Comparative Results）</h3>
+<p class="note">现有探索：公开评审数据上，随机或多样性选择每人最多七篇资料时，严格标签 P@5 均约为 0.175，全量资料约为 0.203；评审标签不验证具体来源，且尚未测量端到端提速。因此后续需在独立数据上同时检验证据保留、排序质量和真实延迟。</p>
 <div class="result-table-scroll"><table class="result-template"><caption>表 7-1　不同方法的专家检索质量与效率（示例数据）</caption><thead><tr><th>方法</th><th>nDCG@10 ↑</th><th>Recall@20 ↑</th><th>证据支持率 ↑</th><th>P95 (s) ↓</th><th>单次查询 (¥) ↓</th><th>成功检索 (¥) ↓</th></tr></thead><tbody><tr><td>B0 混合检索 + 重排</td><td>0.472</td><td>0.618</td><td>74.3%</td><td>1.2</td><td>0.03</td><td>0.21</td></tr><tr><td>B1 固定参数 Agent</td><td>0.563</td><td>0.701</td><td>82.7%</td><td>5.8</td><td>0.19</td><td>0.93</td></tr><tr><td>B2 查询改写 + 记忆</td><td>0.579</td><td>0.716</td><td>84.2%</td><td>6.1</td><td>0.22</td><td>0.95</td></tr><tr><td>B3 离线学习（SFT / DPO）</td><td>0.604</td><td>0.741</td><td>86.8%</td><td>5.0</td><td>0.16</td><td>0.76</td></tr><tr><td>B4 在线反馈学习（RL / RLTF）</td><td>0.617</td><td>0.753</td><td>88.1%</td><td>5.3</td><td>0.18</td><td>0.79</td></tr><tr><td>B5 自适应计算</td><td>0.598</td><td>0.736</td><td>86.1%</td><td>3.9</td><td>0.11</td><td>0.59</td></tr><tr class="focus-method"><td>B6 联合进化</td><td>0.631</td><td>0.768</td><td>89.4%</td><td>4.1</td><td>0.12</td><td>0.54</td></tr></tbody></table></div>
 <p><strong>待新增对照：</strong>关键对照为“反馈学习 + 自适应计算简单叠加”，与 B6 联合机制使用同等模型、索引、预算和数据，区分模块堆叠与真正联合优化。另加入强闭源 LLM 固定提示、Search-R1 类 Agent、Adaptive-RAG、Self-RAG、神经／LLM 专家发现。新增方法尚无实验结果，不补造数值；当前图表均为示例。</p>
 <h3 id="experiment-comparison-chart">7.3 结果可视化（Performance Comparison）</h3>
