@@ -22,6 +22,10 @@ async function decryptDocument(raw,remember){
   if(remember)writeSession(enc(raw));
   // Async decryption must replace the document root, not document.write into the gate.
   const parsed=new DOMParser().parseFromString(html,'text/html');
+  // Keep the architecture component table permanently visible; remove its toggle.
+  parsed.querySelector('.arch-detail-toggle')?.remove();
+  const architectureDetails=parsed.querySelector('#arch-detail');
+  if(architectureDetails){architectureDetails.hidden=false;architectureDetails.removeAttribute('hidden');}
   if(!parsed.querySelector('.reading-shell')||!parsed.querySelector('.reader-toolbar'))throw Error('invalid');
   const nextRoot=document.importNode(parsed.documentElement,true);
   document.replaceChild(nextRoot,document.documentElement);
