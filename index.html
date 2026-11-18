@@ -160,6 +160,14 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 .research-challenges li{margin:9px 0 12px;line-height:1.76}.research-challenges strong{font-weight:700}.research-challenges a.inline-ref{font-size:.81em;color:var(--accent);font-weight:600;white-space:nowrap;margin-left:2px}.research-challenges a.inline-ref:hover{text-decoration:underline}
 
 .demand-taxonomy-table{font-size:12.5px}.demand-taxonomy-table caption{caption-side:top;text-align:left;font-size:13px;font-weight:650;padding-bottom:9px;color:var(--ink)}.demand-taxonomy-table td:first-child{min-width:145px}.demand-taxonomy-table td{line-height:1.6}
+
+.agent-diagram-scroll{overflow-x:auto;overscroll-behavior-inline:contain}
+.agent-diagram-scroll:focus-visible,.implementation-note summary:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.agent-diagram-scroll .agent-diagram{min-width:690px}
+.implementation-note{margin:14px 0 27px;padding:10px 14px;border:1px solid var(--line);border-radius:5px;background:var(--soft)}
+.implementation-note summary{cursor:pointer;font-weight:650;font-size:14px}
+.implementation-note p{font-size:14px;margin:10px 0 4px}
+@media print{.agent-diagram-scroll .agent-diagram{min-width:0}}
 </style><style id="reader-layout-fix">
 .reader-toolbar{position:fixed!important;inset:0 0 auto 0!important;width:100%!important;max-width:none!important;margin:0!important;min-height:44px!important;padding:4px max(18px,calc((100vw - 1220px)/2))!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;flex-wrap:nowrap!important;box-sizing:border-box!important;z-index:1000!important}
 .reader-brand{flex:0 1 auto!important;min-width:0!important;white-space:nowrap!important}
@@ -181,7 +189,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="last-updated">最近更新时间：<time datetime="2026-11-18T18:23:13+08:00">2026-11-18 18:23（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="last-updated">最近更新时间：<time datetime="2026-11-18T18:48:20+08:00">2026-11-18 18:48（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -214,41 +222,87 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <li><strong>基于反馈的长期能力提升（对应 RQ4）</strong>：利用在线反馈和离线经验改善未见过的查询，在持续更新中控制旧任务遗忘，提升跨领域泛化。</li>
 <li><strong>端到端的质量—成本协同优化（对应 RQ5）</strong>：将推理、反馈、训练和评估成本统一核算，降低单位成功检索的总成本，并通过长期实验验证净收益。</li>
 </ol><p><strong>阶段依赖：</strong>P0 评测 → P1 开源强基线 → P2 轻量决策、索引与表示 → P3 初始框架端到端比较；P4 单独验证反馈驱动的后续迭代。</p>
-<h2>4. 研究内容与技术路线（Methodology）</h2><p class="lead"><strong>核心研究：</strong>从冷启动开始构建高质量、高效率、低成本的证据驱动专家检索框架；不依赖已积累用户反馈即可运行。围绕“专家证据索引—粗到细召回—低成本决策—按需核验”探索可复现机制，并与公开数据集上的强方法进行公平对照。<strong>次要贡献：</strong>在固定初始框架上利用在线／离线反馈持续迭代，单独评价其增益与成本。两者均是研究目标，已有探索尚未证明整体优势。</p><h3>4.1 基础智能体架构（Base Expert Search Agent）</h3><div class="figure"><div class="fig-title">拟议的初始高效框架（待实现与验证）</div><p>需求与约束 → 双语理解／决策 → <strong>词法＋稠密候选召回</strong> → 专家／能力／来源层次导航 → 按需证据读取与轻量决策 → 专家级排序、引用与未知项</p><p>决策器按证据缺口控制扩检与停止；候选或证据不足时回退精确／混合检索。离线阶段构建并版本化来源树、向量和专家归属。反馈记忆与模型更新是可选后续层，不是初始框架的运行前提。</p><div class="fig-caption">这是候选架构，不代表树索引、蒸馏或联合策略已经完成；下图保留当前已实现路径供对照。</div></div>
-<p>本研究首先构建一个<strong>完整、可独立运行的专家检索智能体基础框架</strong>，实现需求分类与语义映射、检索规划、工具调用、专家级证据融合、排序与核验等功能。在不启用持续学习机制时，该框架仍能完成专家检索；后续在线与离线学习、计算效率优化均在此基础上展开。</p>
-<p>基础架构由<strong>智能体决策控制、检索与证据获取、专家级证据聚合与结果生成</strong>三个部分组成，并为画像质量检查、证据时效性及反馈采集保留明确接口。LLM 负责需求分类与解析、规划、工具选择及停止判断；检索引擎、Embedding 和 Reranker 分别承担候选召回、语义检索与重排序。</p>
-<div class="figure architecture-figure" id="implemented-agent-architecture">
-<div class="fig-title">当前已实现的专家检索流程（GroundedPipeline）</div>
-<div style="overflow-x:auto"><svg class="basearch paper-svg" style="min-width:800px" viewBox="0 0 940 190" role="img" aria-label="当前实现：企业需求经过需求规划和向量编码，检索专家及来源，读取并检查专家来源归属，逐候选评估证据，输出暂定排序及未解决项。">
-<defs><marker id="current-flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#7d98a4"/></marker></defs>
-<g fill="#f4f7f8" stroke="#aab5bd"><rect x="8" y="20" width="138" height="66" rx="7"/><rect x="162" y="20" width="138" height="66" rx="7"/><rect x="316" y="20" width="138" height="66" rx="7"/><rect x="470" y="20" width="138" height="66" rx="7"/><rect x="624" y="20" width="138" height="66" rx="7"/><rect x="778" y="20" width="154" height="66" rx="7"/></g>
-<g font-size="13" text-anchor="middle" fill="#26353c" font-weight="600"><text x="77" y="46">企业需求</text><text x="77" y="65" font-size="11" font-weight="400">原始需求文本</text><text x="231" y="46">需求规划</text><text x="231" y="65" font-size="11" font-weight="400">子需求与原文定位</text><text x="385" y="46">向量召回</text><text x="385" y="65" font-size="11" font-weight="400">专家及来源候选</text><text x="539" y="46">来源读取</text><text x="539" y="65" font-size="11" font-weight="400">来源归属检查</text><text x="693" y="46">证据评估</text><text x="693" y="65" font-size="11" font-weight="400">逐候选适用性判断</text><text x="855" y="46">排序与结果</text><text x="855" y="65" font-size="11" font-weight="400">暂定排序／未解决项</text></g>
-<g fill="none" stroke="#7d98a4" stroke-width="1.5" marker-end="url(#current-flow-arrow)"><path d="M146 53 H160"/><path d="M300 53 H314"/><path d="M454 53 H468"/><path d="M608 53 H622"/><path d="M762 53 H776"/></g>
-<text x="470" y="125" text-anchor="middle" fill="#63707b" font-size="12">实验可选：精确 CPU／GPU 向量索引、索引绑定与候选并发评估</text><text x="470" y="150" text-anchor="middle" fill="#63707b" font-size="12">错误或证据缺失显式标记为未解决；引用定位不等于已证明语义支持</text></svg></div>
-<div class="fig-caption">这是当前可执行的单次检索路径；反馈驱动的策略更新和质量—成本联合优化仍待实现和验证。词法候选排序、浅层来源树和 Decision API 是仓库中的其他实验路径，并非上图每一步的默认实现。</div></div>
-<div class="figure architecture-figure" id="base-agent-architecture" aria-label="基础专家检索智能体架构">
-<div class="fig-title">拟议架构：按约束证据缺口调度检索</div>
-<svg class="basearch paper-svg" viewBox="0 0 900 582" role="img" aria-label="分层基础专家搜索智能体架构：自然语言需求进入智能体控制器规划任务并调用三类检索工具；聚合专家级证据后重排核验，输出带证据的Top-K专家，必要时反馈控制器继续检索。"><defs><marker id="paper-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10Z" fill="#8ca0a8"/></marker></defs><text x="20" y="21" font-size="10" font-weight="700" fill="#397c7b" text-anchor="start">INPUT</text><rect x="20" y="34" width="860" height="49" rx="9" fill="#f4f7f8" stroke="#dce5e8" stroke-width="1.1"/><text x="38" y="55" font-size="15" font-weight="700" fill="#26353c" text-anchor="start">企业技术需求</text><text x="196" y="55" font-size="12" font-weight="400" fill="#64757d" text-anchor="start">自然语言查询 / 技术约束 / 场景偏好</text><text x="860" y="64" font-size="17" font-weight="700" fill="#7d98a4" text-anchor="end">01</text><path d="M450 83 L450 106" fill="none" stroke="#7d98a4" stroke-width="1.5"  marker-end="url(#paper-arrow)"/><text x="20" y="120" font-size="10" font-weight="700" fill="#397c7b" text-anchor="start">CONTROL</text><rect x="20" y="133" width="860" height="130" rx="11" fill="#e8f2f0" stroke="#397c7b" stroke-width="1.1"/><text x="38" y="155" font-size="15" font-weight="700" fill="#26353c" text-anchor="start">证据缺口与预算决策</text><text x="860" y="155" font-size="17" font-weight="700" fill="#7d98a4" text-anchor="end">02</text><rect x="38" y="170" width="260" height="74" rx="8" fill="#fff" stroke="#dce5e8" stroke-width="1.1"/><text x="51" y="193" font-size="15" font-weight="650" fill="#26353c" text-anchor="start">需求理解与规划</text><text x="51" y="213" font-size="11" font-weight="400" fill="#64757d" text-anchor="start">语义映射 · 约束抽取 · 查询拆解</text><rect x="320" y="170" width="260" height="74" rx="8" fill="#fff" stroke="#dce5e8" stroke-width="1.1"/><text x="333" y="193" font-size="15" font-weight="650" fill="#26353c" text-anchor="start">专家 × 约束状态</text><text x="333" y="213" font-size="11" font-weight="400" fill="#64757d" text-anchor="start">支持 · 冲突 · 未查 · 证据不足</text><rect x="602" y="170" width="260" height="74" rx="8" fill="#e8f2f0" stroke="#397c7b" stroke-width="1.1"/><text x="615" y="193" font-size="15" font-weight="650" fill="#26353c" text-anchor="start">边际收益与动作选择</text><text x="615" y="213" font-size="11" font-weight="400" fill="#64757d" text-anchor="start">补召回 · 读原文 · 核验 · 停止</text><path d="M450 263 L450 287" fill="none" stroke="#7d98a4" stroke-width="1.5"  marker-end="url(#paper-arrow)"/><text x="20" y="304" font-size="10" font-weight="700" fill="#397c7b" text-anchor="start">RETRIEVAL</text><rect x="20" y="317" width="860" height="93" rx="11" fill="#f4f7f8" stroke="#dce5e8" stroke-width="1.1"/><rect x="37" y="331" width="266" height="65" rx="8" fill="#fff" stroke="#dce5e8" stroke-width="1.1"/><text x="50" y="354" font-size="15" font-weight="650" fill="#26353c" text-anchor="start">关键词 / 结构化检索</text><text x="50" y="374" font-size="11" font-weight="400" fill="#64757d" text-anchor="start">关键词与结构化过滤</text><rect x="317" y="331" width="266" height="65" rx="8" fill="#fff" stroke="#dce5e8" stroke-width="1.1"/><text x="330" y="354" font-size="15" font-weight="650" fill="#26353c" text-anchor="start">语义向量检索</text><text x="330" y="374" font-size="11" font-weight="400" fill="#64757d" text-anchor="start">Embedding · ANN · 多路召回</text><rect x="597" y="331" width="266" height="65" rx="8" fill="#fff" stroke="#dce5e8" stroke-width="1.1"/><text x="610" y="354" font-size="15" font-weight="650" fill="#26353c" text-anchor="start">论文 / 专利 / 项目证据</text><text x="610" y="374" font-size="11" font-weight="400" fill="#64757d" text-anchor="start">原文检索 · 片段读取 · 来源索引</text><path d="M450 410 L450 431" fill="none" stroke="#7d98a4" stroke-width="1.5"  marker-end="url(#paper-arrow)"/><text x="20" y="449" font-size="10" font-weight="700" fill="#397c7b" text-anchor="start">EVIDENCE</text><rect x="38" y="461" width="404" height="64" rx="8" fill="#fff" stroke="#dce5e8" stroke-width="1.1"/><text x="51" y="484" font-size="15" font-weight="650" fill="#26353c" text-anchor="start">专家级证据聚合</text><text x="51" y="504" font-size="11" font-weight="400" fill="#64757d" text-anchor="start">需求相关性 · 证据融合 · 时效权重</text><rect x="458" y="461" width="404" height="64" rx="8" fill="#e8f2f0" stroke="#397c7b" stroke-width="1.1"/><text x="471" y="484" font-size="15" font-weight="650" fill="#26353c" text-anchor="start">重排与证据核验</text><text x="471" y="504" font-size="11" font-weight="400" fill="#64757d" text-anchor="start">Reranker · 相关性 · 引用一致性</text><path d="M442 493 L458 493" fill="none" stroke="#7d98a4" stroke-width="1.5"  marker-end="url(#paper-arrow)"/><path d="M660 525 L660 545" fill="none" stroke="#7d98a4" stroke-width="1.5"  marker-end="url(#paper-arrow)"/><rect x="458" y="550" width="404" height="28" rx="7" fill="#26353c" stroke="#26353c" stroke-width="1.1"/><text x="660" y="570" font-size="13" font-weight="650" fill="#fff" text-anchor="middle">Top-K 专家 + 匹配理由 + 原始证据</text><path d="M38 493 H9 V208 H20" stroke="#7d98a4" stroke-width="1.6" stroke-dasharray="5 5" fill="none" marker-end="url(#paper-arrow)"/><text x="26" y="278" font-size="10" font-weight="500" fill="#64757d" text-anchor="start">未决约束 → 继续核验或扩检</text></svg>
-<div class="fig-caption">实线表示检索执行的数据流，虚线表示证据不足时的再次规划。基础框架不依赖在线参数更新，也不排斥后续训练优化。</div>
-
-<div class="arch-detail" id="arch-detail">
-<table><thead><tr><th>组件</th><th>主要输入</th><th>输出／职责</th></tr></thead><tbody>
-<tr><td>智能体控制器</td><td>查询、约束、当前状态</td><td>评估解决约束的收益与开销，选择补召回、读取、核验或停止</td></tr>
-<tr><td>检索工具层</td><td>改写后的查询、过滤条件</td><td>返回候选教师及其相关证据、检索分数与来源信息</td></tr>
-<tr><td>专家证据聚合</td><td>候选教师画像、已归集的多源证据</td><td>按需求评估证据相关性、充分性与时效性，形成专家级匹配特征</td></tr>
-<tr><td>重排与核验</td><td>候选专家与其证据包</td><td>输出相关性得分、约束检查与来源支持结论</td></tr>
-<tr><td>结果生成</td><td>已核验的专家排序与证据</td><td>输出 Top-K、推荐理由与可核验引用</td></tr>
-</tbody></table></div>
+<h2>4. 研究内容与技术路线（Methodology）</h2>
+<p class="lead"><strong>主贡献候选。</strong>从首个查询起，智能体就按「这次取证能否改变 Top-K」分配检索预算。每一轮追踪专家满足了哪些硬约束、哪些证据仍缺失或冲突，再选择补召回、定向取证、冲突复核或停止。在线／离线学习作为次要贡献，在初始策略冻结后单独验证。</p>
+<h3>4.1 证据驱动的专家检索智能体（Base Expert Search Agent）</h3>
+<div class="figure architecture-figure" id="base-agent-architecture" style="scroll-margin-top:70px">
+<div class="fig-title">图 1. 初始专家检索 Agent · 依据证据状态重选动作（拟议）</div>
+<div class="agent-diagram-scroll" tabindex="0" role="region" aria-label="专家检索智能体架构图，可横向滚动">
+<svg class="basearch paper-svg agent-diagram" viewBox="0 0 820 554" role="img" aria-labelledby="agent-diagram-title agent-diagram-desc">
+<title id="agent-diagram-title">面向 Top-K 决策的专家取证闭环</title>
+<desc id="agent-diagram-desc">需求与初始候选初始化专家乘约束状态；决策器在剩余预算内选择一个工具动作。工具观测经来源归属与原文支持核验写回状态，再次决定下一动作；风险达标时退出，预算耗尽则输出已支持部分并标明未决项。</desc>
+<defs>
+<marker id="agent-step-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#607b85"/></marker>
+<marker id="agent-state-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#087973"/></marker>
+</defs>
+<g fill="none" stroke="#607b85" stroke-width="1.5" marker-end="url(#agent-step-arrow)">
+<path d="M148 70 V119"/><path d="M568 200 H608"/><path d="M707 309 V397 H588"/>
+</g>
+<path d="M446 264 V327 H240 V390 M240 404 V506 H284" fill="none" stroke="#607b85" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#agent-step-arrow)"/>
+<g fill="none" stroke="#087973" stroke-width="2.5" marker-end="url(#agent-state-arrow)">
+<path d="M278 200 H322"/><path d="M288 397 H148 V291"/>
+</g>
+<g fill="#f4f7f8" stroke="#bccbd0">
+<rect x="18" y="15" width="784" height="55" rx="8"/>
+<rect x="610" y="113" width="192" height="196" rx="9"/>
+</g>
+<rect x="18" y="122" width="260" height="166" rx="9" fill="#fff" stroke="#8fb7b4" stroke-width="1.5"/>
+<rect x="324" y="122" width="244" height="142" rx="9" fill="#e6f3f0" stroke="#087973" stroke-width="1.8"/>
+<rect x="288" y="350" width="296" height="91" rx="9" fill="#f4f7f8" stroke="#bccbd0"/>
+<rect x="288" y="477" width="514" height="61" rx="8" fill="#263d46"/>
+<g fill="#20343d" font-size="16" font-weight="700">
+<text x="34" y="47">企业需求</text>
+<text x="148" y="47" font-size="13" font-weight="500">拆出硬约束与偏好 · 一次轻量召回建立初始候选</text>
+<text x="34" y="151">当前状态 · 专家 × 约束</text>
+<text x="342" y="151">轻量 Decision Model</text>
+<text x="625" y="140">可选工具动作</text>
+<text x="304" y="376">工具观测与原文核验</text>
+</g>
+<g fill="#425963" font-size="13">
+<text x="34" y="181">未查 · 证据不足 · 已支持 · 有冲突</text>
+<text x="34" y="208">附原文定位、专家归属、结果置信度</text>
+<text x="34" y="235">记录候选分差和剩余预算</text>
+<text x="342" y="180">估计取证能否改变 Top-K</text>
+<text x="342" y="205">比较预期收益和增量成本</text>
+<text x="342" y="230">选择动作和目标专家／约束</text>
+<text x="625" y="171">补召回候选</text>
+<text x="625" y="209">沿证据树读原文</text>
+<text x="625" y="247">复查冲突与归属</text>
+<text x="625" y="285">扩大范围或精确回退</text>
+<text x="304" y="402">核对专家归属与约束是否得到支持</text>
+<text x="304" y="423">写回状态，重新排候选并扣除成本</text>
+</g>
+<g fill="#087973" font-size="12" font-weight="700">
+<text x="159" y="337">证据写回</text>
+<text x="159" y="357">下一轮重决策</text>
+</g>
+<rect x="251" y="276" width="142" height="44" rx="6" fill="#fff"/>
+<g fill="#425963" font-size="12">
+<text x="258" y="292">关键约束已满足且风险达标</text>
+<text x="258" y="310">或预算耗尽，直接退出</text>
+</g>
+<g fill="#fff">
+<text x="306" y="502" font-weight="700" font-size="15">输出 Top-K、约束证据及未决项</text>
+<text x="306" y="523" font-size="12">预算耗尽时，仅输出已获支持的结论</text>
+</g>
+</svg>
 </div>
-<p><strong>基础框架的关键原则：</strong>LLM 负责决策而非代替检索引擎；候选召回、证据聚合、重排与核验各司其职；推荐结论应尽可能关联可追溯的原始证据。关闭持续学习模块后，系统仍可依据已有模型、工具协议与停止规则运行。</p>
+<div class="fig-caption">决策器可直接停止，也可针对一个专家与一项约束调用工具。工具返回的观测改变下一轮选择。证据树参考 PageIndex 的层次导航，按专家、能力与来源组织，原始片段用于核验。拟议闭环及退出条件仍待端到端验证。</div>
+</div>
+<p><strong>同一初始排序可以产生不同的搜索动作。</strong>例如，企业要求某工艺可在低温运行并有中试记录。若领先专家的论文已支持低温，Agent 就定向查该专家的项目或专利，核实中试与个人归属。若中试已核验，但当前候选池没有任何专家的低温证据，则改为按低温约束补召回。后续动作取决于哪个缺口可能改变入选名单，每次取证后重算；这两个路径是设计示例。</p>
+<details id="implemented-agent-architecture" class="implementation-note">
+<summary>当前可运行对照与原型状态</summary>
+<p><strong>GroundedPipeline（固定流程对照）。</strong>已有需求规划、向量召回、来源归属检查、逐候选证据评估与暂定排序。检索与评估的调用顺序固定，可用于测量闭环控制的实际增量。</p>
+<p><strong>已有组件探索。</strong>精确 CPU／GPU 检索、候选并发评估、浅层来源导航与决策模型分别做过实验。词面和冻结向量缺口规则在公开标注上的增益尚未确定。现阶段优先检查语义证据状态能否改善动作选择，结果见第 4.3 节与第 7.2 节。</p>
+</details>
 <h3>4.2 按约束的证据缺口分配搜索预算</h3>
 <p><strong>核心假设。</strong>当两位专家的相关性相近时，下一步应由可能改变推荐的未决约束决定。例如，企业要求某工艺适用于低温并具备中试记录。已有论文支持低温实验时，应优先在项目或专利中查找规模记录。如果所有候选都缺少该工艺的证据，则应按该约束补召回专家。两种情况的查询长度和候选得分可以相同，最佳动作不同。</p>
 <ol>
 <li><strong>记录专家与约束之间的证据状态。</strong>从需求原文定位硬约束和软偏好。每个「专家 × 约束」单元记录未查、已查但证据不足、有支持或存在冲突，并关联来源、原文位置和日期。共享来源只需读取一次，个人贡献逐人核验。索引节点定位原文，最终支持度由原文判定。</li>
-<li><strong>按预期收益选择动作。</strong>从共享候选池出发，针对各未决约束构造补召回、读取原文、复核冲突、停止等有限动作。估计每项动作解决关键缺口及改变 Top-K 的可能性，优先执行预期收益相对增量成本最高的动作。首版用固定规则，随后用本地开源 Decision Model 估计收益。</li>
+<li><strong>按预期收益选择动作。</strong>从共享候选池出发，针对各未决约束构造补召回、读取原文、复核冲突、停止等有限动作。为动作估计两项量：核验结果会改变关键约束判定或 Top-K 的概率，以及动作带来的端到端增量成本。候选路径的排序分数接近时，优先检查有较大机会改变入选名单的约束；同一来源若能核查多个未决项，则合并读取。先用可复现规则运行，再用本地开源 Decision Model 估计动作收益。训练候选来自同一状态下多个动作的配对回放，记录各自的核验结果、名单变化与成本。真实评估用独立标注区分有益变化和错误换人。</li>
 <li><strong>验证停止与回退。</strong>提前停止需满足关键约束有证据，且独立验证集校准的漏失风险低于预设阈值。风险偏高时按预算回退完整检索或强化核验。预算耗尽时返回已支持的推荐及未决约束，并统计质量、失败与弃权。</li>
 </ol>
-<p>固定模型、候选池、来源视图和预算，只替换动作选择规则。比较固定读取、候选分数优先、分差早停和证据缺口调度。用端到端耗时与独立标注的排序、硬约束及证据质量检验增益。</p>
+<p>同模型、工具、初始候选池与预算下，对比固定读取、候选分数优先、分差早停，以及用通用推理／行动循环的 ReAct 对照。补做去掉「专家 × 约束」状态和去掉 Top-K 影响估计的消融，区分收益来自多轮工具调用、证据状态还是预算策略。若固定预算下证据与排序质量无增益，等质量下也无端到端成本收益，则主张不成立。<a href="https://arxiv.org/abs/2210.03629">ReAct 原论文</a></p>
 <h3 id="demand-taxonomy">4.3 企业技术需求分类与结构化理解（Demand Taxonomy）</h3>
 <p>需求分类属于 Agent 的<strong>查询理解阶段</strong>，与上游按教师采集论文、专利、项目并建立画像是两项不同工作。建议采用“<strong>任务意图分类 + 需求特征评估 + 多维属性标注</strong>”体系，允许一条需求具有多个任务标签；需求类型不等于检索难度，描述较长也不必然需要更多推理。信息检索文献指出，任务目标及搜索过程的差异对应不同的检索策略；技术转移实践也强调技术成熟度和实施条件。<a class="inline-ref" href="https://doi.org/10.1145/3497875" target="_blank" rel="noopener noreferrer">[17]</a><a class="inline-ref" href="https://www.techtransfer.kit.edu/english/342.php" target="_blank" rel="noopener noreferrer">[18]</a></p>
 <div class="result-table-scroll"><table class="demand-taxonomy-table"><caption>表 4-1　企业技术需求的候选任务类型（允许多标签）</caption><thead><tr><th>需求类型</th><th>典型任务</th><th>专家匹配侧重点</th></tr></thead><tbody>
@@ -306,7 +360,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <li><strong>人工评价</strong>：按需求类型和理解难度标注专家级相关性、硬性约束、近期能力、可辨认的个人贡献线索及证据支持情况，不把成果署名直接视为个人贡献真值。</li>
 <li><strong>学习经验</strong>：采集自然语言反馈、候选曝光与排序、用户点击／收藏／最终选择、对接结果、检索动作轨迹及离线合成样本，并记录每一步计算消耗。</li></ol>
 <p>按需求类型、技术领域与时间划分训练／测试数据，严格隔离同一需求及近重复改写；固定索引快照，另设知识库更新实验。<strong>RQ1–RQ2</strong> 评估需求理解与基于教师画像的可信证据匹配，<strong>RQ3–RQ5</strong> 评估决策效率、反馈学习、长期进化和总成本。</p><h3>7.1.1 P0 Benchmark 标注与发布协议</h3><p>筛查覆盖率随意图变化：1,000 条约束型合成查询中 279 条未判定，不能只保留通过筛查的样本并当作完整基准。按需求意图和筛查状态抽样，双人独立审查，再按企业／父需求分组处理依赖；验证集确定策略，封闭集只用于最终比较。</p><p><strong>人工标注：</strong>受训且有相关技术背景的标注者对需求类型、约束、专家级匹配与证据独立双人标注，争议仲裁；报告 Cohen’s κ 或 Krippendorff’s α、标签覆盖率及分歧。候选池使用多系统 pooling 并补充随机候选，评估池化偏差。LLM 裁判须用独立人工金标校准，不可由同一方法生成自我评价真值。</p><p><strong>成功检索定义：</strong>主口径为 Top-K 中检出至少一位经人工金标认定满足硬性约束且证据充分的专家。用户选择、联系与合作达成是不同的业务指标，另行报告。单位成功检索总成本为总查询／检索工具／反馈／训练／评估摊销成本除以主口径成功查询数。</p><p><strong>时间与合规：</strong>按需求和科研成果时间严格切分训练、验证、测试，固定索引快照并独立评估知识库更新。企业需求及教师数据先审查授权和脱敏范围；公开数据与受控评测分离。个人贡献缺少人工真值时只做分析性子实验。</p>
-<h3 id="experiment-results">7.2 方法对比（Comparative Results）</h3><p><strong>核心主实验。</strong>同一语料、初始候选池、证据视图、决策模型和预算下，比较固定预算、分差早停、按候选分数扩检，以及按约束缺口调度。再与 BM25、精确稠密、混合加重排、固定流程 Agent 和分层搜索做完整系统对比。CoF 评价专家排序，EvidenceBench 评价来源要点覆盖，企业封闭集用独立标注评价关键约束及证据支持。报告质量、端到端成本和失败。</p>
+<h3 id="experiment-results">7.2 方法对比（Comparative Results）</h3><p><strong>核心主实验。</strong>同一语料、初始候选池、证据视图、决策模型和预算下，比较固定预算、分差早停、按候选分数扩检、匹配工具与预算的 ReAct，以及按约束缺口调度。再与 BM25、精确稠密、混合加重排、固定流程 Agent 和分层搜索做完整系统对比。CoF 评价专家排序，EvidenceBench 评价来源要点覆盖，企业封闭集用独立标注评价关键约束及证据支持。报告质量、端到端成本和失败。</p>
 <p><strong>公开专家排序的联合路径实测。</strong>ws5 作业 39802 在 73 条复用 CoF SIGIR 查询上交替运行两条路径。两组均在线编码，精确检索十位候选，各读取同一篇已归属论文的内存视图，然后返回五人。重排组额外批量调用 Qwen3-4B，对来源中是否展示相关方法进行二元打分。稠密排序与重排的软标签 P@5 分别为 42.2% 和 41.4%，硬标签为 20.0% 和 18.6%，两类配对 95% 区间均跨零。平均耗时为 8.2 和 273.9 毫秒，P95 为 8.4 和 329.8 毫秒。计时含编码、召回、内存证据访问、模型及排序，排除索引构建、存储和服务。公开标签是审稿人自评，证据是否真正支持专家适配仍待独立标注。当前采用稠密排序作为快速基线，将逐候选核验保留为成本对照，设计仅在证据缺口足以改变结果时触发的核验策略。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/cof_live_open_rerank.py">实验代码</a></p>
 <p><strong>只核验排名边界的候选。</strong>ws5 作业 39805 保持前三位不变，只重排第 4 至 7 位。门控根据第 5、6 位稠密分差决定是否调用核验器，阈值为前 36 条查询分差的中位数，未使用其评审标签。其余 37 条复用查询中，纯稠密、每条都核验边界、按分差核验的软标签 P@5 分别为 41.1%、42.2%、41.1%，硬标签分别为 20.0%、18.9%、19.5%。门控触发 12 次，三组平均耗时为 8.1、108.1、41.3 毫秒，P95 为 8.3、139.0、122.9 毫秒。三组候选及来源一致。门控降低了核验开销，尚未显示相对纯稠密的排序收益。保留分差作为对照，在独立数据上比较能判断缺失证据是否影响入选的状态信号。计时未含索引构建、持久化读取和服务。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/cof_live_open_rerank.py">实验代码</a></p>
 <p><strong>分开衡量候选池、重排器和触发策略的提升空间。</strong>对已有 CoF 日志按审稿人自评计算事后上界。73 条查询的十人候选池中，按标签选最优五人的软标签 P@5 上界为 74.2%，相较纯稠密的 42.2% 有差距。对 37 条边界实验查询，保持前三位并只允许调整第 4 至 7 位，软标签上界为 53.5%。即使用已知答案挑选现有模型能改善的查询，在最多 12 次调用的预算下也只能达到 44.3%，纯稠密和实测分差门控均为 41.1%。该分析使用同一批已探索数据；答案驱动上界仅用于诊断。优先在固定候选、来源和预算下比较稠密加 BM25、轻量交叉编码器和现有核验器，确认重排收益后再评估触发策略。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/cof_rerank_headroom.py">分析代码</a></p>
