@@ -1,21 +1,362 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>面向高校专家数据的结构感知网页提取 Agent</title><style>:root{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#20242a;background:#fff}*{box-sizing:border-box}body{margin:0}aside{position:fixed;top:0;bottom:0;width:255px;border-right:1px solid #e5e7eb;padding:32px 20px;overflow:auto;background:#fafafa}aside strong{font-size:13px;letter-spacing:2px;color:#64748b}aside a{display:block;text-decoration:none;color:#4b5563;font-size:13px;padding:10px 8px;border-radius:6px}aside a:hover{background:#eaeef2;color:#111}main{max-width:1000px;margin-left:calc(255px + max(20px, (100vw - 1255px)/2));padding:65px 48px 110px}h1{font-size:33px;letter-spacing:-1px;line-height:1.35;margin:0 0 10px}h2{font-size:23px;margin-top:64px;padding-bottom:12px;border-bottom:1px solid #e5e7eb}h3{font-size:17px;margin-top:30px}p,li{line-height:1.9;color:#374151;font-size:15px}li{margin:5px 0}.subtitle{color:#64748b;font-size:16px}.meta{font-size:12px;color:#94a3b8;margin:18px 0 38px}.note{border-left:3px solid #111;padding:8px 18px;background:#f8fafc;margin:24px 0}.diagram{border:1px solid #dce1e7;border-radius:12px;padding:25px;margin:25px 0;text-align:center}.node{border:1px solid #cbd5e1;border-radius:7px;padding:13px 18px;margin:0 auto;max-width:600px;background:#fff;font-size:14px;font-weight:600}.node small{display:block;font-weight:400;color:#64748b;margin-top:6px}.arrow{color:#94a3b8;padding:9px}.parallel{display:grid;grid-template-columns:1fr 1fr;gap:12px}.parallel .node{width:100%;background:#f8fafc}table{width:100%;border-collapse:collapse;font-size:13px;margin:20px 0}td,th{border-bottom:1px solid #e5e7eb;text-align:left;padding:12px;vertical-align:top;line-height:1.7}th{background:#f8fafc}pre{background:#151b25;color:#e8edf5;border-radius:8px;padding:20px;overflow:auto;font-size:12px;line-height:1.65}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}p code,li code{background:#f1f5f9;padding:2px 5px;border-radius:3px;font-size:13px}.tag{display:inline-block;border:1px solid #d1d5db;padding:4px 8px;border-radius:5px;font-size:12px;color:#475569;margin-right:6px}a{color:#2563eb}.foot{font-size:12px;color:#94a3b8;margin-top:70px}@media(max-width:900px){aside{display:none}main{margin:0;padding:35px 22px}.parallel{grid-template-columns:1fr}h1{font-size:27px}}</style></head><body><aside><strong>CONTENTS · 目录</strong><a href="#background">1. 背景与目标</a><a href="#principles">2. 设计原则</a><a href="#architecture">3. 系统架构</a><a href="#pipeline">4. 核心技术路线</a><a href="#agent">5. Agent 决策机制</a><a href="#schema">6. JSONL 与证据设计</a><a href="#engineering">7. 工程实现</a><a href="#evaluation">8. 评测与实验</a><a href="#roadmap">9. 开发路线与验收</a><a href="#risks">10. 风险与边界</a><a href="#references">11. 参考资料</a></aside><main><h1>面向高校专家数据的结构感知网页提取 Agent</h1><div class="subtitle">Structure-Aware HTML Extraction Agent for Academic Expert Data</div><div class="meta">学源滔滔 · 技术方案 v1.0 · 2026-11-18</div><div class="note"><b>核心思路</b><p>利用 XPath 完成低成本的确定性定位，利用 LLM 解决异构网页的语义理解，并通过规则学习减少后续模型调用。对复杂 HTML 先分析、去噪、保留证据路径，再按语义边界分块提取，最终生成可追溯、可验证的 JSONL。</p></div><section id="background"><h2>1. 背景与目标（Background & Objectives）</h2><p>高校教师主页、学院师资目录、科研成果页面存在模板多样、表格嵌套、字段命名不统一、中英文混排和动态渲染等问题。单纯 XPath 规则维护成本高，直接向 LLM 输入整页 HTML 又存在 token 浪费、上下文截断、跨记录混淆和证据缺失。</p><p>目标是建立可复用的数据提取引擎，输入网页 URL 或 HTML 快照及目标 Schema，输出多条 JSONL 记录和字段级来源；支持单人主页、多人列表、论文/项目列表等页面类型。</p></section><section id="principles"><h2>2. 设计原则（Design Principles）</h2><ol><li><b>结构先于语义：</b>先分析 DOM、表格、列表、标题和链接，再调用 LLM。</li><li><b>确定性优先：</b>已有可信 XPath 规则直接执行；仅在未知模板、规则失效、语义歧义时升级模型。</li><li><b>证据不丢失：</b>简化 HTML 时保留节点 ID、XPath、href、表格行列关系、标题层级和原文。</li><li><b>记录边界优先：</b>先切分“教师/论文/项目”等记录，再按 token 预算切块，禁止随意跨记录切割。</li><li><b>不凭空补全：</b>缺失字段输出 null，推断字段单独标识，不得把模型猜测写成网页事实。</li><li><b>持续学习：</b>通过验证的结果反向生成并测试 XPath 规则，按站点/模板版本缓存。</li></ol></section><section id="architecture"><h2>3. 系统架构（Architecture）</h2><div class="diagram"><div class="node">Input & Fetch<small>URL / HTML Snapshot · Scrapy · 可选 Playwright</small></div><div class="arrow">↓</div><div class="node">DOM Analyzer<small>节点特征 · 重复子树 · 页面类型 · 内容区域 · 结构指纹</small></div><div class="arrow">↓</div><div class="node">Semantic Simplifier & Chunk Planner<small>DOM 剪枝 · 稳定节点 ID · 标题与表格关系 · 记录级分块</small></div><div class="arrow">↓</div><div class="parallel"><div class="node">XPath Fast Path<small>已知模板 · 规则提取 · 低延迟</small></div><div class="node">LLM Fallback<small>结构未知 · 语义字段映射 · 按需提取</small></div></div><div class="arrow">↓</div><div class="node">Merge · Validation · Evidence Alignment<small>Schema 校验 · 原文核对 · 冲突检测 · 去重</small></div><div class="arrow">↓</div><div class="node">JSONL + Provenance Store<small>标准化记录 · 字段级证据 · 版本快照</small></div><div class="arrow">↺</div><div class="node">Rule Induction & Regression Tests<small>生成候选 XPath · 跨页面验证 · 规则注册与漂移监测</small></div></div></section><section id="pipeline"><h2>4. 核心技术路线（Methodology）</h2><h3>4.1 页面解析与结构分析</h3><p>使用 <code>Scrapy/parsel</code> 解析 HTML，记录 DOM 树、节点 XPath、文本长度、链接密度、标签类型、class/id 特征、同级结构相似度和表格布局。将页面初步识别为个人主页、列表页、详情页、混合页或未知类型；检测重复卡片、表格行、列表项等候选记录边界。页面类型分类允许不确定并回退到通用结构切分。</p><h3>4.2 HTML 简化：压缩但不破坏关系</h3><p>删除 script、style、注释和明显导航/页脚等非内容区域，但保留正文中有意义的 <code>a[href]</code>、标题、<code>img[alt]</code>、表格单元格及合并单元格信息。不能无条件丢弃隐藏节点或全部链接；有些教师信息由链接文字、标签或 JS 数据承载。</p><pre><code>&lt;section data-node="n42" data-xpath="//div[@class='teacher']"&gt;
-  &lt;h2 data-node="n43"&gt;张三&lt;/h2&gt;
-  &lt;p data-node="n44"&gt;研究方向：知识图谱、信息检索&lt;/p&gt;
-  &lt;a data-node="n45" href="/faculty/zhang"&gt;个人主页&lt;/a&gt;
-&lt;/section&gt;</code></pre><p>可进一步生成 <b>结构化中间表示（IR）</b>：<code>{node_id, xpath, role, text, attrs, parent_id, record_id}</code>，供分块、模型提示和证据回查共同使用。保留原始 HTML 快照，简化后的内容不是唯一事实来源。</p><h3>4.3 结构感知分块</h3><p>优先以重复卡片、表格行、人物块和标题章节为切分单位；大块内部按语义段落继续拆分。每块附带页面标题、所属章节、记录 ID、原始节点路径和少量相邻上下文。对超长单条记录允许分块提取后合并，但禁止将相邻教师的属性混为一人。</p><h3>4.4 双通道提取</h3><p><b>规则通道：</b>站点/模板指纹命中且回归测试通过时执行 XPath。<b>LLM 通道：</b>仅处理未覆盖字段、未知结构、异常记录或冲突字段。要求模型返回严格 JSON，字段值尽可能附带 <code>node_id</code> 和原文引用；禁止生成未经校验的 XPath 作为直接生产规则。</p><h3>4.5 验证与合并</h3><p>首先执行 JSON Schema/Pydantic 类型检查；随后使用节点 ID 回查原文，检查值是否得到支持，链接是否可解析、人员记录是否串行、重复项是否应合并。字段冲突保留候选证据和冲突状态，不能简单由 LLM 选择看似合理的一项。不同来源的教师身份合并属于独立的实体对齐步骤。</p><h3>4.6 规则归纳与自愈</h3><p>对经过验证的多个同模板样本，归纳相对 XPath（如卡片根节点下的姓名/研究方向字段），在留出页面上检查覆盖率和精确率。只有通过阈值的规则才进入规则库；模板指纹改变或字段异常率升高时停用规则并触发重新分析。</p></section><section id="agent"><h2>5. Agent 决策机制（Agent Policy）</h2><table><thead><tr><th>状态</th><th>动作</th><th>触发条件</th></tr></thead><tbody><tr><td>FETCH</td><td>获取静态 HTML / 必要时渲染</td><td>原始内容缺失或关键区域由 JS 加载</td></tr><tr><td>ANALYZE</td><td>DOM 分类与记录边界识别</td><td>首次页面或结构指纹变化</td></tr><tr><td>RULE</td><td>执行缓存 XPath</td><td>规则存在且质量监控正常</td></tr><tr><td>LLM</td><td>只提取缺失或冲突部分</td><td>规则覆盖不足或字段歧义</td></tr><tr><td>VERIFY</td><td>校验并回查证据</td><td>所有候选记录</td></tr><tr><td>REPAIR</td><td>重新分块、重试或人工复核</td><td>证据不符、记录串扰、校验失败</td></tr><tr><td>STOP</td><td>输出 JSONL 与质量报告</td><td>达到质量门槛或预算耗尽</td></tr></tbody></table><p>控制变量包括最大 LLM 调用次数、最大 token、重试次数、字段重要度、页面质量和时间预算。预算耗尽时允许输出部分已验证记录，并明确标记未完成字段。</p></section><section id="schema"><h2>6. JSONL 与证据设计（Output Contract）</h2><p>建议把<strong>业务字段</strong>与<strong>提取元数据</strong>分开：业务字段映射到学源滔滔统一教师画像 Schema，元数据负责来源与审计。下例仅为示意，不代表平台完整字段定义。</p><pre><code>{"record_type":"expert","data":{"name":"张三","research_interests":["信息检索","知识图谱"],"homepage":"https://example.edu/faculty/zhang"},"evidence":{"name":{"node_id":"n43","xpath":"//section[1]/h2","quote":"张三"},"research_interests":{"node_id":"n44","quote":"研究方向：知识图谱、信息检索"}},"meta":{"source_url":"https://example.edu/faculty","snapshot_id":"sha256:...","extractor":"llm","schema_version":"1.0","status":"verified"}}</code></pre><p>每行是一条 JSON 对象；多教师列表生成多行。对多值字段可将 evidence 扩展为证据数组。正式生产环境还应记录 <code>retrieved_at</code>、模型版本、规则版本、字段级状态、原始值与规范化值。</p></section><section id="engineering"><h2>7. 工程实现（Implementation）</h2><table><thead><tr><th>模块</th><th>建议技术</th><th>职责</th></tr></thead><tbody><tr><td>Fetch</td><td>Scrapy + 可选 Playwright</td><td>异步获取、限速、重试、动态页</td></tr><tr><td>DOM / XPath</td><td>parsel / lxml</td><td>解析、定位、规则执行</td></tr><tr><td>Boilerplate</td><td>自定义 DOM 剪枝 + Trafilatura 对照</td><td>去噪与信息保真</td></tr><tr><td>Chunking</td><td>自定义树分割器</td><td>记录边界与 token 预算</td></tr><tr><td>Extraction</td><td>LLM API + Pydantic</td><td>结构化字段映射与约束输出</td></tr><tr><td>Storage</td><td>JSONL + HTML 快照 + SQLite/PostgreSQL</td><td>记录、规则与证据</td></tr><tr><td>Evaluation</td><td>pytest + 标注样本</td><td>回归、消融与质量监控</td></tr></tbody></table><h3>推荐仓库结构</h3><pre><code>html-extraction-agent/
-├── docs/                  # GitHub Pages 文档
-│   └── index.html
-├── src/agent/
-│   ├── fetch.py
-│   ├── dom_analyzer.py
-│   ├── simplifier.py
-│   ├── chunker.py
-│   ├── xpath_extractor.py
-│   ├── llm_extractor.py
-│   ├── validator.py
-│   ├── rule_induction.py
-│   └── pipeline.py
-├── schemas/               # 业务 Schema 与证据 Schema
-├── rules/                 # 按站点/模板版本管理
-├── tests/fixtures/        # HTML 快照与标注数据
-└── README.md</code></pre></section><section id="evaluation"><h2>8. 评测与实验（Evaluation）</h2><p>固定 HTML 快照、目标 Schema、模型版本和评测集；按高校/站点/模板分组划分训练、开发和测试集，避免同模板泄漏。分别统计字段级精确率、召回率、F1、记录边界准确率、JSON 有效率、证据定位准确率、跨人字段污染率、端到端延迟和每千条有效记录成本。</p><table><thead><tr><th>对照</th><th>方法</th><th>检验问题</th></tr></thead><tbody><tr><td>B1</td><td>纯 XPath 人工规则</td><td>规则维护成本与覆盖率</td></tr><tr><td>B2</td><td>整页 HTML → LLM</td><td>结构分析和分块是否必要</td></tr><tr><td>B3</td><td>纯文本/Markdown → LLM</td><td>保留 DOM 关系是否改善质量</td></tr><tr><td>B4</td><td>结构分块 → LLM</td><td>分块收益</td></tr><tr><td>Ours</td><td>结构分块 + XPath + 按需 LLM + 规则学习</td><td>质量、速度、成本联合收益</td></tr></tbody></table><p>消融实验依次移除：结构感知分块、节点证据、XPath 快速路径、规则归纳和字段级重试。目标不是先验宣称优于基线，而是通过固定数据集验证增益。</p></section><section id="roadmap"><h2>9. 开发路线与验收（Roadmap）</h2><table><thead><tr><th>阶段</th><th>交付物</th><th>验收重点</th></tr></thead><tbody><tr><td>P0 · 数据集</td><td>多站点 HTML 快照、字段标注、记录边界标注</td><td>覆盖个人主页、师资列表、表格和异常页</td></tr><tr><td>P1 · 基线</td><td>Scrapy + DOM 简化 + LLM → JSONL</td><td>端到端可运行，字段有证据</td></tr><tr><td>P2 · 混合提取</td><td>结构分块、XPath 快速路径、质量校验</td><td>对照实验与错误分析</td></tr><tr><td>P3 · 规则学习</td><td>规则归纳、回归测试、模板漂移监控</td><td>新旧模板稳定性与成本收益</td></tr><tr><td>P4 · 生产化</td><td>任务队列、重试、审计、指标看板</td><td>大规模持续运行与异常恢复</td></tr></tbody></table><p>建议先在 3–5 所高校、约 100–300 个具有代表性的页面上完成可复现评测，再扩展覆盖。以上样本量是启动建议，不是已经完成的实验数据。</p></section><section id="risks"><h2>10. 风险与边界（Risks）</h2><ol><li>动态网页、iframe、PDF 附件和图片中的信息需独立处理；本方案的 HTML 提取不等于覆盖所有媒介。</li><li>页面中可能存在恶意指令；网页内容一律作为不可信数据，不能让网页文字修改 Agent 的工具权限或系统指令。</li><li>遵守网站访问规则、合理限速、隐私和个人信息处理要求；不以绕过登录、验证码或访问控制为默认能力。</li><li>LLM 可能漏字段或跨记录串扰，必须使用字段级原文证据和独立验证，不能仅依赖模型自报置信度。</li><li>XPath 对页面改版敏感；规则上线前需要留出样本验证与漂移监测。</li></ol></section><section id="references"><h2>11. 参考资料（References）</h2><p><a href="https://docs.scrapy.org/en/latest/topics/selectors.html">Scrapy Selectors Documentation</a> · <a href="https://github.com/scrapy/parsel">parsel</a> · <a href="https://github.com/adbar/trafilatura">Trafilatura</a> · <a href="https://docs.pydantic.dev/latest/">Pydantic</a> · <a href="https://laiwenai.github.io/expert-search-research/">学源滔滔专家检索研究方案（版式参考）</a></p></section><div class="foot">学源滔滔 · Structure-Aware HTML Extraction Agent · 技术方案 v1.0</div></main></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="学源滔滔：面向异构高校网页的结构感知 HTML→JSONL 智能提取 Agent 技术方案，包含 DOM 分析、XPath、LLM 分块、规则演化、证据验证与实验协议。">
+<title>面向异构高校网页的结构感知数据提取 Agent | 学源滔滔</title>
+<style>
+:root{--ink:#18212b;--muted:#62707c;--line:#dce2e7;--soft:#f5f7f8;--accent:#345a70;--strong:#263846;--code:#f4f6f8}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;color:var(--ink);background:#fff;line-height:1.78;margin:0;font-size:14.5px}
+a{color:#255f84;text-decoration:none}a:hover{text-decoration:underline}
+.reader-bar{height:3px;background:#dce2e7;position:fixed;left:0;right:0;top:0;z-index:90}.reader-bar div{height:100%;width:0;background:#385b70;transition:width .1s}
+.reading-shell{max-width:1340px;margin:auto;display:grid;grid-template-columns:255px minmax(0,1fr);gap:54px;padding:0 48px 0 30px}
+.reader-aside{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:53px 10px 30px 0;border-right:1px solid var(--line);scrollbar-width:thin}.aside-head{color:#8995a0;font-size:11px;letter-spacing:1.4px;font-weight:700;margin-bottom:18px}
+.chapter-nav a{display:block;color:#667581;font-size:12px;line-height:1.55;padding:7px 10px 7px 13px;border-left:2px solid transparent;margin-left:-1px}.chapter-nav a.sub{padding-left:25px;font-size:11.5px}.chapter-nav a.active{border-left-color:#334f60;color:#233b4d;font-weight:700;background:#f5f7f8}
+main{max-width:940px;padding:66px 0 90px;min-width:0}
+header{border-bottom:2px solid var(--strong);padding-bottom:24px;margin-bottom:32px}h1{font-size:29px;line-height:1.42;letter-spacing:-.55px;margin:0 0 11px;font-weight:720}
+header .en{font-size:14px;color:#566673;line-height:1.6}.updated{font-size:11.5px;color:#8994a0;margin-top:11px}
+h2{font-size:20px;margin:49px 0 17px;padding-bottom:9px;border-bottom:1px solid var(--line);line-height:1.48;scroll-margin-top:22px}h3{font-size:16px;margin:28px 0 10px;line-height:1.5;scroll-margin-top:22px}h4{font-size:14px;margin:21px 0 8px}p{margin:10px 0 15px}ol,ul{padding-left:24px;margin:10px 0 18px}li{margin:7px 0;padding-left:3px}strong{font-weight:650}
+.lead{font-weight:600;border-left:3px solid #536b7a;padding:10px 16px;margin:23px 0;background:#f7f9fa}.note{color:#64717b;font-size:12px}.mini{font-size:12px;color:#60707a}.key{border:1px solid #d9e0e5;background:#fafbfc;padding:14px 18px;margin:22px 0}.key strong{display:block;margin-bottom:3px}
+.figure{border:1px solid var(--line);border-radius:9px;margin:23px 0 28px;padding:19px 18px 14px;overflow:hidden}.fig-title{font-size:13px;font-weight:670;margin-bottom:15px}.fig-caption{text-align:center;font-size:12px;color:var(--muted);margin-top:13px;line-height:1.6}
+.pipeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:15px;align-items:stretch}.pipe{border:1px solid #aebbc4;border-radius:6px;text-align:center;background:#f7f9fa;padding:13px 6px;font-size:12px;font-weight:650;position:relative}.pipe small{font-size:10px;font-weight:400;display:block;color:#62707c;line-height:1.5;margin-top:4px}.pipe:not(:last-child):after{content:"→";position:absolute;right:-16px;top:36%;color:#88969f}
+.branch{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.branch .unit{border:1px solid #bac5cc;background:#f8fafb;padding:13px 12px;border-radius:6px;font-size:12px}.branch .unit strong{display:block;margin-bottom:6px}.branch .unit p{margin:0;font-size:11px;color:#596a76;line-height:1.6}
+.arrow{text-align:center;color:#78909c;font-size:20px;line-height:1.5}
+.diagram-svg{width:100%;height:auto;display:block}
+.table-scroll{width:100%;overflow-x:auto;margin:17px 0 25px}table{border-collapse:collapse;width:100%;font-size:12.8px;line-height:1.65}caption{text-align:left;font-size:12px;font-weight:700;margin-bottom:8px}th,td{padding:10px 11px;text-align:left;vertical-align:top;border-bottom:1px solid #dce2e7}th{background:#f1f4f6;font-weight:650;white-space:nowrap}tr:nth-child(even) td{background:#fafbfc}
+pre{background:var(--code);border:1px solid #e1e6ea;border-radius:6px;padding:15px 17px;overflow-x:auto;font:12px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;color:#273e50;margin:17px 0;white-space:pre}code{font:12px ui-monospace,SFMono-Regular,Consolas,monospace;background:#f1f3f5;padding:2px 4px;border-radius:3px}pre code{background:none;padding:0}
+.eq{text-align:center;padding:13px 15px;border:1px solid var(--line);background:#fafbfc;font-family:Georgia,serif;font-size:15px;margin:18px 0;overflow:auto}.references{font-size:12.6px;line-height:1.7}.references li{margin:8px 0}
+.end{border-top:1px solid var(--line);margin-top:36px;padding-top:19px;font-size:12.5px;color:#54636f}
+.mobile-tools{display:none}.scroll-top{position:fixed;bottom:20px;right:22px;border:1px solid #cdd6dc;border-radius:6px;background:#fff;color:#4b6373;padding:7px 11px;cursor:pointer;font-size:12px;box-shadow:0 2px 7px #0000000b}
+@media(max-width:1040px){.reading-shell{grid-template-columns:210px minmax(0,1fr);gap:28px;padding:0 25px}.reader-aside{padding-right:5px}.chapter-nav a{font-size:11.5px}}
+@media(max-width:760px){.reading-shell{display:block;padding:0 19px}.reader-aside{display:none}.mobile-tools{display:flex;gap:10px;position:sticky;top:3px;z-index:60;background:#fffffff0;border-bottom:1px solid var(--line);padding:9px 17px;justify-content:space-between;align-items:center;backdrop-filter:blur(10px)}.mobile-tools button{background:#fff;border:1px solid #ccd5db;border-radius:5px;padding:7px 11px;color:#355568}.mobile-toc{display:none;background:#fff;position:fixed;inset:43px 0 0;overflow:auto;z-index:65;padding:20px 24px}.mobile-toc.open{display:block}.mobile-toc a{display:block;padding:9px 0;border-bottom:1px solid #e9edf0;font-size:13px}main{padding:35px 0 75px}h1{font-size:24px}h2{font-size:18px;margin-top:35px}h3{font-size:15px}.pipeline{grid-template-columns:1fr;gap:13px}.pipe:not(:last-child):after{content:"↓";right:49%;top:auto;bottom:-23px}.branch{grid-template-columns:1fr}.figure{padding:14px 10px}.table-scroll{margin-left:-4px;width:calc(100% + 8px)}table{font-size:12px}th,td{padding:8px 7px}pre{font-size:11px}.scroll-top{bottom:13px;right:12px}}
+@media print{.reader-bar,.reader-aside,.mobile-tools,.scroll-top{display:none!important}.reading-shell{display:block;padding:0}main{padding:0;max-width:none}body{font-size:10pt}h2,h3{break-after:avoid}.figure,.key,table{break-inside:avoid}a{color:inherit}h1{font-size:20pt}h2{font-size:14pt}h3{font-size:11pt}@page{size:A4;margin:17mm}}
+</style>
+</head>
+<body>
+<div class="reader-bar"><div id="progress"></div></div>
+<div class="mobile-tools"><strong style="font-size:12px;letter-spacing:.8px">学源滔滔 · TECHNICAL PROPOSAL</strong><button id="toc-toggle" aria-expanded="false">目录 ☰</button></div>
+<div class="mobile-toc" id="mobile-toc" aria-label="移动端目录"></div>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav id="chapter-nav" class="chapter-nav"></nav></aside><main>
+<header>
+<h1>面向异构高校网页的结构感知数据提取 Agent</h1>
+<div class="en">Structure-Aware HTML Extraction Agent for Heterogeneous Academic Websites</div>
+<div class="updated">学源滔滔 · 技术研究方案 v2.0 · 2026-11-18</div>
+</header>
+<h2>1. 研究背景（Background）</h2>
+<p>学源滔滔需要从高校及科研机构的教师主页、院系名录、成果列表和项目页面中提取结构化信息，并持续更新统一专家画像。网页来源高度异构：同一字段可能分别出现在表格、定义列表、自由文本、嵌套卡片和 JavaScript 渲染区域；同一页面还可能同时包含多位教师、数十篇成果和不相关的站点导航。</p>
+<p>传统 XPath / CSS 规则提取速度快、成本低，但依赖模板；直接让大模型读取完整 HTML 则会引入冗余 token、记录间串扰、证据定位困难和高运行成本。简单的“去标签→按长度分块→LLM 抽取”同样不可靠，因为清洗与切块可能破坏姓名—职称、论文—作者、项目—时间等实体关系。</p>
+<div class="lead">核心思路：先将 HTML 还原为可追溯的结构单元，优先复用确定性规则；仅对未知或异常结构调用 LLM，随后将经验证的提取方式归纳为可复用规则。输出不仅是 JSONL，还必须包含字段级来源证据、抽取状态和可重放的版本信息。</div>
+<p>系统面临的主要技术挑战：</p>
+<ol>
+<li><strong>网页结构异构（Structural Heterogeneity）：</strong>院系、教师主页与成果列表的 DOM 模式不同，跨站点模板无法直接通用。</li>
+<li><strong>结构压缩与信息保真（Structure-Preserving Compression）：</strong>削减导航、样式和重复代码时，必须保留语义、链接、标签层级与父子关系。</li>
+<li><strong>多实体与长列表边界（Entity Boundary）：</strong>一个页面可能包含多个教师或多篇成果，分块不得截断单条记录，亦不能跨记录合并属性。</li>
+<li><strong>字段对齐与来源归属（Field Attribution）：</strong>相同字段可能有多个候选值，需要区分个人邮箱、办公室电话、学院公共邮箱等。</li>
+<li><strong>模板漂移与长期维护（Template Drift）：</strong>网页改版、标签重命名和异步加载会使已部署的 XPath 静默失效。</li>
+<li><strong>质量—延迟—成本约束（Quality–Latency–Cost）：</strong>高准确率不应建立在每个页面都进行多轮大模型推理的前提上。</li>
+</ol>
+
+<h2>2. 目标与任务定义（Objectives & Task Definition）</h2>
+<h3>2.1 输入、输出与非目标</h3>
+<div class="table-scroll"><table><caption>表 1　系统输入、输出及约束</caption><thead><tr><th>项目</th><th>定义</th><th>设计要求</th></tr></thead><tbody>
+<tr><td>输入</td><td>页面 URL / HTML 快照、站点上下文、目标 JSON Schema、已有规则版本</td><td>支持离线 HTML 重放；动态网页可附带渲染后 DOM</td></tr>
+<tr><td>中间表示</td><td>DOM 区域、实体单元、结构化块、候选值与来源定位</td><td>所有被简化内容均可回溯原始节点</td></tr>
+<tr><td>输出</td><td>每行一个实体对象的 JSONL；独立字段证据记录与运行元数据</td><td>JSON 可验证；缺失字段明确为 null 或空列表</td></tr>
+<tr><td>运行约束</td><td>抓取权限、域名限速、模型预算、最大延迟、字段必填与证据政策</td><td>预算耗尽时允许部分输出，不得臆造字段</td></tr>
+<tr><td>非目标</td><td>绕过访问控制、验证码或站点安全限制；直接推断真实科研贡献</td><td>仅处理合法可访问且符合使用约束的数据</td></tr>
+</tbody></table></div>
+<p>把网页快照记为 <code>H</code>，目标 Schema 记为 <code>S</code>，站点上下文记为 <code>C</code>，规则集记为 <code>R</code>。系统生成一组实体记录 <code>Y</code> 与证据映射 <code>E</code>：</p>
+<div class="eq">F(H, S, C, R) → (Y, E, diagnostics)</div>
+<p>优化目标不是“每页提取尽可能多的文字”，而是在目标字段与准确来源归属的约束下提高有效记录覆盖率，同时降低单条合格记录的成本与处理时延。</p>
+<h3>2.2 数据层次与实体边界</h3>
+<div class="table-scroll"><table><caption>表 2　推荐的实体层级</caption><thead><tr><th>页面类型</th><th>主实体边界</th><th>典型字段</th><th>常见风险</th></tr></thead><tbody>
+<tr><td>教师个人主页</td><td>一个教师为主；论文、项目为子实体</td><td>姓名、职称、研究方向、邮箱、履历</td><td>成果列表年份和作者归属错误</td></tr>
+<tr><td>院系教师名录</td><td>每个教师卡片 / 表格行</td><td>姓名、职称、主页链接、头像</td><td>多个教师信息串行</td></tr>
+<tr><td>论文 / 专利列表</td><td>每条成果项</td><td>标题、年份、作者、DOI / 专利号</td><td>跨条目合并、链接错配</td></tr>
+<tr><td>课题 / 项目页面</td><td>每个项目块，负责人为关联实体</td><td>项目名称、角色、期限、资助机构</td><td>主体、合作方与负责人混淆</td></tr>
+</tbody></table></div>
+<p><strong>重要区分：</strong>网页抽取到的“论文作者顺序”是客观字段，但“专家实际贡献程度”是后续画像与证据融合问题，不能仅凭 HTML 提取器做确定性判断。</p>
+
+<h2>3. 总体架构（System Architecture）</h2>
+<div class="figure"><div class="fig-title">图 1. 结构优先、模型按需介入的数据提取架构</div>
+<svg class="diagram-svg" viewBox="0 0 830 450" role="img" aria-label="HTML 输入经快照与结构分析、结构简化、实体分块，分别进入 XPath 与 LLM 提取，随后经证据验证、合并与 JSONL 输出，反馈训练规则库">
+<defs><marker id="arr1" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#698493"/></marker></defs>
+<g font-family="Arial,'Microsoft YaHei',sans-serif" text-anchor="middle" font-size="13" fill="#233847">
+<rect x="294" y="10" width="242" height="44" rx="6" fill="#eef2f4" stroke="#8aa0ae"/><text x="415" y="29" font-weight="bold">URL / HTML / Schema</text><text x="415" y="44" font-size="10" fill="#61727e">快照、版本、站点上下文</text>
+<path d="M415 54V78" stroke="#698493" stroke-width="1.6" marker-end="url(#arr1)"/>
+<rect x="290" y="80" width="250" height="48" rx="6" fill="#f7f9fa" stroke="#acbbc5"/><text x="415" y="99" font-weight="bold">DOM Structural Analyzer</text><text x="415" y="115" font-size="10" fill="#60727e">页面分类 · 区域定位 · 重复模式</text>
+<path d="M415 128V150" stroke="#698493" stroke-width="1.6" marker-end="url(#arr1)"/>
+<rect x="290" y="152" width="250" height="48" rx="6" fill="#f7f9fa" stroke="#acbbc5"/><text x="415" y="171" font-weight="bold">Simplifier + Entity Chunker</text><text x="415" y="187" font-size="10" fill="#60727e">保结构压缩 · 实体完整分块 · 节点映射</text>
+<path d="M415 200V222M415 222H214M415 222H616M214 222V241M616 222V241" stroke="#698493" stroke-width="1.6" fill="none" marker-end="url(#arr1)"/>
+<rect x="93" y="243" width="242" height="55" rx="6" fill="#f2f6f7" stroke="#829fac"/><text x="214" y="263" font-weight="bold">Deterministic Extractor</text><text x="214" y="279" font-size="11">XPath / CSS / JSON-LD</text><text x="214" y="291" font-size="9" fill="#62727c">规则命中且健康 → 快速路径</text>
+<rect x="495" y="243" width="242" height="55" rx="6" fill="#f2f6f7" stroke="#829fac"/><text x="616" y="263" font-weight="bold">LLM Semantic Extractor</text><text x="616" y="279" font-size="11">结构化输出 + 证据节点 ID</text><text x="616" y="291" font-size="9" fill="#62727c">未知模板 / 冲突 / 失败 → 回退路径</text>
+<path d="M214 298V320H415M616 298V320H415M415 320V341" fill="none" stroke="#698493" stroke-width="1.6" marker-end="url(#arr1)"/>
+<rect x="287" y="343" width="256" height="44" rx="6" fill="#edf2f4" stroke="#8198a5"/><text x="415" y="363" font-weight="bold">Validator & Evidence Resolver</text><text x="415" y="378" font-size="10">Schema · 来源归属 · 冲突 · 去重</text>
+<path d="M415 387V404" stroke="#698493" stroke-width="1.6" marker-end="url(#arr1)"/>
+<rect x="307" y="408" width="216" height="32" rx="5" fill="#e9eff2" stroke="#8198a5"/><text x="415" y="429" font-weight="bold">JSONL + Evidence Store</text>
+<rect x="9" y="343" width="195" height="65" rx="5" fill="#fff" stroke="#b7c3cb" stroke-dasharray="4 4"/><text x="106" y="362" font-size="12" font-weight="bold">Rule Registry</text><text x="106" y="378" font-size="10">规则生成 · 版本 · 金标回归</text><text x="106" y="393" font-size="10">模板漂移 → 重学</text>
+<path d="M287 365H204M106 343V220H214V241" fill="none" stroke="#7c96a1" stroke-width="1.3" stroke-dasharray="5 4" marker-end="url(#arr1)"/>
+</g></svg>
+<div class="fig-caption">实线：提取主路径；虚线：已验证样本驱动的规则学习与回归。原始快照和字段证据独立保存，便于审计与重放。</div></div>
+<h3>3.1 模块职责与接口</h3>
+<div class="table-scroll"><table><caption>表 3　模块输入与核心输出</caption><thead><tr><th>模块</th><th>输入</th><th>输出 / 判断依据</th></tr></thead><tbody>
+<tr><td>Fetcher / Snapshot</td><td>URL、请求策略</td><td>原始 HTML、最终 URL、HTTP 状态、内容哈希、获取时间</td></tr>
+<tr><td>Page Classifier</td><td>DOM、站点上下文</td><td>个人主页 / 名录 / 列表 / 混合页及不确定度</td></tr>
+<tr><td>DOM Analyzer</td><td>解析树</td><td>候选区域、重复兄弟模式、标题层级、表头映射</td></tr>
+<tr><td>Simplifier</td><td>DOM 区域、字段需求</td><td>保留节点 ID 的压缩结构树</td></tr>
+<tr><td>Chunker</td><td>结构树、实体边界</td><td>实体完整块与共享上下文</td></tr>
+<tr><td>Extractor Router</td><td>规则健康度、块类型、预算</td><td>确定性 / LLM / 延迟重试 / 人工审查</td></tr>
+<tr><td>Evidence Validator</td><td>候选 JSON、原文、DOM ID</td><td>字段级验证与冲突状态</td></tr>
+<tr><td>Rule Learner</td><td>已验证样本、DOM 模式</td><td>带范围、测试与版本的候选 XPath 规则</td></tr>
+</tbody></table></div>
+
+<h2>4. 核心研究问题（Research Questions）</h2>
+<ol>
+<li><strong>RQ1 · 如何识别复杂 DOM 中的目标内容与实体边界？</strong>在名录、长成果列表、混排主页上提高实体分割准确率，避免跨人、跨成果字段串扰。</li>
+<li><strong>RQ2 · 如何压缩 HTML 而不损失字段及其关系？</strong>在目标字段覆盖率不降低的条件下，减少 LLM 输入 token，并保留可验证的 DOM 路径。</li>
+<li><strong>RQ3 · 如何协同 XPath 与 LLM？</strong>通过健康度检测、结构类型和预算约束，将确定性规则用于稳定模板，将语义推理集中在困难区域。</li>
+<li><strong>RQ4 · 如何将成功的语义提取转化为可复用规则？</strong>从多样本学习稳定选择器，经历回归测试后发布，并及时发现模板漂移。</li>
+<li><strong>RQ5 · 如何评价质量、时延和成本的联合收益？</strong>统一离线页面集、网络与模型条件，评估字段准确性、实体边界、证据归属和端到端成本。</li>
+</ol>
+<p>研究依赖关系：RQ1 为 RQ2 提供完整语义单元；RQ1–RQ2 形成 RQ3 的低成本输入；RQ3 的已验证结果为 RQ4 提供候选训练样本；RQ5 贯穿全部模块，避免局部压缩收益掩盖总体质量下降。</p>
+
+<h2>5. 关键方法与技术路线（Methodology）</h2>
+<h3>5.1 DOM 分析：先理解结构，再决定删除什么</h3>
+<p>DOM Analyzer 首先识别四类节点：<strong>全局模板</strong>（导航、页脚、广告）、<strong>内容容器</strong>（正文、名录主体）、<strong>实体单元</strong>（教师卡片、成果条目）、<strong>字段证据</strong>（标题、时间、链接、键值对）。结合标签语义、文本密度、链接密度、节点深度、重复兄弟子树和字段词典产生候选区域。</p>
+<p>不建议统一删除 <code>table</code>、<code>ul</code>、<code>a</code> 或 <code>img</code>：教师联系方式经常存放于表格，科研成果通常是列表，主页和 DOI 藏于链接地址，头像可用于名录数据核对。<code>script</code> 通常可移除，但包含目标 JSON-LD 或页面数据对象时须先解析后再删除。</p>
+<div class="table-scroll"><table><caption>表 4　结构特征与预期用途</caption><thead><tr><th>信号</th><th>识别逻辑</th><th>用途</th></tr></thead><tbody>
+<tr><td>重复子树</td><td>兄弟节点标签路径、属性模式、文本分布相似</td><td>识别多教师卡片与成果列表</td></tr>
+<tr><td>键值关系</td><td>th→td、dt→dd、label→value、相邻短文本</td><td>保持联系方式与字段名称对应</td></tr>
+<tr><td>标题语义</td><td>h1–h6、aria 标签、中文栏目词</td><td>拆分“教育经历”“研究方向”“代表论文”</td></tr>
+<tr><td>链接角色</td><td>href、rel、anchor text、URL 规范化</td><td>发现教师详情页及论文/项目来源</td></tr>
+<tr><td>内容密度</td><td>文本长度、节点结构与链接密度组合</td><td>辅助主内容定位，不单独决定删除</td></tr>
+</tbody></table></div>
+
+<h3>5.2 保结构 HTML 简化（Structure-Preserving Simplification）</h3>
+<p>采用<strong>两级压缩</strong>：第一层移除脚本、样式和高置信模板噪声；第二层将冗余标签与属性归约为具有节点 ID 的紧凑表示。应保留文本、字段标签、层级、表格单元格映射、相对/绝对 URL、必要的图片替代文本和实体分组边界。</p>
+<div class="figure"><div class="fig-title">图 2. 示例：保留字段关系与可追溯节点编号</div>
+<pre style="margin:0 0 10px">&lt;div class="teacher-box"&gt;
+  &lt;h2&gt;张某某&lt;/h2&gt;
+  &lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;职称&lt;/th&gt;&lt;td&gt;教授&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;邮箱&lt;/th&gt;&lt;td&gt;zhang@example.edu.cn&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/div&gt;</pre>
+<div class="arrow">↓ 结构归约（不丢失字段标签）</div>
+<pre style="margin:0">[entity id=e17 type=person xpath=//div[...]]
+  [n21 heading] 张某某
+  [n24 key=职称] 教授
+  [n29 key=邮箱] zhang@example.edu.cn
+  [source] e17/n24 → original XPath + text offsets</pre>
+<div class="fig-caption">示意数据，非真实教师信息。LLM 消费简化表示；证据解析器仍以原始 HTML 快照核验。</div></div>
+<p>定义压缩率 <code>CR = 1 − tokens(simplified) / tokens(raw)</code>；但 CR 只能作为效率指标，不能单独代表简化效果。必须同时测量字段覆盖率、证据可定位率与实体边界保持率。对于未知字段，先保存保守压缩的回退版本，避免激进删除导致不可恢复的漏抽。</p>
+
+<h3>5.3 结构感知分块：实体完整优先于固定 token</h3>
+<p>分块顺序建议为：<strong>页面类型 → 主内容区域 → 重复实体边界 → 栏目边界 → token 预算</strong>。对教师名录以卡片或表格行为最小单元；对成果列表以每条论文、专利为最小单元；对教师主页按“个人信息 / 研究方向 / 论文 / 项目”等语义小节分块，并在每块携带所属教师的稳定实体 ID。</p>
+<div class="figure"><div class="fig-title">图 3. 分块粒度与跨块上下文</div>
+<div class="branch"><div class="unit"><strong>页面级上下文</strong><p>URL、院系、页面标题、页面语言、主实体 ID</p></div><div class="unit"><strong>实体块</strong><p>教师卡片 A / 教师卡片 B / 论文条目 i … 每条保持完整</p></div><div class="unit"><strong>字段证据</strong><p>姓名 n21、职称 n24、邮箱 n29，输出前逐项反查</p></div></div>
+<div class="fig-caption">超长单实体可按语义小节继续拆分，但须携带实体上下文与连续序号；合并时以实体 ID 与字段类型校验。</div></div>
+<p>采用两种策略：<strong>pack</strong>（将多个完整小实体装入同一模型请求，仍保持边界标记）和 <strong>split</strong>（对超长单实体按栏目拆分）。不得将列表从任意 token 位置硬截断。对跨块值（如论文条目后附统一年份标题），需显式继承栏目上下文，而不是让模型自由猜测。</p>
+
+<h3>5.4 确定性优先：XPath / CSS / JSON-LD</h3>
+<p>命中既有模板且规则健康时，优先使用 XPath/CSS；结构化数据（例如 JSON-LD）可以成为另一条确定性提取路径。规则应包含域名或模板作用域、字段名、选择器、期望数据类型、命中基数、正负样本与回归集。避免仅以“XPath 非空”判定成功：新模板可能让 XPath 命中错误的学院公共邮箱。</p>
+<pre><code>from scrapy import Selector
+
+sel = Selector(text=html)
+name = sel.xpath(
+    "//main//h1[1]/normalize-space()"
+).get()  # 实际使用时应采用下面更可靠的形式
+
+name = sel.xpath("normalize-space((//main//h1)[1])").get()
+emails = sel.xpath(
+    "//a[starts-with(@href, 'mailto:')]/@href"
+).getall()
+
+# 规则执行后：检查范围、基数、格式、与证据节点的对应关系</code></pre>
+<p class="note">以上为接口示意；XPath 表达式以样本模板调整。Scrapy Selector 支持 XPath / CSS 选择器，规则需用本地快照测试后部署。</p>
+
+<h3>5.5 LLM 提取：严格输出契约、字段证据必填</h3>
+<p>LLM 只接收必要块、页面上下文与 Schema 子集，要求每个非空字段都返回来源节点 ID（或可验证的原文 span），并明确未知字段。Prompt 不要求模型根据常识补充机构、职称、邮箱或成果信息；不能定位来源时，字段应置空并标注待复核。</p>
+<pre><code>{
+  "entity_id": "e17",
+  "fields": {
+    "name": {"value": "张某某", "node_ids": ["n21"]},
+    "title": {"value": "教授", "node_ids": ["n24"]},
+    "email": {"value": "zhang@example.edu.cn", "node_ids": ["n29"]}
+  },
+  "unresolved": []
+}</code></pre>
+<p>LLM 返回后需要<strong>独立于 LLM</strong>的证据核验器逐字段检查：节点是否真实存在、值是否被原文支持、归属实体是否一致、日期与 URL 是否可以规范化。模型自报置信度不等同于已验证正确率，也不能替代证据校验。</p>
+
+<h3>5.6 Agent 路由与停止条件（Routing & Stopping）</h3>
+<div class="table-scroll"><table><caption>表 5　分层决策策略（初始版本）</caption><thead><tr><th>状态</th><th>动作</th><th>停止 / 升级条件</th></tr></thead><tbody>
+<tr><td>规则命中、证据通过、关键字段完整</td><td>使用 XPath / JSON-LD 结果</td><td>直接输出；抽样质量审计</td></tr>
+<tr><td>规则未命中或页面类型未知</td><td>DOM 简化后调用 LLM</td><td>输出经验证字段；记录未知模式</td></tr>
+<tr><td>字段冲突或实体边界不明</td><td>扩大局部上下文，重新分块 / 再提取</td><td>重试上限后标记未解决，不无限循环</td></tr>
+<tr><td>动态加载导致内容缺失</td><td>按权限与预算重试渲染版 DOM</td><td>渲染失败则部分输出或错误状态</td></tr>
+<tr><td>质量仍不达标且预算耗尽</td><td>保留可信字段，入待审队列</td><td>不得生成未经支持的完整记录</td></tr>
+</tbody></table></div>
+<p>可以从可解释规则路由起步，后续再用真实运行数据训练成本敏感的决策器；暂时不建议引入复杂强化学习。候选动作的经验价值必须基于真实数据验证，不能将人为设定的“置信度阈值”当成已证实最优策略。</p>
+<div class="eq">min E[cost + λ · latency]　s.t.　quality ≥ q₀,　evidence_valid = true</div>
+<p class="mini">这里的质量约束指在固定测试集上达到预设门槛；λ 与 q₀ 是实验协议指定的权重/门槛，不代表已验证取值。</p>
+
+<h3>5.7 XPath 规则归纳、发布与自愈</h3>
+<p>LLM 成功提取一次，不意味着生成的 XPath 可以立即上线。推荐流程：收集同模板的已验证节点 → 生成多种选择器候选 → 用正例与同页负例测试 → 评估命中稳定性、误命中和唯一性 → 独立回归集通过后发布。规则作用域优先绑定“站点 + 模板指纹”，而非盲目绑定整个域名。</p>
+<div class="figure"><div class="fig-title">图 4. 规则学习与模板漂移检测</div>
+<div class="pipeline"><div class="pipe">已验证样本<small>XPath + 字段证据</small></div><div class="pipe">候选规则<small>泛化相对路径</small></div><div class="pipe">测试筛选<small>正负样本 / 稳定性</small></div><div class="pipe">灰度启用<small>版本 / 回滚</small></div><div class="pipe">漂移监测<small>命中率 / 错误率</small></div></div>
+<div class="fig-caption">规则异常时自动降级至 LLM 或人工审核，并保留旧版规则与失败快照用于诊断。</div></div>
+<p><strong>防止错误自我强化：</strong>LLM 抽取结果不能在未经验证的情况下直接成为 XPath 训练金标；模型与规则互相认可不构成独立证据。候选规则必须通过与生成样本相互独立的测试集，线上保留人工抽检。</p>
+
+<h3>5.8 多页融合与增量更新</h3>
+<p>网页级 JSONL 是抽取层的原子产物，跨页专家合并应放到下游实体对齐层执行。保留 <code>source_url</code>、<code>snapshot_hash</code>、<code>observed_at</code> 和证据时间，不因为不同页面出现同名就自动合并。对增量采集，先比对内容指纹与结构指纹，再判定是否重新抽取；注意正文不变而页脚变动时不必触发全量 LLM。</p>
+
+<h2>6. 输出数据与证据模型（Data Contract）</h2>
+<h3>6.1 输出 JSONL</h3>
+<p>建议将业务字段和可溯源元数据分离。业务 JSONL 每行代表一个实体，保持稳定的字段类型；证据记录可单独存储为伴随 JSONL，以免将大量 XPath/文本片段反复复制到业务数据。以下为示意（不含真实人物信息）：</p>
+<pre><code>{"record_id":"r001","entity_type":"person","name":"张某某","title":"教授","email":"zhang@example.edu.cn","research_interests":["机器学习"],"source_url":"https://example.edu.cn/teacher/17","snapshot_hash":"sha256:...","extraction_status":"verified"}
+{"record_id":"r002","entity_type":"person","name":"李某某","title":null,"email":null,"research_interests":[],"source_url":"https://example.edu.cn/teachers","snapshot_hash":"sha256:...","extraction_status":"partial"}</code></pre>
+<h3>6.2 字段级证据（Field-Level Provenance）</h3>
+<pre><code>{"record_id":"r001","field":"title","value":"教授","source_url":"https://example.edu.cn/teacher/17","snapshot_hash":"sha256:...","node_id":"n24","xpath":"//main//table[1]/tr[1]/td[1]","raw_text":"教授","method":"xpath","verification":"supported","rule_version":"siteA-v3"}</code></pre>
+<p>节点 ID 是一次快照内的稳定引用，不应被当作跨网页版本的永久键。XPath 仅用于在同一快照中回溯；新版网页结构改变后，可能需要基于内容锚点与模板重定位。统一 Schema 可映射至学源滔滔的专家画像字段，不强制每个页面都填满完整画像。</p>
+<h3>6.3 校验规则</h3>
+<div class="table-scroll"><table><caption>表 6　校验层级与失败处理</caption><thead><tr><th>层级</th><th>检查项</th><th>失败策略</th></tr></thead><tbody>
+<tr><td>语法</td><td>JSON 可解析、类型符合 Schema</td><td>仅修复格式，不擅自补值</td></tr>
+<tr><td>证据</td><td>原文存在、节点可定位、值与原文匹配</td><td>字段置疑或置空</td></tr>
+<tr><td>实体</td><td>字段与正确人物 / 成果 / 项目关联</td><td>重新划分实体块</td></tr>
+<tr><td>语义</td><td>日期、机构、职称、邮箱类型规范化</td><td>保留原值与规范值两个层次</td></tr>
+<tr><td>跨来源</td><td>同一字段不同页面冲突</td><td>保留候选和时间，不直接覆盖</td></tr>
+</tbody></table></div>
+
+<h2>7. 工程实现方案（Implementation）</h2>
+<h3>7.1 推荐技术栈</h3>
+<div class="table-scroll"><table><caption>表 7　组件、方案与取舍</caption><thead><tr><th>层级</th><th>建议组件</th><th>选择理由</th></tr></thead><tbody>
+<tr><td>抓取与调度</td><td>Scrapy</td><td>请求调度、中间件、并发、XPath/CSS 生态成熟</td></tr>
+<tr><td>动态页面</td><td>Playwright（按需）</td><td>仅在静态 HTML 不含目标主体时启用浏览器渲染</td></tr>
+<tr><td>DOM 解析</td><td>lxml / parsel</td><td>XPath、树操作与原文定位</td></tr>
+<tr><td>文本提取基线</td><td>Trafilatura</td><td>可作为正文定位与清洗 baseline；不能替代多实体边界处理</td></tr>
+<tr><td>LLM API</td><td>统一推理适配层</td><td>支持结构化输出、模型替换和 token 用量记录</td></tr>
+<tr><td>Schema 校验</td><td>Pydantic / JSON Schema</td><td>强类型、字段规范、缺失与异常处理</td></tr>
+<tr><td>存储</td><td>对象存储 + PostgreSQL（或同等存储）</td><td>保存 HTML 快照、字段证据、规则及运行审计</td></tr>
+<tr><td>规模化执行</td><td>队列 + 分布式 Worker</td><td>抓取、解析、LLM、校验异步解耦；支持限流和重试</td></tr>
+</tbody></table></div>
+<h3>7.2 建议仓库结构</h3>
+<pre><code>html-extraction-agent/
+├── src/
+│   ├── fetcher/           # 抓取、快照、动态渲染
+│   ├── analyzer/          # 页面分类、DOM 区域识别
+│   ├── simplifier/        # 保结构压缩与节点映射
+│   ├── chunker/           # 实体边界与块装箱
+│   ├── extractors/        # xpath / jsonld / llm
+│   ├── router/            # 路由、预算、回退与停止
+│   ├── validators/        # schema / evidence / entity
+│   ├── rules/             # 候选、评测、版本与漂移
+│   └── exporters/         # JSONL + evidence
+├── schemas/               # 人物、论文、专利、项目
+├── fixtures/              # 依法取得、可重放的 HTML
+├── benchmarks/            # 标注协议与指标脚本
+├── tests/                 # 单元、集成、回归
+└── docs/                  # GitHub Pages 文档</code></pre>
+<h3>7.3 关键处理流程（伪代码）</h3>
+<pre><code>def extract_page(snapshot, schema, policy):
+    dom = parse(snapshot.html)
+    page_type, regions = analyze_dom(dom)
+    units = detect_entity_boundaries(regions, page_type)
+    records = []
+
+    for unit in units:
+        rule = registry.match(snapshot.url, unit.fingerprint)
+        candidate = extract_by_rule(unit, rule) if rule else None
+
+        if not evidence_pass(candidate, unit, schema):
+            compact, node_map = simplify(unit, schema)
+            chunks = chunk_by_entity(compact, policy.token_budget)
+            candidate = llm_extract(chunks, schema, node_map)
+
+        verified = validate_against_snapshot(candidate, dom, schema)
+        records.append(verified)
+
+    write_jsonl(records)
+    save_evidence_and_diagnostics(records, snapshot)
+    queue_rule_learning(verified_examples(records))
+    return records</code></pre>
+<p class="note">这是模块级伪代码，并非可直接运行的生产实现；异常捕获、重试、异步调度与模型调用细节在工程开发阶段补齐。</p>
+<h3>7.4 运行安全与数据治理</h3>
+<p>遵守适用法律、站点访问政策与 robots 约束；按域名限制速率并设置重试上限，不绕过登录权限或反爬安全机制。网页文本应视为不可信输入：任何嵌入的“忽略指令”均不得改变 Agent 的提取策略、工具权限或输出 Schema。限制外链访问、模型传输字段、日志中个人信息展示，并制定快照保留和删除策略。</p>
+
+<h2>8. 实验设计与评价（Experiments & Evaluation）</h2>
+<h3>8.1 数据集与分层采样</h3>
+<p>从获得合法使用权限的高校网页构建测试集，按站点、页面模板、实体类型、语种、DOM 规模、静态/动态渲染与长列表程度分层。标注最少包含：实体边界、业务字段值、原文位置、字段归属、可判定性和缺失状态。划分时以<strong>站点/模板分组</strong>防止训练测试泄漏，并独立评估未见过的网站与网页改版后的泛化能力。</p>
+<div class="table-scroll"><table><caption>表 8　必须设置的对照组</caption><thead><tr><th>对照</th><th>方法</th><th>验证问题</th></tr></thead><tbody>
+<tr><td>B0</td><td>手写 XPath / CSS</td><td>稳定模板的低成本上限</td></tr>
+<tr><td>B1</td><td>原始 HTML → LLM</td><td>不做结构优化的直接大模型提取</td></tr>
+<tr><td>B2</td><td>HTML 去噪 / 正文提取 → LLM</td><td>传统文本清洗是否足够</td></tr>
+<tr><td>B3</td><td>固定 token 分块 → LLM</td><td>结构分块的真实贡献</td></tr>
+<tr><td>B4</td><td>DOM 结构分块 → LLM</td><td>验证 RQ1–RQ2</td></tr>
+<tr><td>Ours</td><td>DOM + XPath Router + LLM + Evidence + Rule Learning</td><td>验证端到端质量、效率与规则复用</td></tr>
+</tbody></table></div>
+<h3>8.2 核心指标</h3>
+<div class="table-scroll"><table><caption>表 9　质量、成本与鲁棒性指标</caption><thead><tr><th>维度</th><th>指标</th><th>说明</th></tr></thead><tbody>
+<tr><td>字段</td><td>Field Precision / Recall / F1</td><td>规范化后精确值匹配；多值字段单独计分</td></tr>
+<tr><td>实体</td><td>Entity Boundary F1</td><td>多教师、成果列表的分割效果</td></tr>
+<tr><td>来源</td><td>Evidence Attribution Accuracy</td><td>字段值是否由正确节点与正确实体支持</td></tr>
+<tr><td>完整性</td><td>Required Field Coverage</td><td>仅在可判定/有真值字段上测覆盖率</td></tr>
+<tr><td>效率</td><td>Tokens / valid record、cost / valid record</td><td>包含失败调用、重试与验证开销</td></tr>
+<tr><td>时延</td><td>P50 / P95 end-to-end latency</td><td>按页面类型及并发条件分别统计</td></tr>
+<tr><td>规则</td><td>Rule Reuse Rate / Drift Recovery</td><td>新旧模板命中率、错误触发与恢复代价</td></tr>
+</tbody></table></div>
+<p>成本分母应使用<strong>合格实体记录数</strong>，而非“处理页面数”；训练规则的离线开销要单独计量，并按使用次数进行摊销。所有系统比较须固定 HTML 快照、Schema、模型版本、预算限制和硬件/网络条件，报告失败率与置信区间。</p>
+<h3>8.3 消融实验</h3>
+<div class="table-scroll"><table><caption>表 10　消融与预期解释</caption><thead><tr><th>消融配置</th><th>检验假设</th><th>应重点观察</th></tr></thead><tbody>
+<tr><td>去除 DOM 实体分割</td><td>实体完整性是分块的关键</td><td>跨人字段串扰、Entity Boundary F1</td></tr>
+<tr><td>去除节点 ID / 证据验证</td><td>来源约束降低不受支持字段</td><td>证据准确率、误填率、拒绝率</td></tr>
+<tr><td>固定分块替代结构分块</td><td>结构分块优于长度分块</td><td>长列表字段 F1、token</td></tr>
+<tr><td>全部使用 LLM</td><td>规则路由减少常规页面成本</td><td>同等质量下的单条成本与延迟</td></tr>
+<tr><td>关闭规则学习</td><td>复用可降低后续批次成本</td><td>跨批次单位成本与规则错误率</td></tr>
+<tr><td>关闭模板漂移检测</td><td>漂移监控避免静默误提取</td><td>改版后失效率与恢复时延</td></tr>
+</tbody></table></div>
+<h3>8.4 实验报告方式</h3>
+<p>先报告未见模板上的<strong>质量门槛</strong>是否满足，再比较满足门槛方法的成本和延迟。结果采用质量—成本 Pareto 图、错误类型分布图、随网页批次变化的规则命中曲线，以及抽取字段的证据支持率。没有运行数据之前，不预设“减少 80% token”或“准确率 99%”等未经验证的收益。</p>
+
+<h2>9. 分阶段实施与验收（Implementation Plan）</h2>
+<div class="table-scroll"><table><caption>表 11　按依赖关系实施，优先最小闭环</caption><thead><tr><th>阶段</th><th>主要工作</th><th>独立交付与验收</th></tr></thead><tbody>
+<tr><td>P0 · 数据与基线</td><td>Schema、合法页面样本、字段证据标注、B0/B1 基线</td><td>可重放 HTML 集与评测脚本，抽样标注一致性检查</td></tr>
+<tr><td>P1 · 结构提取</td><td>DOM Analyzer、Simplifier、Entity Chunker</td><td>能输出块、节点映射与压缩保真测试报告</td></tr>
+<tr><td>P2 · 混合 Agent</td><td>XPath / LLM Router、Schema / 证据校验、JSONL</td><td>端到端运行，逐字段可回溯，失败可部分输出</td></tr>
+<tr><td>P3 · 规则演化</td><td>自动候选规则、离线回归、灰度和漂移监测</td><td>模板复用实验及误命中与回滚记录</td></tr>
+<tr><td>P4 · 规模化集成</td><td>调度、队列、监控、增量更新、画像对接</td><td>可重复的批次报告：质量、P95、单位有效记录成本</td></tr>
+</tbody></table></div>
+<p><strong>首个可执行里程碑：</strong>在一组经过标注的教师主页、院系名录与成果列表上，完成“HTML → 实体块 → XPath/LLM → 字段证据 → JSONL”的闭环，并和原始 HTML 直接 LLM、固定分块 LLM 做可复现对比。只有通过该门槛后才投入复杂规则学习。</p>
+
+<h2>10. 风险、边界与工程判断（Risks & Design Decisions）</h2>
+<ol>
+<li><strong>不要把正文提取当作通用结构提取。</strong>Trafilatura 等主内容提取工具适合作为基线，但对教师名录、表格和多实体关系通常需要额外的结构化分割逻辑。</li>
+<li><strong>不要追求最高压缩率。</strong>过度压缩可能删除邮箱所属人、成果年份标题与原始链接，导致“低 token、高错误”。</li>
+<li><strong>不要让 LLM 自己验证自己。</strong>字段支持必须由原始 DOM/快照回查；规则训练需要独立测试集。</li>
+<li><strong>不要将选择器匹配成功等同于提取正确。</strong>模板漂移经常产生“非空但错位”的结果，必要时保留人工抽样审计。</li>
+<li><strong>不要把网页提取层与跨站实体合并混成一个 Agent。</strong>抽取结果可带候选关联，但最终实体对齐应由独立模块执行，保留冲突证据。</li>
+<li><strong>不要默认动态渲染。</strong>浏览器资源昂贵，先尝试静态 HTML；必要时依据页面特征触发渲染。</li>
+</ol>
+<p><strong>总体判断：</strong>该项目的真正技术价值不是“Scrapy + LLM”本身，而是<strong>可验证的结构保持、实体边界一致性、选择器自适应复用及其在质量门槛下的成本优势</strong>。前两者决定准确性，后两者决定长期规模化价值。</p>
+
+<h2>11. 参考资料（References）</h2>
+<ol class="references">
+<li>Scrapy Documentation. <a href="https://docs.scrapy.org/en/latest/topics/selectors.html" target="_blank" rel="noopener noreferrer">Selectors: XPath and CSS</a>. 官方选择器文档。</li>
+<li>Trafilatura Documentation. <a href="https://trafilatura.readthedocs.io/en/latest/extraction-overview.html" target="_blank" rel="noopener noreferrer">How Extraction Works</a>. HTML 正文定位、清洗及回退策略。</li>
+<li>Trafilatura Documentation. <a href="https://trafilatura.readthedocs.io/en/latest/corefunctions.html" target="_blank" rel="noopener noreferrer">Core Functions</a>. 提取模式与可配置参数。</li>
+<li>Playwright. <a href="https://playwright.dev/python/docs/intro" target="_blank" rel="noopener noreferrer">Python Documentation</a>. 动态页面渲染与浏览器自动化。</li>
+<li>Pydantic. <a href="https://docs.pydantic.dev/latest/" target="_blank" rel="noopener noreferrer">Validation Documentation</a>. 数据结构与强类型校验。</li>
+<li>JSON Schema. <a href="https://json-schema.org/learn/getting-started-step-by-step" target="_blank" rel="noopener noreferrer">Getting Started</a>. 结构化数据契约。</li>
+<li>W3C. <a href="https://www.w3.org/TR/xpath/" target="_blank" rel="noopener noreferrer">XML Path Language (XPath)</a>. XPath 标准背景。</li>
+</ol>
+<div class="end">研究主线：DOM 结构理解 → 低损压缩与实体分块 → XPath/LLM 按需协同 → 字段级证据核验 → 规则学习与漂移恢复 → 质量、时延、成本联合评测。<br>本文为工程与研究设计方案，不代表所有模块已经实现或完成实验验证。</div>
+</main></div>
+<button class="scroll-top" type="button" id="scroll-top" aria-label="返回顶部">↑ 顶部</button>
+<script>
+(function(){
+const sections=[...document.querySelectorAll('main h2,main h3')];const nav=document.getElementById('chapter-nav'),mob=document.getElementById('mobile-toc');sections.forEach((h,i)=>{const id='section-'+(i+1);h.id=id;const a=document.createElement('a');a.href='#'+id;a.textContent=h.textContent;a.className=h.tagName==='H3'?'sub':'';nav.appendChild(a);mob.appendChild(a.cloneNode(true));});
+const links=[...nav.querySelectorAll('a')];function onscroll(){const max=document.documentElement.scrollHeight-innerHeight;document.getElementById('progress').style.width=(max>0?scrollY/max*100:0)+'%';let current=0;for(let i=0;i<sections.length;i++){if(sections[i].getBoundingClientRect().top<145)current=i;}links.forEach((a,i)=>a.classList.toggle('active',i===current));}addEventListener('scroll',onscroll,{passive:true});onscroll();
+const toggle=document.getElementById('toc-toggle'),mobile=document.getElementById('mobile-toc');toggle.addEventListener('click',()=>{mobile.classList.toggle('open');toggle.setAttribute('aria-expanded',mobile.classList.contains('open'));});mob.addEventListener('click',e=>{if(e.target.closest('a')){mobile.classList.remove('open');toggle.setAttribute('aria-expanded','false');}});document.getElementById('scroll-top').addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+})();
+</script>
+</body>
+</html>
