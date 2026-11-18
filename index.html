@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T01:18:59+08:00">2026-11-19 01:18（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T01:23:54+08:00">2026-11-19 01:23（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -365,7 +365,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <h3 id="experiment-comparison-chart">7.3 预实验结论与设计取舍</h3>
 <p>现有探索用于选择主实验的方案和强对照。当前证据主要来自公开数据的组件实验。完整 Agent 的专家排序、证据质量和成本将在同一协议下独立验证。</p>
 <div class="result-table-scroll"><table><thead><tr><th scope="col">研究问题</th><th scope="col">已有证据与局限</th><th scope="col">对主实验的影响</th></tr></thead><tbody>
-<tr><th scope="row">低成本初始检索</th><td>精确稠密排序已跑通引用交付。浅层编码节省查询计算，但在 SciRepEval 已标注候选内排序的质量低于完整编码。通用来源降权的排序收益仍不确定。</td><td>以完整编码和精确检索作为质量参照，在更大、多归属索引上比较专家证据树及精确回退。服务压测同时核对专家、次序和引用。<a href="experiments.html#expert-ranking">索引与排序实验</a> · <a href="experiments.html#serving">服务压测</a></td></tr>
+<tr><th scope="row">低成本初始检索</th><td>精确稠密排序已跑通引用交付。GPU 分段聚合在较大多归属索引上加快检索并保留相同输出，在线编码仍占主要开销。浅层编码在 SciRepEval 已标注候选内排序的质量低于完整编码。</td><td>以完整编码和精确检索作为质量参照。保留 CPU 聚合作为小索引对照，把 GPU 聚合纳入大索引服务压测，同时核对专家、分数和引用。分层证据索引的价值仍须在同预算下验证。<a href="experiments.html#expert-ranking">索引与排序实验</a> · <a href="experiments.html#serving">服务压测</a></td></tr>
 <tr><th scope="row">取证决策</th><td>HotpotQA 给定段落池内，轻量决策与按需回退改善了支持文档覆盖。Qwen LoRA 在同预算小规模对照中未显示稳定增益。</td><td>保留轻量决策器为优先对照。用真实专家约束比较固定策略、轻量模型、冻结和微调 Qwen，并计入全链路成本。<a href="experiments.html#action-selection">取证实验</a></td></tr>
 <tr><th scope="row">证据核验与停止</th><td>SciFact 的标签映射和来源相关错误会影响核验，TREC 回放显示过早停止可能损失支持证据。</td><td>分开评估专家晋升与停止取证，单列支持、冲突、未知、漏失和错误放行。<a href="experiments.html#verification">核验与停止实验</a></td></tr>
 <tr><th scope="row">能力迁移</th><td>跨主题文献召回和合成约束对照可诊断机制匹配与约束判断。真实专家的迁移可行性仍待独立评价。</td><td>当直接匹配证据不足时，比较能否找到有方法依据的候选，并评估硬约束、原场景差异和待验证条件。<a href="experiments.html#capability-transfer">迁移实验</a></td></tr>

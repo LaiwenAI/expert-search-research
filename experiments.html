@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T01:18:59+08:00">2026-11-19 01:18（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T01:23:54+08:00">2026-11-19 01:23（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
 <li><a href="#action-selection">证据选择与决策模型</a></li>
@@ -21,6 +21,12 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 
 <p id="cof-citation-path-timing"><strong>初始低成本路径的等输出计时。</strong>ws5 作业 39861 在 CoF SIGIR、NIPS 上使用同一张 RTX 5090、同一冻结 Qwen3-Embedding-0.6B 及精确 FP32 文献评分，对比将全量分数传回 CPU 聚合与在 GPU 上完成专家及引用聚合。计时从解析请求 JSON 开始，含实时编码、检索、SQLite 原文片段读取和响应序列化。两组 73、34 条查询各重复 7 次，共 749 次配对，响应中的排序、分数及引用逐字节一致。SIGIR 的平均请求延迟为 8.00／8.09 毫秒，NIPS 为 8.04／8.07 毫秒。GPU 聚合把评分阶段的回传量从 6,960／59,652 字节降至 60，但两组均未降低整条路径延迟，CPU 聚合时编码分别占 98.3% 和 97.3%。SIGIR 的软／硬标签 P@5 为 42.19%／20.00%；NIPS 前五位的已标注覆盖率为 58.82%，保留未标注位置为未知。</p>
 <p>该实验只评估初始框架的直接返回路径。两个语料中的来源各关联一位专家，单次请求串行执行；耗时不含模型启动、服务网络、多轮推理和语义证据核验。当前规模保留 CPU 聚合为快速路径，在更大或多归属的索引上独立复测。先从查询编码移除不必要的计算，再比较索引兼容的轻量编码与批处理。<a href="https://github.com/yuz9yuz/CoF">CoF 基准</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/blob/22fa72f/experiments/retrieval/cof_online_ownership.py">实验代码</a></p>
+<p id="cof-segmented-gpu-ownership"><strong>多归属索引上的等输出 GPU 聚合。</strong>ws6 作业 40152 使用 RTX 4090、同一冻结 Qwen3-Embedding-0.6B、同一 FP32 全量来源评分和同一 SQLite 引用路径。比较 CPU 聚合、GPU scatter 聚合和两个 Triton kernel 的分段聚合。每位专家按其归属来源求最大分，并保留最低来源 ID 的同分引用，专家同分按 ID 排序。SIGIR 有 1,740 篇来源及 73 条查询，SciRepEval 有 73,257 篇来源、80,822 条归属边和 91 条查询，其中 6,668 篇关联多位专家。查询与档案重合项已排除，保留的查询与此前 59 条训练隔离对照采用不同筛选口径。</p>
+<div class="result-table-scroll"><table><thead><tr><th scope="col">索引</th><th scope="col">在线检索阶段 P95，毫秒</th><th scope="col">含编码与引用的请求 P95，毫秒</th></tr></thead><tbody>
+<tr><th scope="row">SIGIR</th><td>0.152／0.302／0.166</td><td>14.568／14.452／14.375</td></tr>
+<tr><th scope="row">SciRepEval</th><td>0.760／0.518／0.432</td><td>15.432／15.212／15.127</td></tr>
+</tbody></table></div>
+<p>每项按 CPU、scatter、分段顺序列出。每条查询每种计时口径交错回放五次，三种方法在 1,640 组对照中的序列化响应逐字节一致，负分和同分控制也通过。SciRepEval 的评分结果回传从 293,028 字节减至 60 字节，若已缓存查询向量，含引用的 P95 从 0.847 降至 0.469 毫秒。计入在线编码后，SciRepEval 分段相对 CPU 的配对平均请求耗时差为 −0.295 毫秒，描述性 95% 区间为 −0.325 至 −0.266 毫秒。SIGIR 同一差值的区间为 −0.040 至 +0.022 毫秒。计时限于预热串行请求和组件引用交付，服务排队、并发、初始化及语义核验另测。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/7b048a84b9c8acfd95ab8648f1f1e6baef54d464/experiments/retrieval/cof_segmented_gpu_ownership.py">实验与复现代码</a></p>
 <p id="cof-query-encoding-budget"><strong>查询编码的等输出优化与压缩边界。</strong>ws5 作业 39866 在相同的 73 条 SIGIR、34 条 NIPS 查询上固定文献向量、精确召回、CPU 专家聚合和 SQLite 引用读取。每个设置每条查询重复 5 次。保留 28 层及 512 token 上限，关闭生成用 KV 缓存后，535 次配对均返回逐字节相同的专家、分数和引用。SIGIR 的平均请求延迟从 7.99 降至 7.43 毫秒，NIPS 从 8.07 降至 7.50 毫秒；按查询配对重采样的降幅区间分别为 0.56–0.57 和 0.55–0.58 毫秒。以此配置作为直接返回路径的等输出基线。</p>
 <p>将上限从 512 降到 128 token 后，SIGIR 仅额外省约 0.10 毫秒，软标签 P@5 从 42.19% 降至 40.55%。将查询侧直接截到第 21 层后，两组平均约 5.81 和 5.88 毫秒，但前五位候选平均仅与完整模型共享 6.8% 和 5.9%；文献索引仍使用完整模型向量。截到第 14 层的变化更大。NIPS 标签较稀疏，前五位重合度用于显示结果变化，质量另报告未知标签的配对上下界。结果把浅层直接接入原索引保留为反例，后续优先测试在独立训练语料上对齐浅层查询向量与冻结索引，并比较同预算下的召回和证据质量。计时为预热后单查询路径，尚未覆盖并发服务、多轮推理和语义核验。<a href="https://huggingface.co/Qwen/Qwen3-Embedding-0.6B">Qwen 模型卡</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/blob/31296b1/experiments/retrieval/cof_query_encoding_budget.py">复现代码</a></p>
 <p id="cof-shallow-index-alignment"><strong>浅层查询编码对齐到冻结索引。</strong>ws5 作业 39870 用 CoF KDD 论文标题和摘要生成伪查询，排除与 SIGIR、NIPS 重合的文献 ID 和规范化标题。用 3,072 篇拟合线性投影，另用 512 篇选择正则化强度，只拟合完整模型向量；训练与选择均不使用评审标签。在 KDD 校准集上，21 层向量与完整模型的平均余弦从 0.187 升至 0.761，14 层从 0.049 升至 0.627。三种深度的向量计算及两套投影拟合合计用时 37.82 秒，未计语料准备与模型初始化。</p>
