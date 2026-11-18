@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T01:13:51+08:00">2026-11-19 01:13（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T01:18:59+08:00">2026-11-19 01:18（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
 <li><a href="#action-selection">证据选择与决策模型</a></li>
@@ -104,6 +104,12 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p><strong>短证据优先与完整摘要回退。</strong>固定候选摘要，比较直接核验完整摘要与先用 BM25 选三句、遇证据不足再核验完整摘要，两组均采用已验证的多数表决提前停止。ws5 作业 39799 在 90 条三类均衡样本上得到 63 和 67 条与基准一致，短证据策略回退 35 次，平均耗时从 84.3 降至 73.4 毫秒，P95 从 154.8 升至 182.1 毫秒。在 64 条证据不足样本上，回退 50 次，平均耗时从 60.0 升至 81.4 毫秒，明确误报由 19 增至 21 条。两批均为已用 SciFact 诊断样本，计时含句子选择、分词及核验，检索、存储和服务仍待测。将短证据策略保留为对照，按证据不足比例及 P95 决定启用条件。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/scifact/open_verdict_early_stop.py">实验代码</a></p>
 <p><strong>摘要长度能否决定核验路径。</strong>回放作业 39799 的配对计时。将 90 条均衡样本按标签分为各 45 条的校准组和留出组，论文不交叉。只在校准组比较 5、8、12、16 句阈值。若要求正确数、明确误报数及 P95 均不劣于直接核验，四个阈值均因 P95 增加而被排除。若只最小化均值，则选择至少 8 句时先读三句。该阈值在均衡留出组把平均耗时从 83.0 降至 68.8 毫秒，P95 从 140.7 增至 141.1 毫秒，与标注一致的判定为 31 对 32 条。应用到另一批 64 条证据不足样本时，平均耗时从 60.0 增至 67.6 毫秒，P95 从 99.5 增至 120.5 毫秒，明确误报从 19 增至 21 条。一次分组回放保留直接核验为默认基线。后续以预测回退风险和独立样本检验路由，并重新实测完整路径的尾延迟。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/scifact/replay_verdict_length_routing.py">回放代码</a></p>
 
+<p id="trec-submitted-scorecards"><strong>在真实参赛结果上比较专家排序和证据支持。</strong>将 NIST 官方结果目录的专家排序分数，与 91 份参赛附录中的带证据分数按运行 ID 配对。两项均覆盖相同 49 个主题，83 个运行是自动提交。个别附录同时给出两列，脚本以目录分数核对专家列。按 MAP 复算的 Kendall τ-b 为 0.760，复现组织者报告的约 0.76。按 P@10，4,068 个在两项评价上均无并列的运行对中有 542 对反转（13.32%），仅保留自动提交时为 447／3,379（13.23%）。参赛队有多项提交，反转率仅描述归档结果。</p>
+<div class="result-table-scroll"><table><thead><tr><th scope="col">提交</th><th scope="col">专家 P@10</th><th scope="col">带证据 P@10</th></tr></thead><tbody>
+<tr><th scope="row">kmiZhu4</th><td>75.51%</td><td>56.94%</td></tr>
+<tr><th scope="row">kmiZhu2</th><td>74.08%</td><td>58.57%</td></tr>
+</tbody></table></div>
+<p>上表两项提交分别在专家 P@10、带证据 P@10 居首。原始提交及详细分数链接返回 HTTP 401，本次使用公开汇总和附录。汇总可用于检验加入证据条件后评价是否变化，逐条引用、现代系统及实际延迟仍需独立实测。<a href="https://pages.nist.gov/trec-browser/trec15/enterprise/results/">NIST 结果目录</a> · <a href="https://trec.nist.gov/pubs/trec15/papers/ENT06.OVERVIEW.pdf">任务综述</a> · <a href="data/trec-2006-expert-scorecards.json">91 项汇总数据</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/blob/b8bdac0918fbedb182f819571ee7813f017b2341/experiments/trec_enterprise/submitted_run_scorecards.py">复算代码</a></p>
 <p id="trec-expert-evidence-replay"><strong>专家与来源均有人工标注时，预算如何分配。</strong>在 TREC 2006 Enterprise 的 49 个已评主题上，从官方评审池取留一主题先验最高的 10 位候选。每个主题做 32 次源文档顺序打乱，各方法共用顺序和候选。预算按专家—文档核验对计数。每次只揭示已检查对的标注，以模拟理想核验器。40 次上限下，先查完高排位专家、固定轮询、优先检查尚无支持者的证据支持 P@5 分别为 12.02%、32.92%、34.02%。其分子要求专家和至少一份实际被接受的引用均获官方正标签。自适应相对轮询提高 1.10 个百分点，按主题配对重采样的描述性 95% 区间为 +0.51 至 +1.76，平均核验 35.55 对和 36.71 对。把模拟核验器的灵敏度设为 90%、假阳性率设为 5% 时，两组覆盖分别为 29.18% 和 30.19%，差值反转为 −1.01 个百分点（−1.90 至 −0.23）。这些是假设的错误率。先验可复用其他主题上的候选身份，历史评审池也存在选样偏差。该回放每个主题只有一个适配判断，衡量的是给定候选与证据池内的分配策略。完整语料检索、端到端耗时与硬约束级核验仍需独立实验。<a href="https://trec.nist.gov/data/t15_enterprise.html">NIST 数据与标注</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/blob/006aa12/experiments/trec_enterprise/expert_evidence_budget.py">回放代码</a></p>
 <p id="trec-evidence-confirmation"><strong>把首次正判与停止取证分开。</strong>在相同 49 个评审主题、32 次配对顺序和 40 对核验上限下，比较四种规则。模拟灵敏度 90%、假阳性率 5%，且文档判定误差独立时，结果如下。「证据支持 P@5」要求专家与至少一份接受的引用均有官方正标签。「无充分支持的晋升」包含被提到前五位、却未达到该标准的候选。</p>
 <div class="result-table-scroll"><table><thead><tr><th scope="col">排序与停止规则</th><th scope="col">证据支持 P@5</th><th scope="col">无充分支持的晋升占前五位比例</th><th scope="col">平均核验对数</th></tr></thead><tbody>

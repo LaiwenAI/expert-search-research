@@ -1,0 +1,1551 @@
+{
+  "index": "https://raw.githubusercontent.com/usnistgov/trec-browser/75ec9339eac60126b1045e5858a5ac874ea54a51/browser/src/docs/trec15/enterprise/results.md",
+  "index_sha256": "ea9587ba14f562aa26e6d481a08485716b431e833fd3393d52f8f3ee1655ee92",
+  "topics": 49,
+  "all_runs": {
+    "runs": 91,
+    "groups": 23,
+    "map_association": {
+      "concordant": 3599,
+      "discordant": 488,
+      "expert_ties": 1,
+      "support_ties": 7,
+      "joint_ties": 0,
+      "kendall_tau_b": 0.7604499722504262,
+      "discordance_among_untied": 0.11940298507462686
+    },
+    "p10_association": {
+      "concordant": 3526,
+      "discordant": 542,
+      "expert_ties": 14,
+      "support_ties": 12,
+      "joint_ties": 1,
+      "kendall_tau_b": 0.7311933569186653,
+      "discordance_among_untied": 0.13323500491642085
+    },
+    "median_p10_gap": 0.17959999999999998,
+    "median_supported_p5": 0.3469,
+    "leaders": {
+      "expert": "kmiZhu4",
+      "supported": "kmiZhu2"
+    }
+  },
+  "automatic_runs": {
+    "runs": 83,
+    "groups": 22,
+    "map_association": {
+      "concordant": 2972,
+      "discordant": 424,
+      "expert_ties": 1,
+      "support_ties": 6,
+      "joint_ties": 0,
+      "kendall_tau_b": 0.749522191204733,
+      "discordance_among_untied": 0.1248527679623086
+    },
+    "p10_association": {
+      "concordant": 2932,
+      "discordant": 447,
+      "expert_ties": 13,
+      "support_ties": 10,
+      "joint_ties": 1,
+      "kendall_tau_b": 0.7329303180041972,
+      "discordance_among_untied": 0.13228765907073098
+    },
+    "median_p10_gap": 0.17959999999999998,
+    "median_supported_p5": 0.3429,
+    "leaders": {
+      "expert": "kmiZhu4",
+      "supported": "kmiZhu2"
+    }
+  },
+  "positive_supported_runs": {
+    "runs": 88,
+    "groups": 23,
+    "map_association": {
+      "concordant": 3473,
+      "discordant": 350,
+      "expert_ties": 1,
+      "support_ties": 4,
+      "joint_ties": 0,
+      "kendall_tau_b": 0.816363936760075,
+      "discordance_among_untied": 0.09155113784985613
+    },
+    "p10_association": {
+      "concordant": 3396,
+      "discordant": 409,
+      "expert_ties": 13,
+      "support_ties": 9,
+      "joint_ties": 1,
+      "kendall_tau_b": 0.7827569209250489,
+      "discordance_among_untied": 0.10749014454664915
+    },
+    "median_p10_gap": 0.17554999999999998,
+    "median_supported_p5": 0.351,
+    "leaders": {
+      "expert": "kmiZhu4",
+      "supported": "kmiZhu2"
+    }
+  },
+  "runs": [
+    {
+      "run": "UvAbase",
+      "participant": "uamsterdamilps",
+      "type": "automatic",
+      "expert": {
+        "map": 0.328,
+        "p10": 0.4082
+      },
+      "supported": {
+        "map": 0.2049,
+        "p5": 0.3143,
+        "p10": 0.3102
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UvAbase.expert.pdf",
+      "appendix_sha256": "629555c4792111c0648b514ffeb3b40826d2e02adbe436c9b688733164f6ef2d"
+    },
+    {
+      "run": "quotes",
+      "participant": "queen-mary-ulondonforst",
+      "type": "automatic",
+      "expert": {
+        "map": 0.1308,
+        "p10": 0.2653
+      },
+      "supported": {
+        "map": 0.0405,
+        "p5": 0.1061,
+        "p10": 0.0959
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/quotes.expert.pdf",
+      "appendix_sha256": "49b751d9214b12a1090f5dab18162af973e2815108b8c5b467b6da3431824694"
+    },
+    {
+      "run": "body",
+      "participant": "queen-mary-ulondonforst",
+      "type": "automatic",
+      "expert": {
+        "map": 0.1146,
+        "p10": 0.2102
+      },
+      "supported": {
+        "map": 0.0484,
+        "p5": 0.1224,
+        "p10": 0.1122
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/body.expert.pdf",
+      "appendix_sha256": "69a4d6f1f4177a27eed266e6b76d418255482ede205b58c4547a93044f7a04b5"
+    },
+    {
+      "run": "listbq",
+      "participant": "queen-mary-ulondonforst",
+      "type": "automatic",
+      "expert": {
+        "map": 0.1118,
+        "p10": 0.2143
+      },
+      "supported": {
+        "map": 0.041,
+        "p5": 0.1143,
+        "p10": 0.1102
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/listbq.expert.pdf",
+      "appendix_sha256": "ae684debb74d7bbbff73442f153ca216e9e69d5e786798c27b98fb5ed00e9e45"
+    },
+    {
+      "run": "www",
+      "participant": "queen-mary-ulondonforst",
+      "type": "automatic",
+      "expert": {
+        "map": 0.0928,
+        "p10": 0.1939
+      },
+      "supported": {
+        "map": 0.0423,
+        "p5": 0.1224,
+        "p10": 0.1041
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/www.expert.pdf",
+      "appendix_sha256": "645b28b6288386a3c15f1eb657ea2238e1fa48c77ad3cfc6eaf583570ae40e13"
+    },
+    {
+      "run": "UvAprofiling",
+      "participant": "uamsterdamilps",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4664,
+        "p10": 0.5878
+      },
+      "supported": {
+        "map": 0.3016,
+        "p5": 0.498,
+        "p10": 0.4265
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UvAprofiling.expert.pdf",
+      "appendix_sha256": "7676f6316b9fc6fecb1b1fd166cf316508cd18f382c328261739b331ba4e51ed"
+    },
+    {
+      "run": "sophiarun1",
+      "participant": "uulsterpatterson",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2248,
+        "p10": 0.4306
+      },
+      "supported": {
+        "map": 0.0934,
+        "p5": 0.3184,
+        "p10": 0.2449
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/sophiarun1.expert.pdf",
+      "appendix_sha256": "fb7794e341316704803186338b1eab5dcf6f0fe0e18d1b01a31869e28f8dd257"
+    },
+    {
+      "run": "sophiarun2",
+      "participant": "uulsterpatterson",
+      "type": "automatic",
+      "expert": {
+        "map": 0.1355,
+        "p10": 0.3102
+      },
+      "supported": {
+        "map": 0.0159,
+        "p5": 0.049,
+        "p10": 0.0612
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/sophiarun2.expert.pdf",
+      "appendix_sha256": "51789f67874f5e20a2c441155a17dd827779d664ed84205c83b5b0fb274c1d70"
+    },
+    {
+      "run": "sophiarun3",
+      "participant": "uulsterpatterson",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2215,
+        "p10": 0.398
+      },
+      "supported": {
+        "map": 0.0757,
+        "p5": 0.2245,
+        "p10": 0.2061
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/sophiarun3.expert.pdf",
+      "appendix_sha256": "9c9bbe4d2c36b0f6aeee97e4041f47a4ff9d3bfdaed55ea2a7ecfd02808d08e2"
+    },
+    {
+      "run": "ex7512",
+      "participant": "cityumacfarlane",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2718,
+        "p10": 0.4143
+      },
+      "supported": {
+        "map": 0.1783,
+        "p5": 0.3755,
+        "p10": 0.3082
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/ex7512.expert.pdf",
+      "appendix_sha256": "0d96af1b2ba4d9b596720c7783ddd8672adb6612572255960dd3612ad7f64a06"
+    },
+    {
+      "run": "UvAPOS",
+      "participant": "uamsterdamilps",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2053,
+        "p10": 0.251
+      },
+      "supported": {
+        "map": 0.1152,
+        "p5": 0.1429,
+        "p10": 0.1327
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UvAPOS.expert.pdf",
+      "appendix_sha256": "dde29138d6e6a355ef8e5f6fe9f416245ffcbf20c85a6bce0352cb9257b47cea"
+    },
+    {
+      "run": "ex5512",
+      "participant": "cityumacfarlane",
+      "type": "automatic",
+      "expert": {
+        "map": 0.295,
+        "p10": 0.4551
+      },
+      "supported": {
+        "map": 0.1905,
+        "p5": 0.3796,
+        "p10": 0.3347
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/ex5512.expert.pdf",
+      "appendix_sha256": "fd4d3fb25ec4194159ea2399e9c15d1dc3b5fe1028e323998e3e0910a9fcebf7"
+    },
+    {
+      "run": "ex3512",
+      "participant": "cityumacfarlane",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3158,
+        "p10": 0.4612
+      },
+      "supported": {
+        "map": 0.2031,
+        "p5": 0.3959,
+        "p10": 0.3286
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/ex3512.expert.pdf",
+      "appendix_sha256": "88abf7a85fb17ad7c25202a13df60282faa53cfc12b14d40122dcf6e8664ca1b"
+    },
+    {
+      "run": "ex5518",
+      "participant": "cityumacfarlane",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2984,
+        "p10": 0.4531
+      },
+      "supported": {
+        "map": 0.1927,
+        "p5": 0.3755,
+        "p10": 0.3327
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/ex5518.expert.pdf",
+      "appendix_sha256": "16c2c72b31bfcae69c857019b68372e8efc164586f9a7caef3d9a02e4371f261"
+    },
+    {
+      "run": "UvAprofPOS",
+      "participant": "uamsterdamilps",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4249,
+        "p10": 0.5571
+      },
+      "supported": {
+        "map": 0.2588,
+        "p5": 0.4367,
+        "p10": 0.3837
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UvAprofPOS.expert.pdf",
+      "appendix_sha256": "28dfbd1a903e77f5118701a6dd2d5ca21698a3239e976ee3c32067d6c6b66315"
+    },
+    {
+      "run": "MAPTrelCret",
+      "participant": "lowlands-teamdevries",
+      "type": "automatic",
+      "expert": {
+        "map": 0.0908,
+        "p10": 0.1551
+      },
+      "supported": {
+        "map": 0.0509,
+        "p5": 0.1061,
+        "p10": 0.1
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/MAPTrelCret.expert.pdf",
+      "appendix_sha256": "6f5bb7ca4555e3cd11fe2f53b1e9b1401c2a3e5ae44ec75844fb850e8db6b54b"
+    },
+    {
+      "run": "MAPCrelTret",
+      "participant": "lowlands-teamdevries",
+      "type": "automatic",
+      "expert": {
+        "map": 0.0989,
+        "p10": 0.1837
+      },
+      "supported": {
+        "map": 0.0551,
+        "p5": 0.151,
+        "p10": 0.1224
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/MAPCrelTret.expert.pdf",
+      "appendix_sha256": "df1f6ead5c4e4a2e7735bd0574e22a10c572b1426c83f47c6a635f6389aeae34"
+    },
+    {
+      "run": "SPlog",
+      "participant": "lowlands-teamdevries",
+      "type": "automatic",
+      "expert": {
+        "map": 0.1126,
+        "p10": 0.2204
+      },
+      "supported": {
+        "map": 0.0781,
+        "p5": 0.2,
+        "p10": 0.1694
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/SPlog.expert.pdf",
+      "appendix_sha256": "f0890279e29571d80b80ad5040ac6ec93d4f08b3a7fc65429beb9279262ba4de"
+    },
+    {
+      "run": "SP",
+      "participant": "lowlands-teamdevries",
+      "type": "automatic",
+      "expert": {
+        "map": 0.0801,
+        "p10": 0.2041
+      },
+      "supported": {
+        "map": 0.0577,
+        "p5": 0.1878,
+        "p10": 0.151
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/SP.expert.pdf",
+      "appendix_sha256": "dd037dcdf1a73d9a6e1ef9e42780349d4845b3104f20bce413b736e6fb21f7be"
+    },
+    {
+      "run": "kmiZhu2",
+      "participant": "openuzhu",
+      "type": "automatic",
+      "expert": {
+        "map": 0.6329,
+        "p10": 0.7408
+      },
+      "supported": {
+        "map": 0.4402,
+        "p5": 0.6735,
+        "p10": 0.5857
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/kmiZhu2.expert.pdf",
+      "appendix_sha256": "df3110dd5953c27463c45de6312bcc41da4635987c3e42c644c1e2188f557ce6"
+    },
+    {
+      "run": "kmiZhu4",
+      "participant": "openuzhu",
+      "type": "automatic",
+      "expert": {
+        "map": 0.6385,
+        "p10": 0.7551
+      },
+      "supported": {
+        "map": 0.4155,
+        "p5": 0.6571,
+        "p10": 0.5694
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/kmiZhu4.expert.pdf",
+      "appendix_sha256": "14241b4165f32b5237c03f9be38b7152fac0e3602a1054e894b48843bc1fa654"
+    },
+    {
+      "run": "kmiZhu1",
+      "participant": "openuzhu",
+      "type": "automatic",
+      "expert": {
+        "map": 0.6431,
+        "p10": 0.7347
+      },
+      "supported": {
+        "map": 0.4421,
+        "p5": 0.6612,
+        "p10": 0.5633
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/kmiZhu1.expert.pdf",
+      "appendix_sha256": "8891dfcd27d1eb331691045f6c3511a785480e40b11d262dd8b828cbebf035f2"
+    },
+    {
+      "run": "kmiZhu5",
+      "participant": "openuzhu",
+      "type": "automatic",
+      "expert": {
+        "map": 0.6401,
+        "p10": 0.7367
+      },
+      "supported": {
+        "map": 0.4416,
+        "p5": 0.6612,
+        "p10": 0.5673
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/kmiZhu5.expert.pdf",
+      "appendix_sha256": "895738dcc9b998a8a1a7762e57da36a69c4c429991b22ab6ce412d8b5b2699be"
+    },
+    {
+      "run": "uogX06csnP",
+      "participant": "uglasgowounis",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2881,
+        "p10": 0.451
+      },
+      "supported": {
+        "map": 0.1339,
+        "p5": 0.3469,
+        "p10": 0.2653
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/uogX06csnP.expert.pdf",
+      "appendix_sha256": "bd333cbd5586af2807cf75d8f1b0f13a74bc857f8c18fc18d82c05b20e439ead"
+    },
+    {
+      "run": "uogX06csnQEF",
+      "participant": "uglasgowounis",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3011,
+        "p10": 0.4551
+      },
+      "supported": {
+        "map": 0.1383,
+        "p5": 0.3388,
+        "p10": 0.2837
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/uogX06csnQEF.expert.pdf",
+      "appendix_sha256": "e3485cddbd8027b99679ab05332d2dc68730c090ff4948f87cfc6ebbb3dc31b4"
+    },
+    {
+      "run": "uogX06csnQE",
+      "participant": "uglasgowounis",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3024,
+        "p10": 0.4429
+      },
+      "supported": {
+        "map": 0.1387,
+        "p5": 0.3061,
+        "p10": 0.2551
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/uogX06csnQE.expert.pdf",
+      "appendix_sha256": "97b922ac7670a9831144e80e5f1d4eac08e05b28cfe0bac59e43bef702964ca5"
+    },
+    {
+      "run": "uogX06ecm",
+      "participant": "uglasgowounis",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2685,
+        "p10": 0.4143
+      },
+      "supported": {
+        "map": 0.1304,
+        "p5": 0.302,
+        "p10": 0.251
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/uogX06ecm.expert.pdf",
+      "appendix_sha256": "40ba6d99d05c481f9d9dd62b4a18062b6dc457dc754a25b3395cb5f1671c4dee"
+    },
+    {
+      "run": "ICTCSXRUN01",
+      "participant": "cas-iiistan",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4949,
+        "p10": 0.5837
+      },
+      "supported": {
+        "map": 0.1648,
+        "p5": 0.2857,
+        "p10": 0.2347
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/ICTCSXRUN01.expert.pdf",
+      "appendix_sha256": "5c9b53628a9e377dc47e6fe1912ee51b7fbe3b794e8630ea2aee0df0ec580823"
+    },
+    {
+      "run": "ICTCSXRUN02",
+      "participant": "cas-iiistan",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4803,
+        "p10": 0.5878
+      },
+      "supported": {
+        "map": 0.0,
+        "p5": 0.0,
+        "p10": 0.0
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/ICTCSXRUN02.expert.pdf",
+      "appendix_sha256": "ce515d5e0704f92395306b74805dcbf614b8b6238066c51ff520d0e2867a5e1a"
+    },
+    {
+      "run": "ICTCSXRUN03",
+      "participant": "cas-iiistan",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2005,
+        "p10": 0.3612
+      },
+      "supported": {
+        "map": 0.0,
+        "p5": 0.0,
+        "p10": 0.0
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/ICTCSXRUN03.expert.pdf",
+      "appendix_sha256": "3ad58a4050f1fd2784d8964041c83152aca5d5e2d0704bad517290ab3526994b"
+    },
+    {
+      "run": "ICTCSXRUN04",
+      "participant": "cas-iiistan",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4734,
+        "p10": 0.5796
+      },
+      "supported": {
+        "map": 0.1067,
+        "p5": 0.2,
+        "p10": 0.1857
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/ICTCSXRUN04.expert.pdf",
+      "appendix_sha256": "73f64fac9a2e3dbd5565af0ee8608bcc077b814bda0c38f9bfdfb4492842d462"
+    },
+    {
+      "run": "ICTCSXRUN05",
+      "participant": "cas-iiistan",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4219,
+        "p10": 0.5347
+      },
+      "supported": {
+        "map": 0.0,
+        "p5": 0.0,
+        "p10": 0.0
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/ICTCSXRUN05.expert.pdf",
+      "appendix_sha256": "8381c2b93810c8063f617458b20a83e70aa062cb39cba3ee0dc0f3f5fd7579e3"
+    },
+    {
+      "run": "SRCBEX1",
+      "participant": "ricohyou",
+      "type": "automatic",
+      "expert": {
+        "map": 0.529,
+        "p10": 0.6347
+      },
+      "supported": {
+        "map": 0.3433,
+        "p5": 0.5633,
+        "p10": 0.4694
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/SRCBEX1.expert.pdf",
+      "appendix_sha256": "8a96d490d80af2b7a32b922137aa62f9b9dc44faa9d5b784319271766574a13c"
+    },
+    {
+      "run": "IBM06QO",
+      "participant": "ibmprager",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4536,
+        "p10": 0.5408
+      },
+      "supported": {
+        "map": 0.2863,
+        "p5": 0.4857,
+        "p10": 0.4041
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/IBM06QO.expert.pdf",
+      "appendix_sha256": "a0f23df6860ca6bdac9e6bfdfa2a3b229354cae057f091033df8962c6b22839b"
+    },
+    {
+      "run": "IBM06PR",
+      "participant": "ibmprager",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4455,
+        "p10": 0.5265
+      },
+      "supported": {
+        "map": 0.2789,
+        "p5": 0.4776,
+        "p10": 0.3939
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/IBM06PR.expert.pdf",
+      "appendix_sha256": "cc76bb49315e08011c4ac66cbae6cc3cfdecca2f8461f9451a864d8176d6c5e9"
+    },
+    {
+      "run": "IBM06EXP",
+      "participant": "ibmprager",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4357,
+        "p10": 0.5469
+      },
+      "supported": {
+        "map": 0.273,
+        "p5": 0.4816,
+        "p10": 0.4041
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/IBM06EXP.expert.pdf",
+      "appendix_sha256": "9bf265791f04ba0166b13510ee23fbc4f36068e2d42d363d96a6428e0d324442"
+    },
+    {
+      "run": "l3s1",
+      "participant": "uhannoverchernov",
+      "type": "automatic",
+      "expert": {
+        "map": 0.0291,
+        "p10": 0.1143
+      },
+      "supported": {
+        "map": 0.0172,
+        "p5": 0.0898,
+        "p10": 0.051
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/l3s1.expert.pdf",
+      "appendix_sha256": "fc72c40066be7d502551686a1b20b360dcecca5728cbd2ad477a23c06e4ddb31"
+    },
+    {
+      "run": "l3s2",
+      "participant": "uhannoverchernov",
+      "type": "automatic",
+      "expert": {
+        "map": 0.1313,
+        "p10": 0.2918
+      },
+      "supported": {
+        "map": 0.0714,
+        "p5": 0.3429,
+        "p10": 0.1755
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/l3s2.expert.pdf",
+      "appendix_sha256": "7617247e184894f9a0f9d700f804a5fe7e2b26d65cb9cb808577622405758e21"
+    },
+    {
+      "run": "l3s3",
+      "participant": "uhannoverchernov",
+      "type": "automatic",
+      "expert": {
+        "map": 0.1064,
+        "p10": 0.2367
+      },
+      "supported": {
+        "map": 0.062,
+        "p5": 0.2571,
+        "p10": 0.1408
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/l3s3.expert.pdf",
+      "appendix_sha256": "d33164bcc38e2d4a14f26b6700cb823faefade890ef2bdf558492bce06fa4428"
+    },
+    {
+      "run": "l3s4",
+      "participant": "uhannoverchernov",
+      "type": "manual",
+      "expert": {
+        "map": 0.1152,
+        "p10": 0.2592
+      },
+      "supported": {
+        "map": 0.0631,
+        "p5": 0.2776,
+        "p10": 0.149
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/l3s4.expert.pdf",
+      "appendix_sha256": "7897d091378def9595c49d4cea0b7714ec7e71b6bf074f8cac8a4bdf701cd566"
+    },
+    {
+      "run": "UMaTiDm",
+      "participant": "umassallan",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4216,
+        "p10": 0.5469
+      },
+      "supported": {
+        "map": 0.274,
+        "p5": 0.498,
+        "p10": 0.4102
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UMaTiDm.expert.pdf",
+      "appendix_sha256": "eec3900b916f009e5ad28336bd7862b41f1a2eb771e668e96df81c6373e91695"
+    },
+    {
+      "run": "UMaTNDm",
+      "participant": "umassallan",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4307,
+        "p10": 0.5469
+      },
+      "supported": {
+        "map": 0.2574,
+        "p5": 0.4735,
+        "p10": 0.3816
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UMaTNDm.expert.pdf",
+      "appendix_sha256": "0774dd22e84a0de8f40744252c8c5c7675437df08aa69aa562fa928b608e1236"
+    },
+    {
+      "run": "UMaTNFb",
+      "participant": "umassallan",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4706,
+        "p10": 0.5816
+      },
+      "supported": {
+        "map": 0.2574,
+        "p5": 0.4939,
+        "p10": 0.3857
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UMaTNFb.expert.pdf",
+      "appendix_sha256": "e02f898cd683720940d20806a069e45af53609cf227613775bbe562f2635daf1"
+    },
+    {
+      "run": "UMaTDFb",
+      "participant": "umassallan",
+      "type": "automatic",
+      "expert": {
+        "map": 0.5016,
+        "p10": 0.6388
+      },
+      "supported": {
+        "map": 0.2588,
+        "p5": 0.4776,
+        "p10": 0.4061
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UMaTDFb.expert.pdf",
+      "appendix_sha256": "d9a090c1dcbfc61ad4a53fa1b78a3d421535bd473e2330caa2cbeb4431bf8826"
+    },
+    {
+      "run": "DUTEX1",
+      "participant": "dalianuyang",
+      "type": "manual",
+      "expert": {
+        "map": 0.3033,
+        "p10": 0.4184
+      },
+      "supported": {
+        "map": 0.1993,
+        "p5": 0.3469,
+        "p10": 0.3224
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/DUTEX1.expert.pdf",
+      "appendix_sha256": "e4b93466fd26fd906dc419f0d694850c2a6a4d80ab1a1cd319c41a2e55910229"
+    },
+    {
+      "run": "DUTEX2",
+      "participant": "dalianuyang",
+      "type": "manual",
+      "expert": {
+        "map": 0.3779,
+        "p10": 0.5184
+      },
+      "supported": {
+        "map": 0.229,
+        "p5": 0.4898,
+        "p10": 0.3898
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/DUTEX2.expert.pdf",
+      "appendix_sha256": "6a515aaf92c80e22a2e6af451ddfddad53a2e39b2d865fa8336d256ee6ae3fd3"
+    },
+    {
+      "run": "DUTEX3",
+      "participant": "dalianuyang",
+      "type": "manual",
+      "expert": {
+        "map": 0.3267,
+        "p10": 0.4857
+      },
+      "supported": {
+        "map": 0.1886,
+        "p5": 0.4122,
+        "p10": 0.349
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/DUTEX3.expert.pdf",
+      "appendix_sha256": "aa25162c06f5c4623664cab1b30be1edf96fe7191a50b2770b970b474f1cd19b"
+    },
+    {
+      "run": "DUTEX4",
+      "participant": "dalianuyang",
+      "type": "manual",
+      "expert": {
+        "map": 0.2834,
+        "p10": 0.3796
+      },
+      "supported": {
+        "map": 0.1566,
+        "p5": 0.2694,
+        "p10": 0.2939
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/DUTEX4.expert.pdf",
+      "appendix_sha256": "e88860f8bc7941439e010943d61f33d1745636e94b6e3f121ece117772a2a1c6"
+    },
+    {
+      "run": "SRCBEX2",
+      "participant": "ricohyou",
+      "type": "automatic",
+      "expert": {
+        "map": 0.512,
+        "p10": 0.6204
+      },
+      "supported": {
+        "map": 0.3353,
+        "p5": 0.5837,
+        "p10": 0.4633
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/SRCBEX2.expert.pdf",
+      "appendix_sha256": "297c9689ce4d7610f1698a8da630e70df010298ec52bc4d88ce343d1be38aeee"
+    },
+    {
+      "run": "SRCBEX5",
+      "participant": "ricohyou",
+      "type": "manual",
+      "expert": {
+        "map": 0.5639,
+        "p10": 0.6551
+      },
+      "supported": {
+        "map": 0.3602,
+        "p5": 0.5551,
+        "p10": 0.4735
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/SRCBEX5.expert.pdf",
+      "appendix_sha256": "be614c2a3a8bb0d2669eb63ccd02df75f2435521842a8a3fa3347fe8daaee496"
+    },
+    {
+      "run": "SRCBEX3",
+      "participant": "ricohyou",
+      "type": "automatic",
+      "expert": {
+        "map": 0.5165,
+        "p10": 0.6265
+      },
+      "supported": {
+        "map": 0.3384,
+        "p5": 0.5755,
+        "p10": 0.4673
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/SRCBEX3.expert.pdf",
+      "appendix_sha256": "f7d93ad8c043831c4dfff18d842f164e0d2246cfce8cd3b6345e0b52367a9cd3"
+    },
+    {
+      "run": "SRCBEX4",
+      "participant": "ricohyou",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4793,
+        "p10": 0.598
+      },
+      "supported": {
+        "map": 0.3297,
+        "p5": 0.5633,
+        "p10": 0.4653
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/SRCBEX4.expert.pdf",
+      "appendix_sha256": "be386665b7bdf6377b4179b3a5faa2109d21781f77d7ff5ed91f87f8b5369f47"
+    },
+    {
+      "run": "PRISEXB",
+      "participant": "beijingu-posts-teleweiran",
+      "type": "automatic",
+      "expert": {
+        "map": 0.5564,
+        "p10": 0.6653
+      },
+      "supported": {
+        "map": 0.3345,
+        "p5": 0.5429,
+        "p10": 0.4571
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/PRISEXB.expert.pdf",
+      "appendix_sha256": "5e26b3d72fdeed172c00c1c9b4e36ed4f8cf44684e41a62a1e3c98e2238441de"
+    },
+    {
+      "run": "THUPDDEML",
+      "participant": "tsinghuauzhang",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4183,
+        "p10": 0.5102
+      },
+      "supported": {
+        "map": 0.2028,
+        "p5": 0.302,
+        "p10": 0.2837
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/THUPDDEML.expert.pdf",
+      "appendix_sha256": "c059f44efb27b3eb535c518d6b3a65b2c4b546fd34d7a014d98c2a50b27fec68"
+    },
+    {
+      "run": "THUPDDSNEMS",
+      "participant": "tsinghuauzhang",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4954,
+        "p10": 0.5939
+      },
+      "supported": {
+        "map": 0.2537,
+        "p5": 0.4449,
+        "p10": 0.3776
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/THUPDDSNEMS.expert.pdf",
+      "appendix_sha256": "c3936cab38a6b57ed4fe674d1b0d9abdc7ae8a24ad383bdedafa1769a9864c9c"
+    },
+    {
+      "run": "THUPDDL",
+      "participant": "tsinghuauzhang",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4088,
+        "p10": 0.5102
+      },
+      "supported": {
+        "map": 0.2066,
+        "p5": 0.302,
+        "p10": 0.2837
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/THUPDDL.expert.pdf",
+      "appendix_sha256": "bcd18f81bc02427aebc71e5442edba4bdaa3b455ec8e0c8518f4ded9ecb45ed4"
+    },
+    {
+      "run": "THUPDDFBS",
+      "participant": "tsinghuauzhang",
+      "type": "automatic",
+      "expert": {
+        "map": 0.478,
+        "p10": 0.5816
+      },
+      "supported": {
+        "map": 0.2573,
+        "p5": 0.4082,
+        "p10": 0.3673
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/THUPDDFBS.expert.pdf",
+      "appendix_sha256": "392e8ff200e9ccf5a8f73838b3536f058be41429b4c200e7d261494955804258"
+    },
+    {
+      "run": "THUPDDS",
+      "participant": "tsinghuauzhang",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4641,
+        "p10": 0.5735
+      },
+      "supported": {
+        "map": 0.2541,
+        "p5": 0.4163,
+        "p10": 0.3694
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/THUPDDS.expert.pdf",
+      "appendix_sha256": "a0dfe057f66f951f996991fd87e3ff56697eb8ede673aaaa38b86bb8f04705e6"
+    },
+    {
+      "run": "PRISEXR",
+      "participant": "beijingu-posts-teleweiran",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4724,
+        "p10": 0.5551
+      },
+      "supported": {
+        "map": 0.2877,
+        "p5": 0.4367,
+        "p10": 0.3918
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/PRISEXR.expert.pdf",
+      "appendix_sha256": "2f3bc8da4f2d113544d8e8e475b28f364da0308074352cf63093953f3167ae8b"
+    },
+    {
+      "run": "PITTMANUAL",
+      "participant": "upittsburghhe",
+      "type": "manual",
+      "expert": {
+        "map": 0.1631,
+        "p10": 0.4286
+      },
+      "supported": {
+        "map": 0.084,
+        "p5": 0.3265,
+        "p10": 0.2408
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/PITTMANUAL.expert.pdf",
+      "appendix_sha256": "c86a1fb20ebc1778e4199cb8b609bf91db909bfbc2e5a9e570bf1c695b84e2e9"
+    },
+    {
+      "run": "PITTPHFREQ",
+      "participant": "upittsburghhe",
+      "type": "automatic",
+      "expert": {
+        "map": 0.277,
+        "p10": 0.5041
+      },
+      "supported": {
+        "map": 0.1117,
+        "p5": 0.3143,
+        "p10": 0.2857
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/PITTPHFREQ.expert.pdf",
+      "appendix_sha256": "c3064384e281d19d166dcc29fabdc812cb97b5ed9921afe4ce69069e7d0d4d94"
+    },
+    {
+      "run": "PITTNOPH",
+      "participant": "upittsburghhe",
+      "type": "automatic",
+      "expert": {
+        "map": 0.212,
+        "p10": 0.3776
+      },
+      "supported": {
+        "map": 0.0761,
+        "p5": 0.2163,
+        "p10": 0.198
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/PITTNOPH.expert.pdf",
+      "appendix_sha256": "76b734943c5363c6614a8a0e2ec3b4ec09ff056386e90fd6a74f161285abf884"
+    },
+    {
+      "run": "PITTPHFULL",
+      "participant": "upittsburghhe",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2137,
+        "p10": 0.3776
+      },
+      "supported": {
+        "map": 0.0772,
+        "p5": 0.2204,
+        "p10": 0.2041
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/PITTPHFULL.expert.pdf",
+      "appendix_sha256": "9c4c2751a6d18edb4923290e62e2f95b91aec511aed4b2fb51888435fe771a02"
+    },
+    {
+      "run": "PRISEXRM",
+      "participant": "beijingu-posts-teleweiran",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4855,
+        "p10": 0.5776
+      },
+      "supported": {
+        "map": 0.3077,
+        "p5": 0.4735,
+        "p10": 0.4224
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/PRISEXRM.expert.pdf",
+      "appendix_sha256": "e408f5b14f678ff013f11257eecf93efdd2149b0b85799513a99f338222d034e"
+    },
+    {
+      "run": "PRISEXRMT",
+      "participant": "beijingu-posts-teleweiran",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4991,
+        "p10": 0.5776
+      },
+      "supported": {
+        "map": 0.3133,
+        "p5": 0.4694,
+        "p10": 0.4245
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/PRISEXRMT.expert.pdf",
+      "appendix_sha256": "dda480dafff7f88a6a86869b8bbb42e3f4bb4920509cd6d74a487a03438434e5"
+    },
+    {
+      "run": "IBM06MA",
+      "participant": "ibmprager",
+      "type": "manual",
+      "expert": {
+        "map": 0.5235,
+        "p10": 0.6449
+      },
+      "supported": {
+        "map": 0.3346,
+        "p5": 0.5878,
+        "p10": 0.4878
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/IBM06MA.expert.pdf",
+      "appendix_sha256": "45266618392242791dc08a54aaee89250938e667ce82de064c4222d626bf064b"
+    },
+    {
+      "run": "SJTU01",
+      "participant": "sjtu-apex-labbao",
+      "type": "automatic",
+      "expert": {
+        "map": 0.5829,
+        "p10": 0.6878
+      },
+      "supported": {
+        "map": 0.3903,
+        "p5": 0.5673,
+        "p10": 0.5082
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/SJTU01.expert.pdf",
+      "appendix_sha256": "fb433cb12ca7356cbe9dad1150d0cbd43d5541c44cd2fdfb2a40740120158bc2"
+    },
+    {
+      "run": "SJTU02",
+      "participant": "sjtu-apex-labbao",
+      "type": "automatic",
+      "expert": {
+        "map": 0.586,
+        "p10": 0.6918
+      },
+      "supported": {
+        "map": 0.3893,
+        "p5": 0.5755,
+        "p10": 0.5122
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/SJTU02.expert.pdf",
+      "appendix_sha256": "4ac918187063e2d26fa80b2acfa7e3868826e0e07764ef092ff86aa6f4808174"
+    },
+    {
+      "run": "SJTU03",
+      "participant": "sjtu-apex-labbao",
+      "type": "automatic",
+      "expert": {
+        "map": 0.5851,
+        "p10": 0.6776
+      },
+      "supported": {
+        "map": 0.3768,
+        "p5": 0.5673,
+        "p10": 0.5
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/SJTU03.expert.pdf",
+      "appendix_sha256": "b6b8715d597df6ee47a115562b46b546767b29bb70ddfb5dbb721576860863e5"
+    },
+    {
+      "run": "SJTU04",
+      "participant": "sjtu-apex-labbao",
+      "type": "automatic",
+      "expert": {
+        "map": 0.5947,
+        "p10": 0.7041
+      },
+      "supported": {
+        "map": 0.3943,
+        "p5": 0.5714,
+        "p10": 0.5204
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/SJTU04.expert.pdf",
+      "appendix_sha256": "260e5c0edb8d884d87954e03a027e9eef9b6fa943909cfed841a6574138b40e0"
+    },
+    {
+      "run": "FDUSO",
+      "participant": "fudanuniu",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4814,
+        "p10": 0.6306
+      },
+      "supported": {
+        "map": 0.2683,
+        "p5": 0.4857,
+        "p10": 0.4122
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/FDUSO.expert.pdf",
+      "appendix_sha256": "46cfc797ee89b861bbe5f0e37769073d441f6caddd41523045333db127ecc428"
+    },
+    {
+      "run": "basic",
+      "participant": "case-westernrutroy",
+      "type": "automatic",
+      "expert": {
+        "map": 0.191,
+        "p10": 0.4143
+      },
+      "supported": {
+        "map": 0.0778,
+        "p5": 0.2816,
+        "p10": 0.2143
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/basic.expert.pdf",
+      "appendix_sha256": "727ecdc460a368322056df71f32e9449b447f7e344b9d99712f0e517f532c1e7"
+    },
+    {
+      "run": "UMDthrdTTL",
+      "participant": "umarylandoard",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2182,
+        "p10": 0.449
+      },
+      "supported": {
+        "map": 0.0895,
+        "p5": 0.2694,
+        "p10": 0.198
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UMDthrdTTL.expert.pdf",
+      "appendix_sha256": "094a65f021d664e609b4e6603f8a7c7b9d8f75c8cd2cb9214f4046098da3c0b0"
+    },
+    {
+      "run": "UMDthrdTTLDS",
+      "participant": "umarylandoard",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3153,
+        "p10": 0.502
+      },
+      "supported": {
+        "map": 0.1188,
+        "p5": 0.3388,
+        "p10": 0.2776
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UMDthrdTTLDS.expert.pdf",
+      "appendix_sha256": "1917d4eac25b458acb3780aa48b20a2f8be5c45b3fad332734d2abae9d7c6b36"
+    },
+    {
+      "run": "FDUSN",
+      "participant": "fudanuniu",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4672,
+        "p10": 0.6143
+      },
+      "supported": {
+        "map": 0.2469,
+        "p5": 0.4449,
+        "p10": 0.3878
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/FDUSN.expert.pdf",
+      "appendix_sha256": "28447804549675dcc500969a1cba30737d1d25f15b2c78d02368eb21c165106c"
+    },
+    {
+      "run": "allbasic",
+      "participant": "case-westernrutroy",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2118,
+        "p10": 0.4327
+      },
+      "supported": {
+        "map": 0.0996,
+        "p5": 0.302,
+        "p10": 0.2429
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/allbasic.expert.pdf",
+      "appendix_sha256": "e04ff9c1657bcc860f2f5459fd07597c98b5863eb04876d9e128cfe9c18c0eac"
+    },
+    {
+      "run": "qutmoreterms",
+      "participant": "queenslandugeva",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3673,
+        "p10": 0.5388
+      },
+      "supported": {
+        "map": 0.1886,
+        "p5": 0.4082,
+        "p10": 0.349
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/qutmoreterms.expert.pdf",
+      "appendix_sha256": "062740c611f8f652456acaa21c1b00a6a46b3d52022ffe3481d1ecfcc2b69ae7"
+    },
+    {
+      "run": "qutlmv2",
+      "participant": "queenslandugeva",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3083,
+        "p10": 0.5184
+      },
+      "supported": {
+        "map": 0.1776,
+        "p5": 0.3837,
+        "p10": 0.3061
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/qutlmv2.expert.pdf",
+      "appendix_sha256": "94b72eb6df3e57b7a3090bfa8e8d5af3293ba98cb74c2a53b5d57f1732d5f63c"
+    },
+    {
+      "run": "UMDthrdTTLNR",
+      "participant": "umarylandoard",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3429,
+        "p10": 0.5143
+      },
+      "supported": {
+        "map": 0.1389,
+        "p5": 0.3551,
+        "p10": 0.2939
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UMDthrdTTLNR.expert.pdf",
+      "appendix_sha256": "f70a3de90bf67963a4f2819260aaa3ccc94f07f8bd1b146b066596d2b3f18a7b"
+    },
+    {
+      "run": "qutbaseline",
+      "participant": "queenslandugeva",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3663,
+        "p10": 0.5673
+      },
+      "supported": {
+        "map": 0.211,
+        "p5": 0.4082,
+        "p10": 0.3531
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/qutbaseline.expert.pdf",
+      "appendix_sha256": "a150151aed81c93fb0ba8bc8752b52c162ad2704fa73002ff6fe3362963b97de"
+    },
+    {
+      "run": "w1r1s1",
+      "participant": "case-westernrutroy",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2154,
+        "p10": 0.4245
+      },
+      "supported": {
+        "map": 0.0831,
+        "p5": 0.2776,
+        "p10": 0.2082
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/w1r1s1.expert.pdf",
+      "appendix_sha256": "a84ed89c833b305326dbc1e1dc66406b00343c5f9a9c7f31d9c011049d362835"
+    },
+    {
+      "run": "FDUSF",
+      "participant": "fudanuniu",
+      "type": "automatic",
+      "expert": {
+        "map": 0.4706,
+        "p10": 0.6082
+      },
+      "supported": {
+        "map": 0.2796,
+        "p5": 0.4653,
+        "p10": 0.4041
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/FDUSF.expert.pdf",
+      "appendix_sha256": "ea4168b6c9544e8ea993be196a20f7a6de908db67e3fd9897a54b2518a45fb23"
+    },
+    {
+      "run": "UMDemailTTL",
+      "participant": "umarylandoard",
+      "type": "automatic",
+      "expert": {
+        "map": 0.1947,
+        "p10": 0.4061
+      },
+      "supported": {
+        "map": 0.0718,
+        "p5": 0.2531,
+        "p10": 0.1816
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UMDemailTTL.expert.pdf",
+      "appendix_sha256": "fa23902b934f9eea44341156c977ae51eb7dbfd8d4d3a130c3ef722f4c5cb5e8"
+    },
+    {
+      "run": "UMDemailTLNR",
+      "participant": "umarylandoard",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3503,
+        "p10": 0.5041
+      },
+      "supported": {
+        "map": 0.141,
+        "p5": 0.3388,
+        "p10": 0.298
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UMDemailTLNR.expert.pdf",
+      "appendix_sha256": "f34fc80423289511804e38ad7814b689ce5a9a4cdb55fd6f779a1695d30b96d3"
+    },
+    {
+      "run": "UIUCe1",
+      "participant": "uiuczhai",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3043,
+        "p10": 0.4347
+      },
+      "supported": {
+        "map": 0.1498,
+        "p5": 0.2531,
+        "p10": 0.2551
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UIUCe1.expert.pdf",
+      "appendix_sha256": "6dae39f1ebd9f9dfa34d3b4b15ef9856cf3e4dc025a3e2fec9ada560e1b4d9b3"
+    },
+    {
+      "run": "UIUCeFB1",
+      "participant": "uiuczhai",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3185,
+        "p10": 0.4449
+      },
+      "supported": {
+        "map": 0.1521,
+        "p5": 0.3061,
+        "p10": 0.2469
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UIUCeFB1.expert.pdf",
+      "appendix_sha256": "4048d4b340d0552b1a03c756df8d661bce32d311ae98bd149de4d8f3acbff0c4"
+    },
+    {
+      "run": "UIUCeFB2",
+      "participant": "uiuczhai",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3114,
+        "p10": 0.4388
+      },
+      "supported": {
+        "map": 0.1382,
+        "p5": 0.2898,
+        "p10": 0.2531
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UIUCeFB2.expert.pdf",
+      "appendix_sha256": "307d59c5cb16996b30e76fbe4de260d9a566739993a6703e567f9677826db657"
+    },
+    {
+      "run": "UIUCe2",
+      "participant": "uiuczhai",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3364,
+        "p10": 0.4816
+      },
+      "supported": {
+        "map": 0.165,
+        "p5": 0.3143,
+        "p10": 0.2898
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/UIUCe2.expert.pdf",
+      "appendix_sha256": "2e0c5df9a0d6777655cc9a644376f5819afa0feeb86798e7fc2a11fae09325ea"
+    },
+    {
+      "run": "uwXSHUBS",
+      "participant": "uwaterloo-clarke",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2959,
+        "p10": 0.5082,
+        "p5": 0.6
+      },
+      "supported": {
+        "map": 0.1389,
+        "p5": 0.3551,
+        "p10": 0.2878
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/uwXSHUBS.expert.pdf",
+      "appendix_sha256": "b02e74a790f6214f9ba866c0beb895c231ee6443a7796783e117a8e2e9f68252"
+    },
+    {
+      "run": "uwXSOUT",
+      "participant": "uwaterloo-clarke",
+      "type": "automatic",
+      "expert": {
+        "map": 0.3132,
+        "p10": 0.5143,
+        "p5": 0.5796
+      },
+      "supported": {
+        "map": 0.1271,
+        "p5": 0.3306,
+        "p10": 0.2714
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/uwXSOUT.expert.pdf",
+      "appendix_sha256": "f9cff654ff0d602b8df54a3463f9a8236ebebfa6cb6acfe0990bce289ac3b97d"
+    },
+    {
+      "run": "uwXSPMI",
+      "participant": "uwaterloo-clarke",
+      "type": "automatic",
+      "expert": {
+        "map": 0.2119,
+        "p10": 0.3653,
+        "p5": 0.3673
+      },
+      "supported": {
+        "map": 0.0911,
+        "p5": 0.2245,
+        "p10": 0.202
+      },
+      "appendix": "https://trec.nist.gov/pubs/trec15/appendices/enterprise/uwXSPMI.expert.pdf",
+      "appendix_sha256": "20d10266ec438397d2087c351eeaba49a9142d56e32cd6f6f44a7a13dc1093f3"
+    }
+  ],
+  "scope": "Archived aggregate scores, not rescored raw submissions. Paired by run on the same 49 pooled topics. Missing file or field fails rather than changing the cohort. Reversals are descriptive across dependent submissions, not confidence intervals, document-level support audits, latency estimates or a current system leaderboard."
+}
