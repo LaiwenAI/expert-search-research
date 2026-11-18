@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T04:58:45+08:00">2026-11-19 04:58（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T05:10:54+08:00">2026-11-19 05:10（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
 <ul class="research-challenges">
@@ -311,9 +311,9 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <p>从真实需求构造双语等价问句和单约束反事实。按企业、父需求和近重复组切分。独立企业测试集双人盲审并仲裁，报告适配、原文支持和个人归属的标注覆盖率与一致性。</p>
 <p id="judgment-coverage">公开对照：CoF／TREC Enterprise 测专家排序，MERIT 测适配，EvidenceBench 和 LitSearch 测片段与来源，CRediT 测约束变更后的改判。</p>
 <h3 id="experiment-results">7.2 主实验</h3>
-<p>在统一语料、硬件和负载下，对照 BM25、精确稠密、混合重排和固定取证 Agent。</p>
+<p>统一语料、硬件与负载，对照 BM25、精确稠密、混合重排、固定深度重排及轮询取证。按查询来源隔离阈值校准与测试。</p>
 <ul>
-<li><strong>等质量。</strong>预设非劣界限，测端到端平均延迟、P50／P95、吞吐及每次成功查询成本，计入失败与回退。单列训练和建索引成本。</li>
+<li><strong>等质量。</strong>预设证据质量的非劣界限和缺证误放上限。比较端到端延迟、吞吐及每次成功查询成本，计入回退，单列训练与建索引成本。</li>
 <li><strong>等预算。</strong>测专家 P@K、证据完整且归属正确的 P@K、硬约束误放率，分报直接适配与能力迁移。</li>
 </ul>
 <h3 id="experiment-comparison-chart">7.3 消融与稳健性</h3>
@@ -327,7 +327,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
 <p id="expert-evidence-precedent">创新检验：逐专家、逐约束的证据状态，能否比通用自适应检索更有效地分配同等取证预算。反事实评测同时检查该改判和该维持原判的专家。<a href="https://aclanthology.org/2025.naacl-long.597/">FollowIR</a> · <a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a></p>
-<p>投稿门槛：在公开基准与独立企业盲审中，初始框架需相对强基线实现等质量下的端到端 P95 或成本收益，并通过缺源时的弃权与误放检验。达到后再评估 SIGIR／The Web Conference 投稿。</p>
+<p>SIGIR／The Web Conference 投稿门槛：在公开基准与独立企业盲审中，相对最快的合格固定策略复现等质量、等风险下的端到端 P95 或成本收益。消融须验证收益来自逐专家、逐约束的证据状态。</p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>
