@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="last-updated">最近更新时间：<time datetime="2026-11-18T20:37:29+08:00">2026-11-18 20:37（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="last-updated">最近更新时间：<time datetime="2026-11-18T20:48:58+08:00">2026-11-18 20:48（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -203,6 +203,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <li><strong>需求差异与语义鸿沟（Demand Heterogeneity &amp; Semantic Gap）</strong>：企业需求不仅任务类型不同，明确程度、约束数量、知识跨度和所需检索推理也存在差异。例如“找一位研究计算机视觉的教授”可以直接检索，而涉及复杂工艺条件或跨学科问题的需求可能需要澄清、拆解和多轮搜索；不能对所有查询套用同一种推理流程。</li>
 <li><strong>多源异构证据融合（Heterogeneous Evidence Fusion）</strong>：论文、专利和科研项目分别反映专家的不同能力，单项成果与需求相关并不意味着专家整体适合；需要根据具体需求融合多源证据，评估专家的技术适配程度与实际贡献。<a class="inline-ref" href="https://doi.org/10.1145/1148170.1148181" target="_blank" rel="noopener noreferrer">[1]</a><a class="inline-ref" href="https://arxiv.org/abs/2412.18004" target="_blank" rel="noopener noreferrer">[16]</a></li>
 <li><strong>多维匹配与约束满足（Multi-criteria Expert Matching）</strong>：企业不仅关注专家的研究方向，还可能要求特定的技术能力、工程经验、成果成熟度及合作条件。不同需求类型对应不同的匹配标准，需要区分硬性约束与软性偏好，并动态调整专家排序。</li>
+<li id="expertise-transfer" style="scroll-margin-top:78px"><strong>专家能力迁移（Expertise Transfer）</strong>：当找不到具备直接经验的专家时，需要从相邻领域识别最有可能解决目标问题的人选。判断迁移潜力时，应比较专家已验证的方法、原场景与目标场景的差异，以及目标任务的硬性约束。推荐时应说明哪些能力有证据支持、迁移需要哪些适配、哪些关键条件仍待验证。</li>
 <li><strong>能力时效与贡献归因（Expertise Dynamics &amp; Contribution Attribution）</strong>：专家的研究重点与实际能力随时间变化，且参与同一成果的不同人员，其具体贡献可能存在差异。仅凭成果发表时间、数量或署名信息，难以准确判断专家当前的研究能力及其在相关技术方向上的实际贡献。<a class="inline-ref" href="https://doi.org/10.1016/j.knosys.2010.04.008" target="_blank" rel="noopener noreferrer">[15]</a></li>
 
 <li><strong>复杂检索与停止决策（Agentic Retrieval Decisions）</strong>：不同需求需要不同的查询拆解、检索轮次、工具调用与证据读取深度；智能体必须判断何时继续探索、何时已有足够证据可以停止。<a class="inline-ref" href="https://arxiv.org/abs/2503.09516" target="_blank" rel="noopener noreferrer">[2]</a></li>
