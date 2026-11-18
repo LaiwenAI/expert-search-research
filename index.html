@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T03:48:46+08:00">2026-11-19 03:48（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T04:06:20+08:00">2026-11-19 04:06（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
 <ul class="research-challenges">
@@ -312,12 +312,13 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <h3 id="experiment-results">7.2 主实验</h3>
 <p>统一语料、硬件与负载，对照 BM25、精确稠密、混合重排和固定取证 Agent。</p>
 <ul>
-<li><strong>等质量。</strong>预设非劣界限，测端到端 P50／P95、吞吐和每次成功查询的成本。</li>
+<li><strong>等质量。</strong>预设非劣界限，测端到端均值、P50／P95、吞吐和每次成功查询的成本。</li>
 <li><strong>等预算。</strong>测专家 P@K、完整证据 P@K 和硬约束误放率，分报直接适配与能力迁移。</li>
 </ul>
 <p class="note">计入失败与回退，另报训练、建索引及初始化成本。</p>
 <h3 id="experiment-comparison-chart">7.3 预实验对设计的影响</h3>
 <p>公开评审集上的短名单筛选出现漏召且取证更慢，初始召回保留精确稠密检索。分层索引只在需要跨来源补证时启用，与平面取证对照。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/10d9c8a/docs/merit-suitability-card.md#global-shortlist-validation-on-cof">短名单实验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/blob/aa2ecd83ebcbc6c9cdc9349b77fd570109119f2e/docs/exploration/pageindex-expert-design.md#cross-source-navigation-evidence">导航实验</a></p>
+<p>约束解析在同一请求内共享，证据归属逐人核验。受控回放中，按置信度跳过角色核验降低了平均耗时，P95 基本持平，并出现新增误放。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/ba9c2c4f877eaa3964c261e3eb79c954b94bdb50/benchmarks/plos-credit-edits-v1/README.md#calibrating-the-fast-route">检索与核验实验</a></p>
 <h3 id="experiment-continual-results">7.4 迭代实验</h3>
 <p>固定起始索引与反馈预算，对照冻结、仅在线、仅离线和联合更新，测新任务收益、旧任务遗忘及更新成本。</p>
 <h3 id="experiment-ablation-results">7.5 消融</h3>
@@ -333,7 +334,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
 <p id="expert-evidence-precedent">继承指令变更评测，增加同一变更下专家改判与原判保持的配对检查。方法创新取决于逐专家、逐约束的证据状态能否在同预算下改善取证。<a href="https://aclanthology.org/2025.naacl-long.597/">FollowIR</a> · <a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a> · <a href="https://aclanthology.org/2026.emnlp-main.2227/">MERIT</a> · <a href="https://aclanthology.org/2026.acl-long.2035/">RATE</a> · <a href="https://proceedings.neurips.cc/paper_files/paper/2024/hash/724be4472168f31ba1c9ac630f15dec8-Abstract-Conference.html">前缀缓存</a></p>
-<p>SIGIR 和 The Web Conference 是候选方向。现有结果只支持组件取舍。投稿前需用公开强基线和独立企业盲审验证初始系统能降低端到端 P95 或成本，同时维持证据完整性并控制硬约束误放。</p>
+<p>SIGIR 和 The Web Conference 是候选方向。当前收益来自受控回放。投稿前需在独立措辞、新来源和企业盲审中，相对强基线复现端到端 P95 或成本收益，维持证据完整性，并逐请求核对新增硬约束误放。</p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>
