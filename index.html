@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T01:59:09+08:00">2026-11-19 01:59（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T02:17:08+08:00">2026-11-19 02:17（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
 <ul class="research-challenges">
@@ -318,7 +318,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <p class="note">计入失败与回退，单列并摊销训练、建索引和初始化成本。</p>
 <h3 id="experiment-comparison-chart">7.3 阶段结论与下一步</h3>
 <div class="result-table-scroll"><table><thead><tr><th scope="col">阶段取舍</th><th scope="col">下一步</th></tr></thead><tbody>
-<tr><th scope="row">精确稠密作为默认路径</th><td>以 CPU 批量服务为对照，验证端到端速度和引用一致性。</td></tr>
+<tr><th scope="row">精确稠密作为默认路径</th><td>两套公开评审数据上，测试的画像短名单漏召且取证更慢。以精确检索服务为速度对照。 <a href="https://github.com/LaiwenAI/expert-find-agent/blob/10d9c8a/docs/merit-suitability-card.md#global-shortlist-validation-on-cof">实验</a></td></tr>
 <tr><th scope="row">分层导航限于明确的关系缺口</th><td>在相同起始状态比较沿关系补证与平面搜索。</td></tr>
 <tr><th scope="row">优先补齐企业标注</th><td>盲审专家适配、硬约束和贡献归属。</td></tr>
 </tbody></table></div>
@@ -340,10 +340,10 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
 <div class="result-table-scroll"><table><thead><tr><th scope="col">创新候选</th><th scope="col">投稿所需证据</th></tr></thead><tbody>
 <tr><th scope="row">按专家证据缺口调度</th><td>同候选、同工具和同预算下，量化逐约束证据状态的增益。<a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a> · <a href="https://aclanthology.org/2026.emnlp-main.2227/">MERIT</a></td></tr>
-<tr id="expert-evidence-precedent"><th scope="row">初始系统的质量与效率</th><td>以强检索和固定 Agent 为对照，证明质量—成本曲线改善。<a href="https://aclanthology.org/2026.acl-long.2035/">RATE</a></td></tr>
+<tr id="expert-evidence-precedent"><th scope="row">初始系统的质量与效率</th><td>画像压缩已有先例。以 <a href="https://aclanthology.org/2026.acl-long.2035/">RATE</a> 对照排序，以精确检索服务和固定 Agent 对照端到端成本。</td></tr>
 <tr><th scope="row">可复现的企业证据评价</th><td>用独立盲审验证逐约束指标能发现专家排序掩盖的失配。</td></tr>
 </tbody></table></div>
-<p><strong>投稿判断。</strong>SIGIR 和 The Web Conference 是候选方向。当前缺企业盲审和可归因的端到端结果。</p>
+<p><strong>投稿判断。</strong>SIGIR 和 The Web Conference 是候选方向。需用企业盲审验证证据质量，并证明按需取证改善端到端质量—成本曲线。</p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>
