@@ -109,6 +109,13 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>在 1,000 字符上限下，五组要点覆盖依次为 31.47%、31.36%、29.20%、28.85%、30.10%。质心组评分约 45 个叶子和 21 个质心，平面组平均 168 句；质心保留的候选只覆盖约 69.49% 的标注要点。按论文分组的描述性 95% 区间显示质心相对全量变化为 −4.22 至 −0.44 个百分点。选证阶段 P95 为 0.062 → 0.035 毫秒，计入共享查询编码为 7.992 → 7.973 毫秒。质心增量构建约 0.037 秒，增加约 25 MB 向量。计时与覆盖限于预热的已知单篇，不含跨来源召回或语义核验。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/a03244ff61f740b996cdb04338afc4ec8136315e/experiments/retrieval/evidencebench_block_navigation.py">复现实验代码</a></p>
 </section>
 <section aria-labelledby="verification"><h2 id="verification">来源核验、冲突与停止</h2>
+<p id="cof-bounded-adjustment"><strong>有界核验调整。</strong>CoF SIGIR 的 73 条查询中，有界路线与完整调整的前五名及引用全部一致。计时包括查询编码、检索、核验与结果组装。</p>
+<div class="result-table-scroll"><table><thead><tr><th scope="col">路线</th><th scope="col">平均核验数</th><th scope="col">P95</th><th scope="col">严格 P@5</th></tr></thead><tbody>
+<tr><td>纯向量</td><td>0</td><td>7.61 ms</td><td>20.00%</td></tr>
+<tr><td>完整调整</td><td>32.00</td><td>221.20 ms</td><td>20.00%</td></tr>
+<tr><td>有界调整</td><td>12.38</td><td>121.26 ms</td><td>20.00%</td></tr>
+</tbody></table></div>
+<p>批次形状会影响核验判定。此处两种调整路线沿用相同的批次切分，CoF 评分只评价评审匹配。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/53738295d5535abba8cb43b6d9f130a15c899c74/benchmarks/cof-bounded-adjustment/README.md">有界调整实验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/blob/ae7b487ff28115832629671a36ce77d0e188eec5/benchmarks/plos-credit-live-stop/README.md">批次对照</a></p>
 <p id="source-depth-calibration"><strong>核验深度与阈值迁移。</strong>两组共用稠密候选池。下表每格按「两篇／六篇」报告。</p>
 <div class="result-table-scroll"><table><thead><tr><th scope="col">基准与校准设计</th><th scope="col">目标返回</th><th scope="col">缺源返回</th><th scope="col">P95</th></tr></thead><tbody>
 <tr><td>LitSearch，246 条作者问句，2% 校准上限</td><td>23／21</td><td>3／4</td><td>25.02／65.01 ms</td></tr>
