@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="last-updated">最近更新时间：<time datetime="2026-11-18T23:55:14+08:00">2026-11-18 23:55（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="last-updated">最近更新时间：<time datetime="2026-11-19T00:00:09+08:00">2026-11-19 00:00（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -441,6 +441,8 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 
 
 
+<p id="trec-learned-evidence-dispatch"><strong>用专家与文档双标注学习核验动作。</strong>ws5 作业 40012 用 TREC 2006 Enterprise 的 49 个既有主题做五折交叉评估。每折只用训练主题构造专家先验和有监督的动作数据。225 参数 MLP 根据当前证据计数、晋升名次和剩余文档等 12 项状态量，预测核验下一份文档对证据支持 P@5 的即时增益，并对无充分支持的晋升设惩罚。测试主题的专家与文档评分只用来模拟核验和评估。所有方法共用官方已评候选池，每主题 32 次顺序及误差抽样，比较最高排位优先、轮询、未获支持候选优先和学习策略。</p>
+<p>在灵敏度 90%、假阳性率 5%、独立误差的模拟下，40 次上限时四组平均均核验 36.27 对，证据支持 P@5 分别为 12.14%、27.63%、26.85% 和 23.20%。学习策略相对轮询低 4.43 个百分点（按主题配对的描述性 95% 区间 -7.87 至 -1.58），无充分支持的晋升也从 28.78% 降至 26.47%。在共享误差下，轮询和学习策略的证据支持 P@5 分别为 27.91% 和 22.82%。这组结果支持保留轮询作为强基线，并在相同晋升惩罚下比较即时目标和多步累计收益，再用实测核验器检验迁移。已有主题重复用于研究，池外召回、真实核验和线上耗时均尚未覆盖。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/ede949ca0907ed321cbfc35caf87f6dd13ee42cf/experiments/trec_enterprise/learned_evidence_dispatch.py">动作构造与交叉评估代码</a> · <a href="https://trec.nist.gov/data/t15_enterprise.html">TREC 官方标注</a></p>
 <p><strong>同一协议的对照矩阵：</strong>固定 BM25、精确稠密、混合与重排；静态 Agent；仅反馈记忆；仅自适应计算；反馈与自适应的简单叠加；拟议联合策略。比较时固定模型、语料和证据可见范围，分别控制候选预算与反馈预算；另做不同索引、模型和知识库版本的独立实验。实验应记录每次调用的输入、失败、耗时及费用，并冻结代码、提示、数据及输出快照。将开源决策模型的短标签生成、候选标签打分与分类头，以及冻结、SFT 和策略训练版本纳入对照；同一候选与证据预算比较完整推理、延迟和成本。此前 610 对公开评审数据上的 Luna API 实验仅作历史参考，未证明非劣或完整搜索提速，不作为后续模型依赖。</p><div class="result-table-scroll"><table style="min-width:660px"><caption style="text-align:left;font-weight:650">已完成的基础实验（不同任务与口径，不可跨行直接比较）</caption><thead><tr><th>实验与范围</th><th>真实结果</th><th>解释边界</th></tr></thead><tbody>
 <tr><td>MERIT：610 对评审自评数据；完整推理与原生 Decisions</td><td>准确率 73.28% / 71.15%；单次请求均时 3.84 s / 0.91 s</td><td>非劣未证实；不是企业匹配或完整搜索耗时。</td></tr>
 <tr><td>EvidenceBench：293 条查询；来源角色选择与稠密基线</td><td>证据方面召回 0.494 / 0.432</td><td>模型辅助标注；不是专家级匹配真值，角色离线构建成本另计。</td></tr>
