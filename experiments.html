@@ -109,6 +109,14 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>在 1,000 字符上限下，五组要点覆盖依次为 31.47%、31.36%、29.20%、28.85%、30.10%。质心组评分约 45 个叶子和 21 个质心，平面组平均 168 句；质心保留的候选只覆盖约 69.49% 的标注要点。按论文分组的描述性 95% 区间显示质心相对全量变化为 −4.22 至 −0.44 个百分点。选证阶段 P95 为 0.062 → 0.035 毫秒，计入共享查询编码为 7.992 → 7.973 毫秒。质心增量构建约 0.037 秒，增加约 25 MB 向量。计时与覆盖限于预热的已知单篇，不含跨来源召回或语义核验。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/a03244ff61f740b996cdb04338afc4ec8136315e/experiments/retrieval/evidencebench_block_navigation.py">复现实验代码</a></p>
 </section>
 <section aria-labelledby="verification"><h2 id="verification">来源核验、冲突与停止</h2>
+<p id="ownership-swap-replication"><strong>职责交换训练复测。</strong>交换本人和他人的职责，保持任务描述不变。完整正确要求改判和原判保持同时成立。</p>
+<div class="result-table-scroll"><table><thead><tr><th scope="col">训练数据</th><th scope="col">探索集完整正确／116</th><th scope="col">另采集完整正确／80</th><th scope="col">另采集误认支持</th></tr></thead><tbody>
+<tr><td>原始描述</td><td>88</td><td>40</td><td>16</td></tr>
+<tr><td>等量普通扩写</td><td>86</td><td>44</td><td>14</td></tr>
+<tr><td>其他职责交换</td><td>84</td><td>45</td><td>10</td></tr>
+<tr><td>易混职责交换</td><td>96</td><td>40</td><td>19</td></tr>
+</tbody></table></div>
+<p>另采集隔离 DOI、已公布 ORCID 和规范化姓名，使用另写措辞。易混职责交换在探索集上的增益未复现。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/23f831d74cc933845da48d0220e908cad803f460/benchmarks/plos-credit-external-v1/README.md">复测与数据</a></p>
 <p id="cross-paper-requirement-edits"><strong>跨论文约束变更。</strong>发布 42 组、360 个视图，核对同一作者的两份出版声明。下表为三个留出来源组的 156 个视图。</p>
 <div class="result-table-scroll"><table><thead><tr><th scope="col">路线</th><th scope="col">正确</th><th scope="col">误认有支持</th><th scope="col">P95</th></tr></thead><tbody>
 <tr><td>联合 4B 判断</td><td>73</td><td>7</td><td>15.11 ms</td></tr>
