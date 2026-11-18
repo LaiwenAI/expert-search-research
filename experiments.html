@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T01:10:05+08:00">2026-11-19 01:10（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T01:13:51+08:00">2026-11-19 01:13（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
 <li><a href="#action-selection">证据选择与决策模型</a></li>
@@ -54,6 +54,8 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>原稠密、训练稠密特征、首来源词面、多来源互补的已标注软／硬 P@5 依次为 30.51%／16.61%、30.85%／16.95%、26.10%／14.24%、29.15%／15.93%，单请求 P95 依次为 8.73、8.79、9.41、10.86 毫秒。计时含在线编码、召回、特征与引用读取和序列化。档案重排中只有已标注部分计入准确率，其余结果保留为未知，跨方法的完整质量差异仍不可识别。这个小样本内，简单词面与互补特征未显示排序收益，继续把真实方法证据、硬约束和原文支持度作为后续标注对象。CoF 的评审者适配标签用于评价专家排序，引用本身仍需独立判定。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/69b75a5b6136ae8966ac60987ee5d0068840fb6f/experiments/retrieval/cof_source_feature_rerank.py">来源特征实验代码</a> · <a href="https://github.com/yuz9yuz/CoF">CoF 数据说明</a> · <a href="https://pages.nist.gov/trec-browser/trec15/enterprise/runs/">TREC 历史运行目录</a></p>
 <p id="cof-rank-disagreement-review"><strong>将专家适配和引用支持分开盲评。</strong>ws5 作业 40044 逐条复现原稠密与多来源重排的 Top-5，冻结了 17 条 CoF 查询及其候选并集的 105 个案例。59 条过滤查询中有 54 条的 Top-5 成员发生变化，从中随机抽取 12 条，并纳入全部 5 条成员一致的查询。候选顺序随机化，表单隐藏方法、名次与既有标签，另存可追溯映射。</p>
 <p>适配表展示最多三份候选本人关联的来源摘录，区分直接适配、可迁移、低适配和信息不足。引用表仅展示系统实际返回的一份摘录，判断是否直接支持、支持迁移、存在反证或信息不足。需逐字摘录直接证据，并为迁移判断说明所需适配。每项独立双人评审，先锁定适配记录，后核对引用。配对比较中共同入选的候选抵消，未评与分歧保留为未知，以样本内上下界呈现。盲评材料已生成，人工标签尚未收集；抽样针对分歧诊断，结果不直接外推为整库性能。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/ef602cb61804bef291e1d75973866f36c0a0f1f6/experiments/retrieval/cof_rank_disagreement_review.py">样本生成与标注校验代码</a></p>
+<p id="cof-joint-review-coverage"><strong>分别估计共同候选与独有候选的标注价值。</strong>复核冻结的 CoF SciRepEval 盲审批次和原始 Top-5。17 条抽样查询共有 105 个查询—专家对，65 个被两组共享，40 个仅被一组召回到前五。同一专家在两组使用同一候选资料和固定的首条引用。直接适配对应直接支持，迁移适配对应迁移支持，尚未判定的组合保留未知。共享项在配对差中抵消，仍计入单组绝对质量。</p>
+<p>当前尚无正式双审判断，重排相对稠密排序的联合 Top-5 命中差在 17 条抽样查询内可为 −23.53 至 +23.53 个百分点。59 条原回放查询共有 188 个独有条目，全组识别界限为 −31.86 至 +31.86 个百分点。以收窄到总宽度 10 个百分点为例，两组范围分别至少需明确 32 和 159 个独有条目的联合状态。全组尚有 148 个此类条目未进入现有审表，完成现有表也不足以达到该精度。10 个百分点用于说明工作量；区间反映未判定标签的可能影响，抽样误差另计。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/13178041c0669f1e1ac6b3b82887c4d77f7b674f/experiments/retrieval/cof_joint_review_coverage.py">覆盖率审计代码</a></p>
 </section>
 <section aria-labelledby="serving"><h2 id="serving">批处理与服务延迟</h2>
 <p id="cof-request-batching"><strong>单 GPU 并发到达下的微批检索。</strong>ws5 作业 39951 在一张 RTX 5090 上冻结完整 28 层开源查询编码器，关闭查询缓存。CoF SIGIR 和过滤后的 SciRepEval 各以三档到达率回放相同的 384 次请求序列，比较单条处理、积压时立即合批（最多 4 或 8 条）和最多等待 1 毫秒的 4 条微批。最高档实际到达率为 276.57 请求／秒。立即合批至多 8 条时，SIGIR 实际吞吐从 134.98 升至 273.59 请求／秒，P95 从 1,389.76 降至 44.87 毫秒；SciRepEval 从 128.47 升至 272.54 请求／秒，P95 从 1,526.85 降至 50.22 毫秒。低档实际到达率为 52.60 请求／秒时，两组的实测吞吐均约为 52.7 请求／秒，P95 分别由 23.13 降至 18.98 毫秒、由 24.22 降至 18.59 毫秒。</p>
