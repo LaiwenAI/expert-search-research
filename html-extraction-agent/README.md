@@ -1,13 +1,13 @@
-# Structure-Aware HTML Extraction Agent
+# 面向异构高校网页的结构感知数据提取 Agent
 
-学源滔滔高校专家数据提取 Agent 技术方案（v1.0）。以 DOM/XPath 结构分析、HTML 简化、结构感知分块、LLM 提取与字段证据校验为核心。
+**Structure-Aware HTML Extraction Agent for Heterogeneous Academic Websites**
 
-## 在线文档
+学源滔滔技术研究方案 v2.0（2026-11-18）。
 
-https://laiwenai.github.io/expert-search-research/html-extraction-agent/
+在线技术文档：https://laiwenai.github.io/expert-search-research/html-extraction-agent/
 
-## 仓库路径
+该页面位于 `LaiwenAI/expert-search-research` 的 `html-extraction-agent/` 子目录，不覆盖原研究首页。
 
-此方案发布在 `LaiwenAI/expert-search-research` 的 `html-extraction-agent/` 子目录下，不修改原研究首页。
+内容覆盖：研究背景与五项研究问题、总体架构、DOM 分析、保结构压缩、实体感知分块、XPath/LLM 路由、证据核验、XPath 规则归纳与模板漂移、JSONL 数据契约、工程架构、对照实验及分阶段验收。
 
-当前版本为静态技术方案，不含已实现的生产抓取 Agent。
+**状态：技术设计与研究方案，尚非生产 Agent 实现。**
