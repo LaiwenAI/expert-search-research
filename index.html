@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T05:58:31+08:00">2026-11-19 05:58（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T06:11:05+08:00">2026-11-19 06:11（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
 <ul class="research-challenges">
@@ -280,7 +280,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <p>从同一状态执行备选动作，训练轻量决策器预测名次、约束判定及耗时。共享来源合并读取，逐人核验归属。目标证据缺失时补证或标为未决，停止阈值在独立验证集校准。</p>
 <p id="expert-action-routing-prior-work">对照固定轮询、分差早停及分数有界剪枝。剪枝用当前分数上下界判断剩余证据能否改变前 K。<a href="https://research.ibm.com/publications/optimal-aggregation-algorithms-for-middleware">Top-K 阈值算法</a> · <a href="https://arxiv.org/abs/2210.03629">ReAct</a></p>
 <h3 id="demand-taxonomy">4.3 企业需求理解</h3>
-<p>提取任务类型、技术场景和硬约束，决定直接检索、澄清或分步取证。</p>
+<p>提取任务类型、技术场景和硬约束。含排除项或多主体时，先定位各主体的任务片段，再归一化约束。</p>
 <div class="result-table-scroll"><table class="demand-taxonomy-table"><caption>表 4-1　企业技术需求的候选任务类型（允许多标签）</caption><thead><tr><th>需求类型</th><th>典型任务</th><th>专家匹配侧重点</th></tr></thead><tbody>
 <tr><td><strong>技术诊断与咨询</strong></td><td>失效分析、技术瓶颈定位</td><td>问题诊断经验及相关技术案例</td></tr>
 <tr><td><strong>关键技术研发</strong></td><td>研发新材料、核心算法或工艺</td><td>前沿方向、持续科研成果与项目经验</td></tr>
@@ -327,7 +327,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
 <p id="expert-evidence-precedent">创新检验：逐专家、逐约束的证据状态能否在同预算下，比有界剪枝和固定取证获得更多可归属的正确推荐。合成数据的收益须在另采的来源、专家与措辞上复现，同时检验改判、原判保持与误归属。<a href="https://aclanthology.org/2025.naacl-long.597/">FollowIR</a> · <a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a></p>
-<p>SIGIR／The Web Conference 投稿门槛：在公开基准与独立企业盲审中，相对最快的合格固定策略复现等质量、等风险下的端到端 P95 或成本收益。消融须验证动态证据状态相对同分数剪枝的增益。</p>
+<p>SIGIR／The Web Conference 投稿门槛：在公开基准与独立企业盲审中，相对最快的合格固定策略复现等质量、等风险下的端到端 P95 或成本收益。论文须在未经预切分的人工需求中复现，并消融动态证据状态和任务片段定位。</p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>

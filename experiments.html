@@ -109,6 +109,14 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>在 1,000 字符上限下，五组要点覆盖依次为 31.47%、31.36%、29.20%、28.85%、30.10%。质心组评分约 45 个叶子和 21 个质心，平面组平均 168 句；质心保留的候选只覆盖约 69.49% 的标注要点。按论文分组的描述性 95% 区间显示质心相对全量变化为 −4.22 至 −0.44 个百分点。选证阶段 P95 为 0.062 → 0.035 毫秒，计入共享查询编码为 7.992 → 7.973 毫秒。质心增量构建约 0.037 秒，增加约 25 MB 向量。计时与覆盖限于预热的已知单篇，不含跨来源召回或语义核验。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/a03244ff61f740b996cdb04338afc4ec8136315e/experiments/retrieval/evidencebench_block_navigation.py">复现实验代码</a></p>
 </section>
 <section aria-labelledby="verification"><h2 id="verification">来源核验、冲突与停止</h2>
+<p id="credited-clause-search"><strong>来源确认与任务片段。</strong>165 篇论文的受控检索，24 篇为测试目标。下表为删节摘要线索，160 个查询版本。计时含本地检索、推理和结果组装。</p>
+<div class="result-table-scroll"><table><thead><tr><th scope="col">路线</th><th scope="col">来源和作者集合正确／160</th><th scope="col">有来源 P95</th><th scope="col">缺源未决／160</th><th scope="col">缺源误引</th></tr></thead><tbody>
+<tr><td>BM25 与 Ridge</td><td>102</td><td>8.62 ms</td><td>5</td><td>99</td></tr>
+<tr><td>来源确认与 Ridge</td><td>102</td><td>9.13 ms</td><td>160</td><td>0</td></tr>
+<tr><td>来源确认、片段选择与 Ridge</td><td>120</td><td>24.18 ms</td><td>160</td><td>0</td></tr>
+<tr><td>来源确认与完整词表判断</td><td>114</td><td>47.76 ms</td><td>160</td><td>0</td></tr>
+</tbody></table></div>
+<p>一起检查两个版本时，片段路线完整正确 49／80，Ridge 为 37／80。请求提供角色边界，来源提示取自原摘要。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/f730206935ec6cbdf700d19a704705b512b7f5fe/benchmarks/plos-credit-external-search/README.md">检索与归属复现</a></p>
 <p id="ownership-swap-replication"><strong>职责交换训练复测。</strong>交换本人和他人的职责，保持任务描述不变。完整正确要求改判和原判保持同时成立。</p>
 <div class="result-table-scroll"><table><thead><tr><th scope="col">训练数据</th><th scope="col">探索集完整正确／116</th><th scope="col">另采集完整正确／80</th><th scope="col">另采集误认支持</th></tr></thead><tbody>
 <tr><td>原始描述</td><td>88</td><td>40</td><td>16</td></tr>
