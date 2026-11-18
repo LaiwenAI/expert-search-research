@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T02:42:44+08:00">2026-11-19 02:42（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T03:03:04+08:00">2026-11-19 03:03（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
 <ul class="research-challenges">
@@ -307,7 +307,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 </ul>
 <h2>7. 实验设计与评价（Experiments and Evaluation）</h2>
 <h3>7.1 数据与盲审</h3>
-<p>企业独立样本用双人盲审与仲裁，按企业、父需求及近重复组隔离。公开对照用 CoF 和 TREC Enterprise 检验专家排序，用 EvidenceBench 检验片段，用 MERIT 检验适配判断，用 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/07fdfda/benchmarks/plos-credit-pilot-v1">CRediT 样例</a>检验已声明的作者贡献。</p>
+<p>企业独立样本用双人盲审与仲裁，按企业、父需求及近重复组隔离。公开对照用 CoF 和 TREC Enterprise 检验专家排序，用 EvidenceBench 检验片段，用 MERIT 检验适配判断，用 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/1a3c9cf/benchmarks/plos-credit-pilot-v1">CRediT 样例</a>分别检验角色理解和个人贡献归属。</p>
 <p id="judgment-coverage">分别标注专家适配与原文支持，报告一致性、覆盖率和未知标签对比较的影响。</p>
 <h3 id="experiment-results">7.2 主实验</h3>
 <p>同语料、硬件和负载下比较 BM25、精确稠密、混合重排、固定 Agent 和按需取证 Agent。</p>
@@ -321,7 +321,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <tr><th scope="row">精确稠密作为默认路径</th><td>两套公开评审数据上，测试的画像短名单漏召且取证更慢。以精确检索服务为速度对照。 <a href="https://github.com/LaiwenAI/expert-find-agent/blob/10d9c8a/docs/merit-suitability-card.md#global-shortlist-validation-on-cof">实验</a></td></tr>
 <tr><th scope="row">分层导航限于明确的关系缺口</th><td>在相同起始状态比较沿关系补证与平面搜索。</td></tr>
 <tr><th scope="row">分别约束读取与核验</th><td>减少平均输入仍可能漏证或抬高尾延迟。共享原文可降低核验成本，需保留逐人核验和回退。 <a href="https://github.com/LaiwenAI/expert-find-agent/blob/07fdfda/docs/exploration/pageindex-expert-design.md#qasper-human-annotated-evidence-and-reader-cost">实验</a></td></tr>
-<tr><th scope="row">优先补齐企业标注</th><td>盲审专家适配、硬约束和贡献归属。</td></tr>
+<tr><th scope="row">分开验收理解与归属</th><td>公开样例中，角色误读会传到作者推荐。企业盲审分别检查角色理解、硬约束和个人贡献。 <a href="https://github.com/LaiwenAI/expert-find-agent/blob/1a3c9cf/benchmarks/plos-credit-pilot-v1/README.md#language-interpretation-before-attribution">实验</a></td></tr>
 </tbody></table></div>
 <p class="note"><a href="experiments.html">实验记录与复现</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/blob/aa2ecd83ebcbc6c9cdc9349b77fd570109119f2e/docs/exploration/pageindex-expert-design.md#cross-source-navigation-evidence">跨来源导航实验</a></p>
 <h3 id="experiment-continual-results">7.4 迭代实验</h3>
@@ -342,7 +342,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <div class="result-table-scroll"><table><thead><tr><th scope="col">创新候选</th><th scope="col">投稿所需证据</th></tr></thead><tbody>
 <tr><th scope="row">按专家证据缺口调度</th><td>同候选、同工具和同预算下，量化逐约束证据状态的增益。<a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a> · <a href="https://aclanthology.org/2026.emnlp-main.2227/">MERIT</a></td></tr>
 <tr id="expert-evidence-precedent"><th scope="row">初始系统的质量与效率</th><td>以 <a href="https://aclanthology.org/2026.acl-long.2035/">RATE</a> 对照排序。将 <a href="https://proceedings.neurips.cc/paper_files/paper/2024/hash/724be4472168f31ba1c9ac630f15dec8-Abstract-Conference.html">前缀缓存</a>作为运行时基线，在相同回退规则下对比完整请求。</td></tr>
-<tr><th scope="row">可复现的企业证据评价</th><td>用独立盲审验证逐约束指标能发现专家排序掩盖的失配。</td></tr>
+<tr><th scope="row">可复现的企业证据评价</th><td>分别测需求解析、来源选取和同一专家满足全部约束。用独立盲审确认完整证据指标能发现排序掩盖的误判。</td></tr>
 </tbody></table></div>
 <p><strong>投稿判断。</strong>SIGIR 和 The Web Conference 是候选方向。投稿前需用企业盲审证明取证调度能保住证据完整性，并降低端到端 P95 或成本。</p>
 </section>
