@@ -189,7 +189,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="last-updated">最近更新时间：<time datetime="2026-11-18T18:48:20+08:00">2026-11-18 18:48（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="last-updated">最近更新时间：<time datetime="2026-11-18T18:54:45+08:00">2026-11-18 18:54（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -276,10 +276,9 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <text x="159" y="337">证据写回</text>
 <text x="159" y="357">下一轮重决策</text>
 </g>
-<rect x="251" y="276" width="142" height="44" rx="6" fill="#fff"/>
 <g fill="#425963" font-size="12">
-<text x="258" y="292">关键约束已满足且风险达标</text>
-<text x="258" y="310">或预算耗尽，直接退出</text>
+<text x="282" y="292">关键约束已满足且风险达标</text>
+<text x="282" y="310">或预算耗尽，直接退出</text>
 </g>
 <g fill="#fff">
 <text x="306" y="502" font-weight="700" font-size="15">输出 Top-K、约束证据及未决项</text>
@@ -369,6 +368,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <p><strong>按首篇缺失术语选择第二篇。</strong>ws5 作业 39819 固定 73 条 CoF SIGIR 查询的候选池、首篇片段、两篇各自的 token 数、重排器及融合规则。若第三篇的等长片段覆盖更多首篇没有的查询术语，就替换原来的第二篇。730 个候选位置中替换 263 个，所有位置均核查了 token 数和首篇身份。等长两篇按稠密顺序与按缺词规则的软标签 P@5 为 43.6% 和 43.0%，硬标签均为 18.1%。软标签配对差为 −0.55 个百分点，描述性 95% 区间为 −2.47 至 +1.37 个百分点。平均耗时 60.5 和 62.9 毫秒。此项以已探索的审稿人自评判断排序，词面新增是否构成实质证据仍需单独核验。后续先在人审约束上比较第二来源的新增支持、冗余和冲突，再测该信号对扩读决策的收益。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/cof_live_compact_fusion.py">实验代码</a></p>
 <p><strong>第二来源的配对盲审。</strong>从作业 39819 中出现替换的 71 条查询抽取 40 条，每条随机取一个替换位置。用冻结文本和分词器还原实际输入，保留相同首篇和等长的第二篇片段，随机呈现两种选择并隐藏策略、排序和自评标签。两名评审独立判断新增支持、重复支持、冲突、证据不足或无法判断。支持或冲突需填写具体技术能力、片段内原句和理由。报告一致性与分歧，主比较限于发生替换的样本。材料已生成并通过结构校验，80 项判断均待填写，尚无人工结果。汇总程序已用空表及合成提交验证。只有双方一致且确定的标签才进入配对点估计。新增支持和冲突分别报告，其余选项计入全样本最坏情形界限。当前没有共同完成项，界限为 −100 至 +100 个百分点。摘要内容可能暴露研究者身份，审稿人匹配结果也需与企业验证分开。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/cof_complement_review.py">材料生成与校验代码</a></p>
 <p><strong>用公开要点标注检查第二段是否补证。</strong>在 293 条已探索 EvidenceBench 查询中固定首句。第三句只有在不超过原第二句字符数，且包含更多首句尚未覆盖的查询术语时，才替换第二句。规则触发 26 次，7 条增加了标注要点，3 条减少，16 条无变化。全组平均每条新增要点从 0.522 升至 0.532，配对差为 +0.010，按论文聚类的描述性 95% 区间为 −0.024 至 +0.044。同一候选范围内，按答案择优的事后上界为 0.659。该回放只检验同篇论文的完整句子，未标注句可能仍有证据，不能据此推断跨论文冲突或专家适配。将缺词规则保留为对照，并以配对盲审检验新增引用能否补齐实际能力约束。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/evidencebench_second_source_audit.py">回放代码</a></p>
+<p><strong>用公开跨文档标注检查第二份来源是否补证。</strong>在 HotpotQA 的带干扰段落开发集上，固定 BM25 排名第一的段落。在第 2–5 位中，只有候选段落的字符数不超过原第二段，且包含更多首段未覆盖的查询词时才替换。排除 1 条标注句索引越界的记录后，7,404 条查询中触发 1,315 次替换。其中 350 条补齐全部标注来源，118 条失去原本完整的来源覆盖。总体完整覆盖率从 31.47%（2,330 条）升至 34.60%（2,562 条），平均读取从 1,045 降至 997 字符；同一首段、候选与字符上限内，事后按标注选取的上界为 49.95%。该回放使用数据集给定的候选段落，整段可见，也未生成答案。它支持将补缺词保留为跨文档对照。任一替换是否真正补齐企业硬约束，仍需根据原文和独立标注判定。<a href="https://aclanthology.org/D18-1259/">HotpotQA 原论文</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/blob/44200d1/experiments/hotpotqa/second_document_complement.py">回放代码</a></p>
 
 
 
