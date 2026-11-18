@@ -189,7 +189,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="last-updated">最近更新时间：<time datetime="2026-11-18T19:21:10+08:00">2026-11-18 19:21（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="last-updated">最近更新时间：<time datetime="2026-11-18T19:40:43+08:00">2026-11-18 19:40（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -299,7 +299,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <ol>
 <li><strong>记录专家与约束之间的证据状态。</strong>从需求原文定位硬约束和软偏好。每个「专家 × 约束」单元记录未查、已查但证据不足、有支持或存在冲突，并关联来源、原文位置和日期。共享来源只需读取一次，个人贡献逐人核验。索引节点定位原文，最终支持度由原文判定。</li>
 <li><strong>按预期收益选择动作。</strong>从共享候选池出发，针对各未决约束构造补召回、读取原文、复核冲突、停止等有限动作。为动作估计两项量：核验结果会改变关键约束判定或 Top-K 的概率，以及动作带来的端到端增量成本。候选路径的排序分数接近时，优先检查有较大机会改变入选名单的约束；同一来源若能核查多个未决项，则合并读取。先用可复现规则运行，再用本地开源 Decision Model 估计动作收益。训练候选来自同一状态下多个动作的配对回放，记录各自的核验结果、名单变化与成本。真实评估用独立标注区分有益变化和错误换人。</li>
-<li><strong>验证停止与回退。</strong>提前停止需满足关键约束有证据，且独立验证集校准的漏失风险低于预设阈值。风险偏高时按预算回退完整检索或强化核验。预算耗尽时返回已支持的推荐及未决约束，并统计质量、失败与弃权。</li>
+<li><strong>验证停止与回退。</strong>提前停止需满足关键约束有证据，且独立验证集校准的漏失风险低于预设阈值。风险偏高时按预算回退完整检索或强化核验。单次正判导致的漏查与错误晋升须分别测量；在验证集比较单次正判、第二来源复核与保持未决三种策略。<a href="#trec-expert-evidence-replay">TREC 核验误差回放</a>预算耗尽时返回已支持的推荐及未决约束，并统计质量、失败与弃权。</li>
 </ol>
 <p>同模型、工具、初始候选池与预算下，对比固定读取、候选分数优先、分差早停，以及用通用推理／行动循环的 ReAct 对照。补做去掉「专家 × 约束」状态和去掉 Top-K 影响估计的消融，区分收益来自多轮工具调用、证据状态还是预算策略。若固定预算下证据与排序质量无增益，等质量下也无端到端成本收益，则主张不成立。<a href="https://arxiv.org/abs/2210.03629">ReAct 原论文</a></p>
 <h3 id="demand-taxonomy">4.3 企业技术需求分类与结构化理解（Demand Taxonomy）</h3>
@@ -352,7 +352,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <h3>次要贡献：在线／离线可迭代优化</h3><p>在冻结初始系统上，比较固定框架、反馈记忆、反馈驱动模型更新及其与计算策略的组合；明确区分模型、记忆、索引及数据变化，测量新任务、旧任务和迭代成本。模拟反馈仅用于开发，真实迁移收益需独立验证。</p>
 <h2>7. 实验设计与评价（Experiments and Evaluation）</h2>
 <p><strong>近期执行原则：</strong>先冻结企业需求分组、索引快照和多系统候选池；在开发集定义判断规则及停止策略，在独立验证集定阈值，再在封闭测试集评估。基线至少包括 BM25、稠密精确检索、混合检索与有／无重排的固定流程；控制相同候选、语料及预算，分别报告索引构建、冷启动、查询编码、检索、证据读取、模型推理与端到端延迟、P50／P95、吞吐和资源成本。未完成的主实验及消融保持待测，不使用示意数据填充结果。</p><p><strong>指标研究：</strong>以人工专家级相关性及硬约束成功率为主，分别报告证据支持、引用可核验性、时效、个人贡献是否可判断、跨语言表现与质量—成本曲线；缺失标注和未知贡献保持未知。新的综合指标先定义适用范围、权重和缺失值规则，并检验与独立人工判断的一致性，避免用合成标签证明自身有效。</p>
-<h3>7.1 数据集与评测协议</h3><p><strong>公开数据与场景互补：</strong>CoF SIGIR／NIPS 的公开审稿人匹配用于专家排序；MERIT 的公开审稿人自评用于候选匹配决策；EvidenceBench 用于来源片段覆盖；这些任务分别检验不同能力，不等同企业专家适配或个人贡献。企业需求与来源的独立双人标注用于主场景；对每个公开数据集记录来源、许可、分组、候选集、训练／验证／测试及可能的泄漏，基线使用同样输入和证据视图。</p>
+<h3>7.1 数据集与评测协议</h3><p><strong>公开数据与场景互补：</strong>CoF SIGIR／NIPS 的公开审稿人匹配用于专家排序；TREC 2006 Enterprise 的专家和专家—文档双层判断用于单主题的联合评价；MERIT 的公开审稿人自评用于候选匹配决策；EvidenceBench 用于来源片段覆盖；这些任务分别检验不同能力，不等同企业专家适配或个人贡献。企业需求与来源的独立双人标注用于主场景；对每个公开数据集记录来源、许可、分组、候选集、训练／验证／测试及可能的泄漏，基线使用同样输入和证据视图。</p>
 <p class="note">当前数据准备：已构造 5,000 对双语查询，其中 4,224 对通过同模型筛查；筛查不构成人工金标，完整人工评测仍待完成。数据、标注协议和实验代码的详细状态以<a href="https://github.com/LaiwenAI/expert-find-agent/tree/research/prototype-20261117">研究仓库</a>为准。</p>
 <ol><li><strong>真实检索需求</strong>：覆盖从明确的研究方向查询到复杂工程场景，标注任务类型、技术领域、约束、明确程度、知识跨度及是否需要澄清或多步推理。</li>
 <li><strong>教师画像与多源证据</strong>：以教师为数据单元，使用已归集的论文、专利及项目，保留证据类型、来源、时间与完整性信息。</li>
@@ -370,6 +370,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <p><strong>用公开要点标注检查第二段是否补证。</strong>在 293 条已探索 EvidenceBench 查询中固定首句。第三句只有在不超过原第二句字符数，且包含更多首句尚未覆盖的查询术语时，才替换第二句。规则触发 26 次，7 条增加了标注要点，3 条减少，16 条无变化。全组平均每条新增要点从 0.522 升至 0.532，配对差为 +0.010，按论文聚类的描述性 95% 区间为 −0.024 至 +0.044。同一候选范围内，按答案择优的事后上界为 0.659。该回放只检验同篇论文的完整句子，未标注句可能仍有证据，不能据此推断跨论文冲突或专家适配。将缺词规则保留为对照，并以配对盲审检验新增引用能否补齐实际能力约束。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/evidencebench_second_source_audit.py">回放代码</a></p>
 <p><strong>用公开跨文档标注检查第二份来源是否补证。</strong>在 HotpotQA 的带干扰段落开发集上，固定 BM25 排名第一的段落。在第 2–5 位中，只有候选段落的字符数不超过原第二段，且包含更多首段未覆盖的查询词时才替换。排除 1 条标注句索引越界的记录后，7,404 条查询中触发 1,315 次替换。其中 350 条补齐全部标注来源，118 条失去原本完整的来源覆盖。总体完整覆盖率从 31.47%（2,330 条）升至 34.60%（2,562 条），平均读取从 1,045 降至 997 字符；同一首段、候选与字符上限内，事后按标注选取的上界为 49.95%。该回放使用数据集给定的候选段落，整段可见，也未生成答案。它支持将补缺词保留为跨文档对照。任一替换是否真正补齐企业硬约束，仍需根据原文和独立标注判定。<a href="https://aclanthology.org/D18-1259/">HotpotQA 原论文</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/blob/44200d1/experiments/hotpotqa/second_document_complement.py">回放代码</a></p>
 <p><strong>同一候选池的冻结向量对照。</strong>ws5 作业 39824 在相同 7,404 条 HotpotQA 查询上使用 Qwen3-Embedding-0.6B，固定首段、可选候选和逐查询字符上限。缺词、查询余弦相似度、扣除首段在查询向量中的投影后三种策略的完整来源覆盖率分别为 34.60%、40.57%、35.45%。查询余弦相似度比缺词高 5.97 个百分点，按查询配对重采样的描述性 95% 区间为 +5.05 至 +6.86；扣除投影比原余弦低 5.12 个百分点（−5.79 至 −4.44）。对 5,159 条有替代段落的查询，RTX 5090 合批编码首段、问题和候选并计算两组分数，平均 12.48 毫秒。最终选出的两段平均为 912 字符；该值仅衡量选出内容，两组向量均访问可选段落。计时只覆盖编码与打分，区间未处理共享文章带来的相关性，任务也未评价专家匹配。开放检索仍需比较候选漏失和完整查询成本。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/302b9ae/experiments/hotpotqa/semantic_complement.py">复现代码</a></p>
+<p id="trec-expert-evidence-replay"><strong>专家与来源均有人工标注时，预算如何分配。</strong>在 TREC 2006 Enterprise 的 49 个已评主题上，从官方评审池取留一主题先验最高的 10 位候选。每个主题做 32 次源文档顺序打乱，各方法共用顺序和候选。预算按专家—文档核验对计数。每次只揭示已检查对的标注，以模拟理想核验器。40 次上限下，先查完高排位专家、固定轮询、优先检查尚无支持者的证据支持 P@5 分别为 12.02%、32.92%、34.02%。其分子要求专家和至少一份实际被接受的引用均获官方正标签。自适应相对轮询提高 1.10 个百分点，按主题配对重采样的描述性 95% 区间为 +0.51 至 +1.76，平均核验 35.55 对和 36.71 对。把模拟核验器的灵敏度设为 90%、假阳性率设为 5% 时，两组覆盖分别为 29.18% 和 30.19%，差值反转为 −1.01 个百分点（−1.90 至 −0.23）。这些是假设的错误率。先验可复用其他主题上的候选身份，历史评审池也存在选样偏差。该回放每个主题只有一个适配判断，衡量的是给定候选与证据池内的分配策略。完整语料检索、端到端耗时与硬约束级核验仍需独立实验。<a href="https://trec.nist.gov/data/t15_enterprise.html">NIST 数据与标注</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/blob/006aa12/experiments/trec_enterprise/expert_evidence_budget.py">回放代码</a></p>
 
 
 
@@ -422,6 +423,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <tr><td>可选的反馈驱动后续迭代</td><td>身份记忆的模拟重分组平均差值小且有正负；当前并未解析自然语言，路由曾退化为选择固定稠密基线。</td><td>定义可复现的经验状态、更新、决策和回退；同数据与预算下优于固定、仅反馈、仅预算及简单叠加，并检验新任务迁移和旧任务保留。</td></tr>
 </tbody></table></div>
 <h3>10.2 与相关研究的区别</h3>
+<p><strong>专家及来源的联合评价已有先例。</strong>TREC 2006 已在专家排序之外考察是否提交了真实的支持文档。本文的指标贡献需要进一步验证逐条硬约束的覆盖、原文与个人归属，以及在明确质量约束下的端到端成本。应同时报告独立的专家排序与证据支持指标。<a href="https://trec.nist.gov/pubs/trec15/papers/ENT06.OVERVIEW.pdf">TREC 2006 任务综述</a></p>
 <p><strong>证据互补的强对照。</strong>首段固定时，投影版本等价于以查询与候选的相似度为相关项、以候选和首段的相似度为冗余项的 MMR 特例；冗余权重由首段和查询的相似度确定。GoldEn Retriever 已根据现有上下文生成后续查询以定位缺失实体。后续比较应保留固定余弦、验证集选权重的 MMR，以及同工具和预算的上下文查询改写。方法差异要落实到专家归属、硬约束支持或冲突状态，以及取证动作能否改善最终名单。<a href="https://www.cs.cmu.edu/~jgc/publication/MMR_DiversityBased_Reranking_SIGIR_1998.pdf">MMR（SIGIR 1998）</a> · <a href="https://aclanthology.org/D19-1261/">GoldEn Retriever（EMNLP 2019）</a></p>
 <ul><li><a href="https://arxiv.org/abs/2606.02461">AgentCL</a> 研究受控任务流中的经验复用和迁移；本研究需进一步处理专家身份、来源级证据与需求约束，并区分经验更新和专家库更新。仅有记忆检索或随机划分不足以构成差异。</li><li><a href="https://arxiv.org/abs/2608.01913">Long-Horizon Search Agents 轨迹诊断</a> 区分证据未召回与已召回但未利用，并指出搜索次数与质量不必同步；本研究应继承逐阶段诊断，再验证面向专家排序的证据状态及停止决策是否带来增益。</li><li><a href="https://arxiv.org/abs/2604.17337">AutoSearch</a> 探索自适应搜索深度；简单减少搜索步骤并非独有创新。应在相同候选、模型、预算和完整成本下比较，并评估专家与证据质量。</li><li><a href="https://arxiv.org/abs/2605.27881">Search Agent Training 的受控研究</a> 强调检索覆盖、奖励及训练协议的混杂；本研究须固定语料与索引，分开检验机制、训练与数据变化。以上近期工作按预印本引用，不在此声称已发表顶会。</li></ul>
 <h3>10.3 投稿前的证据门槛</h3>
