@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T07:31:43+08:00">2026-11-19 07:31（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T07:42:48+08:00">2026-11-19 07:42（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
 <ul class="research-challenges">
@@ -275,58 +275,53 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 </svg>
 </div>
 </div>
-<p id="implemented-agent-architecture">以现有固定流程 GroundedPipeline 为对照。</p>
+<p id="implemented-agent-architecture">对照为现有固定流程 GroundedPipeline。</p>
 <h3>4.2 按证据缺口调度</h3>
-<p>若未决证据的最乐观与最保守判定给出相同专家顺序和引用，则结束取证。其余状态回放备选动作，学习预测质量增益与延迟。用独立验证集校准停止阈值。</p>
-<p id="expert-action-routing-prior-work">对照固定轮询、固定核验深度、分差调度及有界剪枝。<a href="experiments.html#cof-bounded-adjustment">有界剪枝实验</a> · <a href="https://research.ibm.com/publications/optimal-aggregation-algorithms-for-middleware">Top-K 阈值算法</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/blob/66d249a/benchmarks/litsearch-source-confirmation/README.md#route-verification-depth-from-the-dense-gap">核验深度实验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/blob/fbb576d/benchmarks/cof-live-certified-batching/README.md#defer-rechecks-until-they-can-change-the-output">按输出影响复核</a></p>
+<p>未决证据的判定上下界给出相同的专家顺序与引用时停止。否则，按预期质量增益和耗时选择下一步动作，在独立验证集校准停止阈值。</p>
+<p id="expert-action-routing-prior-work"><a href="experiments.html#cof-bounded-adjustment">已有剪枝对照</a></p>
 <h3 id="demand-taxonomy">4.3 企业需求理解</h3>
-<p>提取任务类型、技术场景和硬约束。含排除项或多主体时，先定位各主体的任务片段，再归一化约束。</p>
-<details><summary>展开企业需求类型</summary><div class="result-table-scroll"><table class="demand-taxonomy-table"><caption>表 4-1　企业技术需求的候选任务类型（允许多标签）</caption><thead><tr><th>需求类型</th><th>典型任务</th><th>专家匹配侧重点</th></tr></thead><tbody>
-<tr><td><strong>技术诊断与咨询</strong></td><td>失效分析、技术瓶颈定位</td><td>问题诊断经验及相关技术案例</td></tr>
-<tr><td><strong>关键技术研发</strong></td><td>研发新材料、核心算法或工艺</td><td>前沿方向、持续科研成果与项目经验</td></tr>
-<tr><td><strong>方案设计与优化</strong></td><td>设计技术路线、优化现有系统</td><td>应用研究、工程能力与跨领域经验</td></tr>
-<tr><td><strong>测试验证与评估</strong></td><td>性能测试、实验验证、可行性评价</td><td>实验方法、测试条件与验证能力</td></tr>
-<tr><td><strong>成果引进与转化</strong></td><td>寻找专利、技术原型或成熟成果</td><td>成果证据、技术成熟度及转化条件</td></tr>
-</tbody></table></div></details>
+<p>提取任务、场景和硬约束，多主体需求先区分约束归属。</p>
 <h3>4.4 专家证据索引与能力迁移</h3>
-<p>按「专家 → 能力 → 来源 → 原文」组织索引，保留角色与时间。跨来源对比 <a href="https://github.com/VectifyAI/PageIndex">PageIndex</a> 式导航与平面索引，单篇内以句级检索为起点。<a href="experiments.html#evidencebench-block-navigation">已有单篇分层实验的证据覆盖下降</a></p>
-<p id="expertise-transfer-protocol">直接经验不足时按可迁移的方法召回，核对专家个人贡献、原工况及目标约束，标明所需适配。数值约束先定位同对象、同指标、同工况的实测原句，再换算单位并比较。缺证或判定冲突时保留未决。<a href="https://github.com/LaiwenAI/expert-find-agent/tree/14402da/benchmarks/bilingual-numeric-passages-v1">实测证据对照</a></p>
+<p>索引按「专家 → 能力 → 来源 → 原文」组织。在跨来源取证上比较 PageIndex 式导航和平面索引，篇内采用句级检索。</p>
+<p id="expertise-transfer-protocol">直接经验不足时，按可迁移的方法召回专家，核对其个人贡献和方法适用条件，标明适配缺口。数值约束须由相同对象、指标和工况的原文实测支持。</p>
 <h3>4.5 在线／离线迭代</h3>
 <p>在线复用已核查的纠错，离线回放反馈更新策略。</p>
 <h2>5. 模型与关键对照（Models and Technologies）</h2>
-<div class="result-table-scroll"><table><thead><tr><th scope="col">组件</th><th scope="col">对照</th></tr></thead><tbody>
-<tr><th scope="row">Decision Model</th><td>以轻量 MLP 为起点，对比规则、冻结开源 Qwen 与 LoRA。动作监督稳定后评估离线强化学习。<a href="experiments.html#hotpot-qwen-lora">现有 LoRA 与 MLP 对照</a></td></tr>
-<tr><th scope="row">检索模型</th><td>比较 Qwen3-Embedding 与 BGE-M3 的冻结和微调版本，加入开源重排对照。</td></tr>
-<tr><th scope="row">蒸馏</th><td>用开源教师离线生成监督，比较同规模学生有无蒸馏的表现。</td></tr>
-</tbody></table></div>
-<h2>6. 预期贡献（Expected Contributions）</h2>
 <ul>
-<li><strong>主贡献。</strong>首查即高效、低成本的证据检索智能体。</li>
-<li><strong>评测贡献。</strong>可控需求合成与证据归属指标。</li>
-<li><strong>次要贡献。</strong>在线纠错与离线策略更新。</li>
+<li><strong>Decision Model。</strong>轻量 MLP 对照规则、冻结 Qwen 和 LoRA。动作监督稳定后评估离线强化学习。</li>
+<li><strong>检索。</strong>对照冻结与微调的 Qwen3-Embedding、BGE-M3，以及开源重排。</li>
+<li><strong>蒸馏。</strong>用开源教师离线生成监督，对比同规模学生有无蒸馏的表现。</li>
 </ul>
+<h2>6. 预期贡献（Expected Contributions）</h2>
+<p>主贡献是首查即高效、低成本的证据检索智能体。配套贡献是可控需求合成与可归属证据指标，次要贡献是可独立验证的在线／离线迭代。</p>
 <h2>7. 实验设计与评价（Experiments and Evaluation）</h2>
 <h3>7.1 数据与标注</h3>
-<p>从真实需求构造双语、单约束变更及跨来源配对，与等量普通扩写对照。按企业、父需求及近重复组切分，测试集双人盲审与仲裁。</p>
-<p id="judgment-coverage">公开基准：CoF／TREC Enterprise（排序）、MERIT（适配）、EvidenceBench／LitSearch（来源证据）、CRediT（贡献归属）。</p>
+<p>基于真实需求构造双语、单约束变更与跨来源配对，对照等量普通扩写。按企业、父需求和近重复组切分，测试集双人盲审并仲裁。</p>
+<p id="judgment-coverage">公开基准覆盖排序（CoF／TREC Enterprise）、适配（MERIT）、取证（EvidenceBench／LitSearch）和个人归属（CRediT）。</p>
 <h3 id="experiment-results">7.2 主实验</h3>
-<p>统一语料、硬件与负载，对照 BM25、精确稠密、混合重排和固定取证。校准与测试按查询来源隔离。</p>
+<p>统一语料、硬件和负载，对照 BM25、稠密召回、混合重排、固定核验深度及分差调度。校准与测试按来源隔离。</p>
 <ul>
-<li><strong>等质量与风险。</strong>预设非劣界和缺证误放上限，比较端到端 P95、吞吐及每次成功查询成本。回退纳入计时，训练与建索引成本单列。</li>
-<li><strong>等预算。</strong>比较专家 P@K、证据归属 P@K 和硬约束误放率。归属指标仅计入专家匹配且关键约束有可归属原文支持的推荐，直接适配和能力迁移分别报告。</li>
+<li><strong>等质量与风险。</strong>在预设非劣界及误放上限内，比端到端 P95、吞吐和每次成功查询成本。在线计入回退，训练与建索引成本单列。</li>
+<li><strong>等预算。</strong>比专家 P@K、证据归属 P@K 和硬约束误放率。证据归属 P@K 只计有原文支持且可归属于该专家的正确推荐，直接适配与能力迁移分开报告。</li>
 </ul>
 <h3 id="experiment-comparison-chart">7.3 消融与稳健性</h3>
-<p id="experiment-ablation-results"><span id="experiment-grounding">消融索引、编码器、决策状态及回退。</span>用双语、约束变更及证据遮蔽测漏召、误放与早停，并盲审各策略返回的未标注替代来源。</p>
+<p id="experiment-ablation-results"><span id="experiment-grounding">消融索引、编码器、决策状态和回退。</span>用双语、约束变更与证据遮蔽检验漏召、误放和错误早停，盲审替代来源。</p>
 <h3 id="experiment-continual-results">7.4 迭代实验</h3>
-<p>等反馈预算对比冻结、仅在线、仅离线和联合更新，测新任务收益、旧任务退化及更新成本。</p>
+<p>等反馈预算下对照冻结、仅在线、仅离线和联合更新，测新任务收益、旧任务退化及更新成本。</p>
 <h2>8. 实施顺序（Implementation Plan）</h2>
-<p>冻结基准与评测协议 → 验证初始框架 → 独立评估迭代 → 发布代码、可公开数据和基准。</p>
+<p>冻结评测 → 验证初始框架 → 评估迭代 → 开源方法、合成与评测代码及可公开数据。</p>
 <h2>9. 参考文献（References）</h2>
-<details><summary>展开参考文献</summary><ol class="refs"><li>Balog, K., Azzopardi, L., &amp; de Rijke, M. (2006). <a class="reference-title" href="https://doi.org/10.1145/1148170.1148181" target="_blank" rel="noopener noreferrer">Formal Models for Expert Finding in Enterprise Corpora. SIGIR</a>.</li><li>Jin, B., et al. (2025). <a class="reference-title" href="https://arxiv.org/abs/2503.09516" target="_blank" rel="noopener noreferrer">Search-R1: Training LLMs to Reason and Leverage Search Engines with Reinforcement Learning</a>.</li><li>Song, Y., et al. (2026). <a class="reference-title" href="https://proceedings.mlr.press/v306/song26c.html" target="_blank" rel="noopener noreferrer">Expanding the Capabilities of Reinforcement Learning via Text Feedback</a>.</li><li>Shenfeld, I., et al. (2026). <a class="reference-title" href="https://arxiv.org/abs/2601.19897" target="_blank" rel="noopener noreferrer">Self-Distillation Enables Continual Learning</a>.</li><li>Rafailov, R., et al. (2023). <a class="reference-title" href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener noreferrer">Direct Preference Optimization: Your Language Model is Secretly a Reward Model</a>.</li><li>Shao, Z., et al. (2024). <a class="reference-title" href="https://arxiv.org/abs/2402.03300" target="_blank" rel="noopener noreferrer">DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models</a>.</li><li>Ong, I., et al. (2024). <a class="reference-title" href="https://arxiv.org/abs/2406.18665" target="_blank" rel="noopener noreferrer">RouteLLM: Learning to Route LLMs from Preference Data</a>.</li><li>Luo, X., et al. (2025). <a class="reference-title" href="https://arxiv.org/abs/2508.03680" target="_blank" rel="noopener noreferrer">Agent Lightning: Train ANY AI Agents with Reinforcement Learning</a>.</li><li>Chen, J., et al. (2024). <a class="reference-title" href="https://arxiv.org/abs/2402.03216" target="_blank" rel="noopener noreferrer">BGE M3-Embedding: Multi-Lingual, Multi-Functionality, Multi-Granularity Text Embeddings</a>.</li><li>Qwen Team. (2025). <a class="reference-title" href="https://arxiv.org/abs/2506.05176" target="_blank" rel="noopener noreferrer">Qwen3 Embedding: Advancing Text Embedding and Reranking Through Foundation Models</a>.</li><li>VectifyAI. <a class="reference-title" href="https://github.com/VectifyAI/PageIndex" target="_blank" rel="noopener noreferrer">PageIndex</a>.</li><li>Qwen Team. <a class="reference-title" href="https://huggingface.co/Qwen" target="_blank" rel="noopener noreferrer">Qwen3 / Qwen3.5 Model Cards</a>.</li><li>BAAI. <a class="reference-title" href="https://huggingface.co/BAAI/bge-reranker-v2-m3" target="_blank" rel="noopener noreferrer">bge-reranker-v2-m3</a>.</li><li>Rodrigues, N. S., Mariano, A. M., &amp; Ralha, C. G. (2024). <a class="reference-title" href="https://doi.org/10.1007/s00799-024-00398-1" target="_blank" rel="noopener noreferrer">Author name disambiguation literature review with consolidated meta-analytic approach</a>.</li><li>Daud, A., Li, J., Zhou, L., &amp; Muhammad, F. (2010). <a class="reference-title" href="https://doi.org/10.1016/j.knosys.2010.04.008" target="_blank" rel="noopener noreferrer">Temporal expert finding through generalized time topic modeling</a>.</li><li>Wallat, J., Heuss, M., de Rijke, M., &amp; Anand, A. (2025). <a class="reference-title" href="https://arxiv.org/abs/2412.18004" target="_blank" rel="noopener noreferrer">Correctness is not Faithfulness in Retrieval Augmented Generation Attributions</a>.</li><li>Tang, Z., &amp; Yang, G. H. (2022). <a class="reference-title" href="https://doi.org/10.1145/3497875" target="_blank" rel="noopener noreferrer">A Re-classification of Information Seeking Tasks and Their Computational Solutions</a>. ACM Transactions on Information Systems.</li><li>Karlsruhe Institute of Technology. <a class="reference-title" href="https://www.techtransfer.kit.edu/english/342.php" target="_blank" rel="noopener noreferrer">Checklist: Well Prepared for Technology Transfer</a>.</li><li><a href="https://papers.neurips.cc/paper_files/paper/2023/hash/78f9c04bdcb06f1ada3902912d8b64ba-Abstract-Datasets_and_Benchmarks.html" target="_blank" rel="noopener noreferrer">DORIS-MAE: Scientific Document Retrieval using Multi-level Aspect-based Queries (NeurIPS 2023)</a></li><li><a href="https://aclanthology.org/2024.emnlp-main.840/" target="_blank" rel="noopener noreferrer">LitSearch: A Retrieval Benchmark for Scientific Literature Search (EMNLP 2024)</a></li><li><a href="https://aclanthology.org/2024.naacl-long.389/" target="_blank" rel="noopener noreferrer">Adaptive-RAG: Learning to Adapt Retrieval-Augmented Large Language Models through Question Complexity (NAACL 2024)</a></li><li><a href="https://proceedings.iclr.cc/paper_files/paper/2024/hash/25f7be9694d7b32d5cc670927b8091e1-Abstract-Conference.html" target="_blank" rel="noopener noreferrer">Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection (ICLR 2024)</a></li><li><a href="https://proceedings.iclr.cc/paper_files/paper/2026/hash/c6af791af7ef0f3e02bccef011211ca5-Abstract-Conference.html" target="_blank" rel="noopener noreferrer">Off-Policy Evaluation for Ranking Policies under Deterministic Logging Policies (ICLR 2026)</a></li><li><a href="https://doi.org/10.1007/s10844-025-01004-9" target="_blank" rel="noopener noreferrer">Leveraging knowledge graphs and LLMs for content-based reviewer assignment (2025)</a></li></ol></details>
+<details><summary>展开核心参考</summary><ul class="refs">
+<li><a href="https://doi.org/10.1145/1148170.1148181">Balog et al. · Formal Models for Expert Finding</a></li>
+<li><a href="https://research.ibm.com/publications/optimal-aggregation-algorithms-for-middleware">Fagin et al. · Optimal Aggregation Algorithms for Middleware</a></li>
+<li><a href="https://aclanthology.org/2024.naacl-long.389/">Jeong et al. · Adaptive-RAG</a></li>
+<li><a href="https://proceedings.iclr.cc/paper_files/paper/2024/hash/25f7be9694d7b32d5cc670927b8091e1-Abstract-Conference.html">Asai et al. · Self-RAG</a></li>
+<li><a href="https://github.com/VectifyAI/PageIndex">VectifyAI · PageIndex</a></li>
+</ul></details>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p id="expert-evidence-precedent"><strong>方法创新。</strong>检验基于支持来源数的停止规则能否推广到多项硬约束。在同一候选池上，比固定深度和分差调度少取证，并以盲审验证排序、个人归属及缺证或冲突时的误放率。<a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a></p>
-<p><strong>SIGIR／The Web Conference 投稿门槛。</strong>相对最快的合格固定策略，在公开基准和未经预切分的企业盲审需求上复现延迟或成本收益。合成训练须在新专家、新来源和新措辞上复现收益。</p>
+<p id="expert-evidence-precedent"><strong>创新点。</strong>把有界停止从排序扩展到专家归属、硬约束和引用同时稳定。</p>
+<p><strong>SIGIR／The Web Conference 投稿门槛。</strong>相对最快的合格固定策略，在公开基准和未经预切分的企业盲审需求上复现首查收益。合成训练收益须在新专家、新来源和新措辞上复现。</p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>
