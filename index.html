@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T04:06:20+08:00">2026-11-19 04:06（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T04:30:45+08:00">2026-11-19 04:30（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
 <ul class="research-challenges">
@@ -290,6 +290,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 </tbody></table></div>
 <h3>4.4 专家证据索引与能力迁移</h3>
 <p>索引按「专家 → 能力 → 来源 → 原文」组织，保留角色与时间。以 <a href="https://github.com/VectifyAI/PageIndex">PageIndex</a> 式导航处理跨来源关系，单来源内用平面句级检索。</p>
+<p>跨来源补证先核对每个来源与需求的匹配，再按稳定身份拼接贡献证据。证据链缺一环时标未决。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/fc88019a882444c7c13dcad4054357aae8298431/benchmarks/plos-credit-cross-source-v1/README.md#unavailable-source-audit">缺源实验</a></p>
 <p id="expertise-transfer-protocol">直接经验不足时按已验证的方法机制召回，核对原工况、目标约束和所需适配。</p>
 <h3>4.5 在线／离线迭代</h3>
 <p>在线复用经核查的纠错，离线回放反馈更新策略。记录候选曝光，单独版本化索引更新。</p>
@@ -322,7 +323,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <h3 id="experiment-continual-results">7.4 迭代实验</h3>
 <p>固定起始索引与反馈预算，对照冻结、仅在线、仅离线和联合更新，测新任务收益、旧任务遗忘及更新成本。</p>
 <h3 id="experiment-ablation-results">7.5 消融</h3>
-<p id="experiment-grounding">逐一替换索引、编码器、决策器与回退策略。用双语等价、硬约束反事实和证据遮蔽定位漏召、误放与过早停止。</p>
+<p id="experiment-grounding">逐一替换索引、编码器、决策器与回退策略。用双语等价、硬约束反事实、证据遮蔽和整篇来源撤除，定位漏召、误放与过早停止。</p>
 <h2>8. 实施顺序（Implementation Plan）</h2>
 <ol>
 <li>冻结数据与索引，完成企业盲审及公开强基线。</li>
@@ -334,7 +335,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
 <p id="expert-evidence-precedent">继承指令变更评测，增加同一变更下专家改判与原判保持的配对检查。方法创新取决于逐专家、逐约束的证据状态能否在同预算下改善取证。<a href="https://aclanthology.org/2025.naacl-long.597/">FollowIR</a> · <a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a> · <a href="https://aclanthology.org/2026.emnlp-main.2227/">MERIT</a> · <a href="https://aclanthology.org/2026.acl-long.2035/">RATE</a> · <a href="https://proceedings.neurips.cc/paper_files/paper/2024/hash/724be4472168f31ba1c9ac630f15dec8-Abstract-Conference.html">前缀缓存</a></p>
-<p>SIGIR 和 The Web Conference 是候选方向。当前收益来自受控回放。投稿前需在独立措辞、新来源和企业盲审中，相对强基线复现端到端 P95 或成本收益，维持证据完整性，并逐请求核对新增硬约束误放。</p>
+<p>SIGIR 和 The Web Conference 是候选方向。投稿前需在独立措辞、新来源和企业盲审中，相对强基线复现端到端 P95 或成本收益。分别验证完整证据下的匹配、缺源时的弃权，并逐请求核对新增误放。</p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>
