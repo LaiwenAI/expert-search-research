@@ -163,10 +163,6 @@ pre{background:var(--code);border:1px solid #e1e6ea;border-radius:6px;padding:15
 <pre><code>from scrapy import Selector
 
 sel = Selector(text=html)
-name = sel.xpath(
-    "//main//h1[1]/normalize-space()"
-).get()  # 实际使用时应采用下面更可靠的形式
-
 name = sel.xpath("normalize-space((//main//h1)[1])").get()
 emails = sel.xpath(
     "//a[starts-with(@href, 'mailto:')]/@href"
