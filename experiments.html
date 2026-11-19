@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-20T01:59:07+08:00">2026-11-20 01:59（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-20T02:33:01+08:00">2026-11-20 02:33（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -231,6 +231,8 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>相对 BF16 回退，P95 提速倍数的配对 95% 区间为 1.01–2.72。三条路线的参考输出一致。两份解析模型均常驻，计时未含建索引、服务排队或网络。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/69136a73684f900581e241a817544e127f8d674d/benchmarks/enterprise-cross-precision-search-v1">完整实验与复现</a></p>
 <h3 id="enterprise-cross-precision-load">同负载下的首查排队与完成时延</h3>
 <p>复用同一企业开发集，在单 GPU 回环 HTTP 服务上以四条固定到达序列逐条比较。按需双精度复核使客户端 P95 降低 48.1%–57.2%，320 对响应一致。在约 3 请求／秒的两组测试中，P95 分别从 16.02 降到 6.85 秒、从 9.74 降到 5.04 秒。两条路线在最后一次到达后均有积压，持续服务容量仍待测定。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/fab3031c56846fefe6fa16b588e40bbade328d36/benchmarks/enterprise-cross-precision-load-v1">完整负载实验</a></p>
+<h3 id="enterprise-prefix-load">共享前缀与单工作进程排队</h3>
+<p>80 条企业开发需求的完整首查 P95 从 1,181 降至 1,137 ms，资格、排序和引用一致。两组约 3 请求／秒的回环负载下，共享前缀维持 160 条逐字节相同的响应，客户端 P95 从 6.78／5.04 降至 6.56／4.94 秒。按长度优先的路径同样保持输出，P95 基本持平；第一组最长四分之一请求的中位延迟增加 195 ms。结论适用于重复开发集和单工作进程。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c461741c7db186456602b391d4f47dfff10a9edc/benchmarks/enterprise-prefix-fork-v1">顺序首查</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/8273b70598822a8af6c1e716335e8c7d348d7042/benchmarks/enterprise-prefix-schedule-v1">负载对照</a></p>
 <h3 id="enterprise-multi-criterion">企业多条件的核验、证据范围与补召回</h3>
 <p>80 条需求上，按缺口核验把核验阶段 P95 从 176.2 降至 147.4 ms，重现两轮完整核验输出。25 条多条件需求上，增加来源与窗口多核验 2,934 次，支持项从 46 增至 56，完整支持仍为 3 位专家；分条件融合增至 4 位，支持需求始终为 2 条。19 条私有盲审尚无人工判断。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/157a6e87a345c96045c049304eb8f29fa53ba626/benchmarks/enterprise-gap-verification-v1">缺口核验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/9ee8e58517509827babc31b19cea432ca5a741a7/benchmarks/enterprise-evidence-extent-v1">证据范围</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c170622e2291813fd6f768f089f780e307620730/benchmarks/enterprise-criterion-recall-v1">分条件召回</a></p>
 <h3 id="scifact-verifier-scope">公开核验、语种差异与领域微调</h3>
@@ -267,6 +269,8 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </tbody>
 </table></div>
 <p>尾部排除句下，已有正确来源且正确职责进入前两位的请求有 51／41 条，职责门控全部拦截。直接绕过该门控虽找回 40／31 条，也误收 4／3 条目录外职责。后续应验证能识别职责主体和句段范围的解析方法，并与固定门控对照。该对照只评价出版方声明的个人职责。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/59cf7d88ed49aa77a33867c11115e6677376bdba/benchmarks/plos-open-role-scope-v1">分阶段计数与独立措辞复测</a></p>
+<h3 id="open-source-competition">开放语料中的来源确认</h3>
+<p>固定四候选，159 篇结构化 PLOS 语料的 24 条留出查询上，正文回退将摘录正确匹配由 12 提至 19，关键词由 11 提至 15；按同一作者的两项职责筛选后，摘录再增 1 条。197 篇旧语料迁移中，关键词的正文分差将正确来源从 56 降至 48／72、缺源误收从 11 降至 0／72。P95 从 7.35 增至 7.55 ms，为检索与来源确认的组件耗时。前者核对本人声明，后者核对来源身份。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/811cf35fe0ca3a1ac2990c2eaf5ebd611e2b11c7/benchmarks/plos-open-person-postings-v1">结构化作者对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/79f5c9bc254ecda32fc9ee2cd0c6a970373965dd/benchmarks/plos-source-competition-v1">跨语料复测</a></p>
 <h3 id="cof-packed-verifier-load">共享权重的无填充核验</h3>
 <p>CoF KDD／SciRepEval 在单张 RTX 5090 上各回放 432 条请求，按每秒 12 条持续 36 秒。逐段观察时，填充基线的 P95 随排队上升；无填充路线分别为 138／182／129 ms 和 124／124／124 ms。四线程闭环完成速率提高 32.5%／29.8%，两种负载下共 1,411 条无填充响应复现原专家顺序与引用。测试含实时编码、全库检索、核验和等待，采用进程内回放。闭环速率限于本负载，引用一致性衡量实现对照。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/4a76bb6cee846295e7f9a84540e92fc607b8f80e/benchmarks/cof-ragged-sustained-v1">代码与完整结果</a></p>
 <h3 id="cof-profile-first">全量评分与画像筛选</h3>
