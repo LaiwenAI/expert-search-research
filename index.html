@@ -257,7 +257,7 @@ html[data-theme="dark"] .agent-map{--map-ink:#a9e1d2;--map-fill:#203834;--map-li
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T12:35:50+08:00">2026-11-19 12:35（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T14:02:29+08:00">2026-11-19 14:02（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -309,7 +309,7 @@ html[data-theme="dark"] .agent-map{--map-ink:#a9e1d2;--map-fill:#203834;--map-li
 <section class="agent-card" aria-labelledby="agent-query-title">
 <div class="agent-label">在线 · 接收需求</div>
 <h4 id="agent-query-title">初始化候选与搜索预算</h4>
-<p>抽取技术目标、硬约束和偏好，保留需求原句。全库召回专家与证据线索，并为本次查询设定时延和原文读取预算。</p>
+<p>抽取技术目标、硬约束和偏好，保留需求原句。全库召回专家，候选确定后再融合其来源的排名。设定时延和原文读取预算。</p>
 </section>
 </div>
 
@@ -374,11 +374,11 @@ html[data-theme="dark"] .agent-map{--map-ink:#a9e1d2;--map-fill:#203834;--map-li
 <p>将需求转为技术方向、硬约束、软偏好及可追溯的原文片段。区分现有工况、既往资质和未来交付。如果不同解释会改变推荐，则保留解释并核对其共同依据，必要时请求澄清。</p>
 
 <h3 id="expertise-transfer">4.3 多源证据索引与能力迁移（Evidence Indexing and Expertise Transfer，RQ2）</h3>
-<p>按「专家 → 能力 → 来源 → 原文」组织论文、专利和项目证据。保留平面精确检索，对照 PageIndex 式层次导航，比较跨来源定位的开销与关键证据召回率。</p>
+<p>按「专家 → 能力 → 来源 → 原文」组织论文、专利和项目证据。双路召回先确定候选，再计算候选来源的融合排名。篇内以平面浅检索为强基线，检验 PageIndex 式导航能否降低跨来源补证成本。</p>
 <p id="expertise-transfer-protocol">直接经验不足时，核对源领域的方法机制、专家个人贡献和目标场景的适配条件，标明待验证的差异。数值硬约束需有同对象、同指标、同工况的实测依据。</p>
 
 <h3>4.4 搜索决策与停止（Search Decisions and Stopping，RQ3）</h3>
-<p id="expert-action-routing-prior-work">比较每项动作可减少的误放、漏召或错引风险与新增成本，优先处理可能改变推荐的证据缺口。对可界定的分数使用排序和引用不变条件；对语义核验使用经校准的风险阈值。预算耗尽时输出已获支持的结论，并标明未决项。</p>
+<p id="expert-action-routing-prior-work">先对少量来源做批量核验，再按证据缺口选择补召回、定向取证或复核归属。轻量分数用于安排核验顺序。需求解析只在资格边界附近复算；排序和引用的不变条件限于候选与来源快照固定、证据假设明确的情形。预算耗尽时标明未决项。</p>
 
 <h3>4.5 在线与离线迭代（Online and Offline Improvement，RQ4–RQ5）</h3>
 <p>冻结初始框架后，在线复用经核查的纠错；离线将回放轨迹中的问题归因到需求理解、证据判断、排序或调度，再更新策略。在同等反馈预算下检验新任务收益、旧任务退化及更新成本。</p>
@@ -402,7 +402,7 @@ html[data-theme="dark"] .agent-map{--map-ink:#a9e1d2;--map-fill:#203834;--map-li
 <h2>7. 实验与评价（Evaluation）</h2>
 <h3 id="judgment-coverage">7.1 数据构造与标注（Benchmark Construction）</h3>
 <p>以授权的企业需求和教师画像为起点，构造单约束反事实、双语等义需求和跨来源证据组合，并与等量常规改写对照。按企业与近重复组隔离验证集和测试集，由两名审阅者独立标注专家适配、约束支持和个人贡献，分歧经仲裁。</p>
-<p>公开对照使用 CoF 和 TREC Enterprise 评价排名，MERIT 评价适配，QASPER、EvidenceBench 和 LitSearch 检验取证，CRediT 角色声明评估贡献归属。</p>
+<p>公开对照使用 CoF 和 TREC Enterprise 评价排名，MERIT 评价适配，QASPER、EvidenceBench 和 LitSearch 检验取证，CRediT 角色声明评估贡献归属。CoF 全库结果同步报告标注覆盖；MERIT 按目标论文和精确重复履历分组。</p>
 
 <h3 id="implemented-agent-architecture">7.2 强基线与消融（Baselines and Ablations）</h3>
 <p>全链路比较领域先验、BM25、稠密与混合检索及 GroundedPipeline；固定候选与核验器时，对照固定深度、固定批量、最短约束优先和自适应截断。统一语料、硬件、缓存条件与负载，超参数在验证集确定。</p>
@@ -412,7 +412,7 @@ html[data-theme="dark"] .agent-map{--map-ink:#a9e1d2;--map-fill:#203834;--map-li
 <thead><tr><th scope="col">实验</th><th scope="col">主要判据</th></tr></thead>
 <tbody>
 <tr id="experiment-results"><th scope="row">首查 · 等质量</th><td>预设质量非劣界、覆盖下限和误放上限；比较含回退的端到端 P95、吞吐和成功查询成本。</td></tr>
-<tr><th scope="row">首查 · 等预算</th><td>比较专家 P@K、硬约束误放率和证据归属 P@K，分别报告直接适配与迁移适配。</td></tr>
+<tr><th scope="row">首查 · 等预算</th><td>比较候选 Recall@K、专家 P@K、硬约束误放率和证据归属 P@K，分别报告直接适配与迁移适配。</td></tr>
 <tr id="experiment-comparison-chart"><th scope="row">机制消融</th><td id="experiment-ablation-results"><span id="experiment-grounding">分别替换索引、编码、决策和回退。</span>用人工约束定位解析误差，改变证据可见性检验核验与停止行为。</td></tr>
 <tr id="experiment-continual-results"><th scope="row">持续迭代</th><td>等反馈预算比较冻结、在线、离线与联合更新，衡量新任务收益、旧任务退化及更新成本。</td></tr>
 </tbody>
@@ -422,21 +422,23 @@ html[data-theme="dark"] .agent-map{--map-ink:#a9e1d2;--map-fill:#203834;--map-li
 <h3 id="key-results">7.3 关键实验结果（Preliminary Results）</h3>
 <figure class="research-roadmap latency-figure">
 <figcaption>图 2. 企业开发集首查 P95（秒）</figcaption>
-<p>80 条需求，52,667 条来源。三组只替换需求解析方式。</p>
+<p>80 条企业开发需求，52,667 条来源。四组共享同一检索及核验配置。</p>
 <ol class="latency-bars">
-<li><span>独立整批</span><div class="latency-track" aria-hidden="true"><i style="--bar:100%"></i></div><strong>5.47</strong></li>
+<li><span>独立整批</span><div class="latency-track" aria-hidden="true"><i style="--bar:100%"></i></div><strong>5.48</strong></li>
 <li><span>仅前缀缓存</span><div class="latency-track" aria-hidden="true"><i style="--bar:11.7%"></i></div><strong>0.64</strong></li>
-<li class="latency-guarded"><span>缓存＋整块复核</span><div class="latency-track" aria-hidden="true"><i style="--bar:62.7%"></i></div><strong>3.43</strong></li>
+<li><span>通用边界复算</span><div class="latency-track" aria-hidden="true"><i style="--bar:62.6%"></i></div><strong>3.43</strong></li>
+<li class="latency-guarded"><span>资格边界复算</span><div class="latency-track" aria-hidden="true"><i style="--bar:39.3%"></i></div><strong>2.15</strong></li>
 </ol>
-<p>整块复核降低 P95 <strong>37.4%</strong>，推荐顺序、引用与未决项 80／80 一致。仅缓存有 3 条需求的证据状态变化。 <a href="experiments.html#enterprise-first-query">首查实测</a></p>
+<p>资格边界复算较通用复算降低 P95 <strong>37.2%</strong>，在 80 条需求上均复现独立整批的推荐顺序、引用及未决状态。 <a href="experiments.html#enterprise-qualification-guard">首查实测</a></p>
 </figure>
 <div class="plan-table" tabindex="0" role="region" aria-label="公开数据集关键对照结果">
 <table class="study-table">
 <caption>表 3. 公开数据集对首查设计的约束</caption>
 <thead><tr><th scope="col">任务</th><th scope="col">实测结果</th><th scope="col">研究决策</th></tr></thead>
 <tbody>
-<tr><th scope="row">CoF 评审检索</th><td>约 10 请求／秒、四个请求工作线程时，延迟取证与最快固定批次同输出，P95 为 3.08 对 3.61 秒。</td><td>在相同缓存、批量和负载下比较调度。</td></tr>
-<tr><th scope="row">QASPER 篇内取证</th><td>固定重排 32 段与有界停止的完整证据率同为 69.9%，P95 分别为 132 和 234 毫秒。</td><td>将固定深度保留为篇内强基线。</td></tr>
+<tr><th scope="row">CoF 全库召回</th><td>双路召回的已标注正例 Recall@10 为 16.94%，纯稠密为 13.64%。延迟计算候选来源融合后，双路端到端 P95 由 172.7 降至 157.9 ms，122 条输出一致。 <a href="experiments.html#cof-deferred-union">对照</a></td><td>保留快速纯稠密对照。以更完整的候选标注复核排序差异。</td></tr>
+<tr><th scope="row">MERIT 取证门控</th><td>129 条配对中，向量首筛省去 38 次完整履历核验，但只完整保留 22／27 个含正例的组。 <a href="experiments.html#merit-recall-screen">对照</a></td><td>先用轻量分数排取证顺序，另测筛除的漏召。</td></tr>
+<tr><th scope="row">QASPER 篇内取证</th><td>48 个问题中，固定重排 16 与 32 段均找齐 34 题，P95 分别为 76.3 与 122.0 ms。 <a href="experiments.html#qasper-section-relation-graph">对照</a></td><td>以固定浅深度为强基线，重点检验跨来源导航。</td></tr>
 </tbody>
 </table></div>
 <p>首查结果衡量与参考系统的输出一致性。专家适配与证据归属精度需通过公开标注和企业盲审评价。 <a href="experiments.html#plan-evidence">实验依据与复现</a></p>
@@ -466,14 +468,15 @@ html[data-theme="dark"] .agent-map{--map-ink:#a9e1d2;--map-fill:#203834;--map-li
 </ul>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p id="expert-evidence-precedent">最接近的工作分别研究 Top-K 探测、按查询复杂度路由和联合选证。本研究的创新假设是：联合追踪专家归属与硬约束状态，可以用更少的取证达到同等推荐质量。 <a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a> · <a href="https://aclanthology.org/2025.acl-long.861/">SetR</a></p>
+<p id="expert-evidence-precedent">已有研究覆盖 Top-K 探测、自适应路由、联合选证和分层证据分配。本文拟验证的差异在于，把专家归属、硬约束和候选排序放入同一查询状态，据此决定还需查谁、读哪份证据和何时停止。已有结果支持局部提速，完整框架尚缺独立的质量与效率证据。 <a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a> · <a href="https://aclanthology.org/2025.acl-long.861/">SetR</a> · <a href="https://aclanthology.org/2026.emnlp-main.1348/">BEAR</a></p>
 <div class="plan-table" tabindex="0" role="region" aria-label="顶会投稿判据表">
 <table class="study-table">
 <caption>表 4. SIGIR／The Web Conference 的阶段判据</caption>
 <thead><tr><th scope="col">检验</th><th scope="col">证据与下一道判据</th></tr></thead>
 <tbody>
-<tr><th scope="row">首查效率</th><td>企业开发集已验证解析提速，CoF 上的共享取证改进相对最强调度仍有限。论文需在达到质量门槛后，超过同负载下最快的固定和自适应基线。 <a href="experiments.html#enterprise-first-query">首查实测</a> · <a href="experiments.html#cof-shared-frontier">调度对照</a></td></tr>
-<tr><th scope="row">方法增益</th><td>在公开任务和企业盲审中复核推荐与引用；用消融确定收益来自约束和归属联合决策。 <a href="experiments.html#plan-evidence">已有实验依据</a></td></tr>
+<tr><th scope="row">质量门槛</th><td>预先冻结候选召回、约束误放与归属判据，在公开标注和企业盲审中复核专家与原文证据。</td></tr>
+<tr><th scope="row">完整首查效率</th><td>在达到质量门槛后，比较同负载下最快的固定与自适应基线，报告真实回退、P95、吞吐及成功查询成本。</td></tr>
+<tr><th scope="row">创新归因</th><td>固定候选池、模型与预算，逐项移除约束状态和归属信息，检验联合决策是否带来可复现增益。 <a href="experiments.html#plan-evidence">实验依据</a></td></tr>
 </tbody>
 </table></div>
 </section>

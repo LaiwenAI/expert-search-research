@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T13:31:51+08:00">2026-11-19 13:31（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T14:02:29+08:00">2026-11-19 14:02（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -35,6 +35,8 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>仅为前五名附证据的 P95 为 125.3 ms，低于证据晋位的 215.5 ms，双引用覆盖率也由 56.23% 降至 43.28%。各组前五名中仅 12.62%–15.90% 的位置有原始标签，需扩充盲审才能比较全库匹配质量。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/6dedcb9b5289b6e136af2b661edd4ef63d3177a8/benchmarks/cof-global-candidate-audit-v1">实验代码与结果</a></p>
 <h3 id="cof-global-hybrid">等预算的稠密与关键词联合召回</h3>
 <p>在同一批 122 条 CoF KDD 查询上，全库召回 10 位候选，附证据时保留前五名顺序。双路各保留候选，使已标注正例 Recall@10 从稠密的 13.64% 升至 16.94%，新增 12 对、失去 4 对已标注正例。P@5 差值为 +0.66 个百分点，95% 区间为 −0.49 至 +1.80；含证据核验的 P95 从 123.8 ms 升至 170.4 ms。关键词对漏召有补充，评测仍受稀疏标注影响。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0db73d45a1c7bc56ad9f92ba82611b0cb34d2509/benchmarks/cof-global-hybrid-v1">五组对照与复现</a></p>
+<h3 id="cof-deferred-union">候选确定后的来源融合</h3>
+<p>同一 CoF KDD 面板上，先确定候选，再计算候选来源的精确全库名次。122 条请求的候选顺序、来源名单和最终引用全部复现；检索 P95 由 46.8 降至 32.4 ms，端到端由 172.7 降至 157.9 ms。纯稠密端到端为 125.9 ms。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/3ccfcc379444f14e0c7b82c469eb71738f0f62fd/benchmarks/cof-deferred-union-v1">实验代码与结果</a></p>
 <p><strong>分组索引的剪枝开销。</strong>在 73 条已探索的 CoF SIGIR 查询、189 位审稿人和 1,740 篇去重论文上，用冻结向量比较平面全量评分与每位专家最多 1、2、4 组的质心距离上界。三种布局在 Top-5、10、20 均复现全量最大来源分数的排序。以 Top-5 为例，分别评分约 100.0%、95.7%、76.6% 的原始来源，计入质心后，点积总量却达到平面的 110.9%、117.4%、119.9%。实验使用缓存向量，统计的是计算量，尚未测量延迟、企业匹配或来源支持。因此保留平面精确评分作为全库召回的强基线。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/cof_centroid_bound.py">复现实验</a></p>
 <p><strong>固定候选后的来源导航。</strong>同一批 73 条公开查询各固定 5 位稠密检索候选，每位取最多 3 篇来源。平面扫描平均评分 77.8 篇，用时 0.076 毫秒。四组上界剪枝平均评分 71.8 篇及 20.0 个质心，365 位候选的来源顺序全部一致，平均用时 0.133 毫秒。只读质心分数最高的一组平均用时 0.059 毫秒，保留了平面扫描 65.9% 的参考来源。这些数字来自缓存向量的单进程 CPU 评分，每条查询重复五次，未计入建树、查询编码、候选生成、原文读取和模型调用。参考来源按向量相似度定义，语义证据是否充分仍待人工验证。当前以平面扫描作为候选内证据选择基线。后续将检验原文读取昂贵或专家来源更多时，带回退的分组导航能否在完整成本上获益。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/cof_candidate_evidence_navigation.py">复现实验</a></p>
 
@@ -91,6 +93,8 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">前缀缓存＋整块复核</th><td>0.23 秒</td><td>3.43 秒</td><td>0／80</td><td>0／80</td></tr>
 </tbody></table></div>
 <p>整块复核使 P95 降低 37.4%，配对重采样的 P95 加速比 95% 区间为 1.15–3.57 倍。三组均有 34 条需求获得模型初步支持。测量使用预加载模型与索引，输出一致性以独立整批为参照，专家匹配精度仍需人工判定。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/a5b9a97c2f89341113bb1897397f4b0ad5d297cd/benchmarks/enterprise-first-query-v1">实验代码与结果</a></p>
+<h3 id="enterprise-qualification-guard">只在资格边界附近复算</h3>
+<p>同一企业开发集复测直接比较独立整批、仅缓存、通用边界复算和资格边界复算。新方法将复算从 56 批降为 25 批，端到端 P95 从通用边界的 3.43 降为 2.15 秒。相对独立整批，80 条需求的资格集合、推荐顺序、引用与未决状态均一致。协议以模型输出为参照，未使用人工盲审结果。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/001fe1cafe315ca73896f765f2b14b37b0d9e6ae/benchmarks/enterprise-qualification-guard-v1">实验代码与结果</a></p>
 <p id="cof-request-batching"><strong>单 GPU 并发到达下的微批检索。</strong>ws5 作业 39951 在一张 RTX 5090 上冻结完整 28 层开源查询编码器，关闭查询缓存。CoF SIGIR 和过滤后的 SciRepEval 各以三档到达率回放相同的 384 次请求序列，比较单条处理、积压时立即合批（最多 4 或 8 条）和最多等待 1 毫秒的 4 条微批。最高档实际到达率为 276.57 请求／秒。立即合批至多 8 条时，SIGIR 实际吞吐从 134.98 升至 273.59 请求／秒，P95 从 1,389.76 降至 44.87 毫秒；SciRepEval 从 128.47 升至 272.54 请求／秒，P95 从 1,526.85 降至 50.22 毫秒。低档实际到达率为 52.60 请求／秒时，两组的实测吞吐均约为 52.7 请求／秒，P95 分别由 23.13 降至 18.98 毫秒、由 24.22 降至 18.59 毫秒。</p>
 <p>最高档下，两组保持完全相同的专家顺序与引用的比例分别为 330／384 和 341／384；已标注软／硬 P@5 的请求加权变化分别为 +0.10／+0.10 与 −0.57／−0.47 个百分点。请求在有限查询池内重复抽样，指标差为描述性结果，SciRepEval 标签稀疏。计时含排队、编码、精确检索、SQLite 引用读取及序列化，采用预热的单进程模拟到达，不含网络和证据语义核验。把无等待微批纳入检索效率对照；需要稳定输出的路径保留单条基线，再检验批大小和边界复算能否兼顾吞吐与排序一致性。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/2f7a2185769c1444d3ea44eabf1b0e8fd6a754de/experiments/retrieval/cof_request_batching.py">并发压测代码</a></p>
 <p id="cof-loopback-http"><strong>带请求排队和引用交付的 HTTP 回放。</strong>ws5 作业 40094 在 RTX 5090 上用 64 个持久 HTTP/1.1 回环连接和单 GPU 工作线程，回放 SIGIR 与过滤后的 SciRepEval。每种并发条件发送相同的 384 次请求，串行响应逐字节复现了进程内基线。计划到达率为 276.57 请求／秒时，无等待微批最多合并 8 条，结果如下。</p>
