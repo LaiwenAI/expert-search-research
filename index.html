@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T10:30:00+08:00">2026-11-19 10:30（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T11:02:04+08:00">2026-11-19 11:02（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
 <ul class="research-challenges">
@@ -212,7 +212,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <p>建立可复现的专家检索方法与评测。</p>
 <h2>4. 研究内容与技术路线（Methodology）</h2>
 <h3 id="foundation-title">4.1 初始高效搜索框架</h3>
-<p>离线建索引，在线以一次精确稠密召回建立候选，再按需取证。</p>
+<p>离线索引专家与证据。首查从低成本候选生成起步，按需编码和核验。</p>
 <div class="figure architecture-figure" id="base-agent-architecture" style="scroll-margin-top:70px">
 <div class="fig-title">图 1. 按需推理路径中的证据状态与工具调用（拟议）</div>
 <div class="agent-diagram-scroll" tabindex="0" role="region" aria-label="专家检索智能体架构图，可横向滚动">
@@ -276,7 +276,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 </div>
 </div>
 <h3>4.2 按证据缺口调度</h3>
-<p id="expert-action-routing-prior-work">排名与引用可证不变时精确停止。其余查询按预期增益与耗时取证，核对跨来源的互补证据。</p>
+<p id="expert-action-routing-prior-work">已结构化的可信证据直接核对。其余按预期增益和成本取证；判定稳定且排名与引用可证不变时停止。</p>
 <h3 id="demand-taxonomy">4.3 企业需求理解</h3>
 <p>区分工况、既往资质与未来交付。歧义会改变推荐时保留多种解释，核对共同证据或请求澄清。</p>
 <h3>4.4 专家证据索引与能力迁移</h3>
@@ -305,7 +305,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <details><summary>评测设置</summary>
 <p id="judgment-coverage">公开评测：CoF、TREC Enterprise（排名），MERIT（适配），QASPER、EvidenceBench、LitSearch（取证），CRediT（归属）。</p>
 <p>双语、单约束、跨来源样本对照等量普通扩写。盲审分歧经仲裁。证据须由原文支持且归属正确。</p>
-<p id="implemented-agent-architecture">基线：BM25、稠密召回、混合重排、GroundedPipeline、最优固定深度、自适应截断。统一语料、硬件、缓存与负载，验证集选阈值和深度。</p>
+<p id="implemented-agent-architecture">基线：领域先验、BM25、稠密及混合检索、GroundedPipeline、固定批量、最短约束优先和自适应截断。统一语料与负载；取证固定候选，超参数在验证集确定。</p>
 <p>以人工约束定位解析误差，改变证据可见性和负载，盲审新专家及替代来源。单列训练和建索引成本。</p>
 </details>
 <h2>8. 实施与开源</h2>
@@ -314,6 +314,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <details><summary>展开核心参考</summary><ul class="refs">
 <li><a href="https://doi.org/10.1145/1148170.1148181">Balog et al. · Formal Models for Expert Finding</a></li>
 <li><a href="https://research.ibm.com/publications/optimal-aggregation-algorithms-for-middleware">Fagin et al. · Optimal Aggregation Algorithms for Middleware</a></li>
+<li><a href="https://doi.org/10.1145/564691.564731">Chang and Hwang · Minimal Probing for Top-K Queries</a></li>
 <li><a href="https://aclanthology.org/2024.naacl-long.389/">Jeong et al. · Adaptive-RAG</a></li>
 <li><a href="https://doi.org/10.1145/3626772.3657864">Meng et al. · Ranked List Truncation</a></li>
 <li><a href="https://aclanthology.org/2025.acl-long.861/">Lee et al. · Shifting from Ranking to Set Selection</a></li>
@@ -322,8 +323,8 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 </ul></details>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p id="expert-evidence-precedent"><strong>创新检验</strong>　联合调度需求消歧与跨来源取证，能否降低提供可靠专家证据的首查成本？</p>
-<p><strong>SIGIR／The Web Conference 投稿判据</strong>　公开基准与企业盲审均达到质量门槛，首查效率优于最强基线。 <a href="experiments.html#plan-evidence">研究依据</a></p>
+<p id="expert-evidence-precedent"><strong>创新检验</strong>　把跨来源取证、个人归属与引用顺序纳入同一决策，检验能否在质量达标时降低首查成本。</p>
+<p><strong>SIGIR／The Web Conference 投稿判据</strong>　公开基准与企业盲审均达到第 7 节质量门槛，且首查效率超过最强固定策略和自适应对照。 <a href="experiments.html#plan-evidence">研究依据</a></p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>

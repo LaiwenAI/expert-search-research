@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T09:51:41+08:00">2026-11-19 09:51（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T11:02:04+08:00">2026-11-19 11:02（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -23,6 +23,8 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">CoF 评审检索</th><td>同一并发配置下，延迟取证与最快固定批次策略同输出，P95 为 3.08 对 3.61 s（约 10 请求／秒）。</td><td>控制缓存和批策略，同时报告低负载与过载。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/70deba449b8ce5c314cf05a4a897f2f15ec51f10/benchmarks/cof-verification-microbatch-v1">并发实验</a></td></tr>
 <tr><th scope="row">TREC 专家与引用</th><td>在已判定来源池、理想核验条件下，最省检查的固定策略距理论下界约 1.0%–1.4%。</td><td>重点验证来源选择和真实核验成本。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7293064b0246180c231df42352f2f701fb472555/benchmarks/trec-check-lower-bound-v1">下界回放</a></td></tr>
 <tr><th scope="row">PLOS 作者归属</th><td>角色已知时 120 条全部返回正确排序与引用，自然语言最佳方案为 60 条。多解释的宽阈值在 28 条给出推荐的查询中观察到 0 次误放，另有 89 条未决。</td><td>分开测解析与归属，并联合报告推荐覆盖率、误放率和未决率。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/78151673214393f86334eefed9097bbbd0586548/benchmarks/plos-live-expert-bundles-v1">首查实测</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/3e384d80ae95612ecefb8f5caa279743c35860b0/benchmarks/plos-robust-role-bundles-v1">歧义对照</a></td></tr>
+<tr><th scope="row">SE-PEF 社区先验</th><td>同批 512 条查询的 Hit@5 为先验 38.09%、最佳文本 11.91%、加权融合 35.55%。</td><td>在同类公开任务中保留领域先验；答主名次与证据相关性分别评价。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/e8ba748eac03ebe3ad94471d1e9f7e0f5b947272/benchmarks/sepef-matched-prior-v1">复现</a></td></tr>
+<tr><th scope="row">PLOS 取证调度</th><td>同 108 条查询，固定批量 P95 为 19.81 ms，串行最短约束优先为 59.66 ms。固定批量返回的 171 条结果中有 95 条引用未完全获支持。</td><td>把固定批量作为强延迟对照，另查证据误判与批形状稳定性。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/03b7a5f20ce1d0f5525e4b590660403badb4820d/benchmarks/constraint-certificate-local-v1">复现</a></td></tr>
 <tr><th scope="row">企业需求</th><td>冻结 123 个候选需求组，尚无人工判定。原 20 条用于可行性验证。</td><td>复核企业归属和近重复，再按误放上限确定正式样本量。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b829a5152f25ef8b9f44c3a7f05f4c8a3af45469/benchmarks/enterprise-blind-panel-v1">样本审计</a></td></tr>
 </tbody></table></div>
 </section>
