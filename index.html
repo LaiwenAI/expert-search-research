@@ -207,89 +207,53 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 html[data-theme="dark"] .verifier-grid .error i{background:#e3a176}
 @media(max-width:580px){.verifier-grid{gap:8px;font-size:11px}.verifier-grid .metric-value{display:flex;flex-direction:column-reverse;align-items:stretch;gap:3px}}
 .agent-map {
-  --graph-ink:#175c55; --graph-surface:#edf7f3; --graph-line:#a8c8c0;
-  --graph-blue:#eaf2fa; --graph-gold:#fff0d7; --graph-stroke:#54857c;
-  margin:22px 0 28px; padding:clamp(12px,2.5vw,20px); border:1px solid var(--line);
-  border-radius:12px; background:var(--page); scroll-margin-top:70px; container-type:inline-size;
+  --diagram-teal:#275e57; --diagram-field:#eff7f4; --diagram-border:#8eb7ab;
+  --diagram-blue:#eaf1f8; --diagram-gold:#fff2de; --diagram-wire:#637a87;
+  container-type:inline-size; margin:22px 0 28px; padding:clamp(8px,2vw,17px);
+  border:1px solid var(--line); border-radius:10px; background:var(--page);
+  scroll-margin-top:70px;
 }
 html[data-theme="dark"] .agent-map {
-  --graph-ink:#a9e1d2; --graph-surface:#203834; --graph-line:#547f74;
-  --graph-blue:#263c52; --graph-gold:#4d3c24; --graph-stroke:#8cc2b4;
+  --diagram-teal:#a7dacb; --diagram-field:#203630; --diagram-border:#62897d;
+  --diagram-blue:#263e51; --diagram-gold:#493822; --diagram-wire:#a0b6c1;
 }
 .agent-map figcaption {
-  display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:4px 10px;
-  margin:0 0 14px; color:var(--ink); font-size:17px; font-weight:750;
+  display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline;
+  gap:4px 12px; margin:2px 3px 12px; font-size:16px; font-weight:750;
 }
-.agent-map figcaption span {color:var(--muted); font-size:12px; font-weight:500}
-.agent-defs {position:absolute; width:0; height:0; overflow:hidden}
-.agent-entry,.agent-run-grid {display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px}
-.agent-graph {
-  position:relative; min-width:0; display:flex; flex-direction:column; justify-content:center;
-  padding:9px 8px 5px; border:1px solid var(--line); border-radius:8px; background:var(--page);
+.agent-map figcaption span {font-size:12px; font-weight:500; color:var(--muted)}
+.agent-map .diagram {display:block; width:100%; height:auto}
+.agent-map .diagram-defs {position:absolute; width:0; height:0; overflow:hidden}
+.agent-map .diagram-narrow {display:none}
+.diagram-text {fill:var(--ink); dominant-baseline:central; font-size:13px; font-weight:650}
+.diagram-label {fill:var(--muted); font-size:11.5px; font-weight:600}
+.diagram-title {font-size:15px; font-weight:750}
+.diagram-zone-title {fill:var(--diagram-teal); font-size:16px; font-weight:750}
+.diagram-center {text-anchor:middle}
+.diagram-card {fill:var(--page); stroke:var(--line)}
+.diagram-zone {fill:var(--diagram-field); stroke:var(--diagram-border)}
+.diagram-node {fill:var(--soft); stroke:var(--line)}
+.diagram-key {fill:var(--diagram-blue); stroke:var(--line)}
+.diagram-pass {fill:var(--diagram-field); stroke:var(--diagram-border)}
+.diagram-warn {fill:var(--diagram-gold); stroke:var(--line)}
+.diagram-dashed {stroke-dasharray:5 4}
+.diagram-wire,.diagram-branch {
+  fill:none; stroke:var(--diagram-wire); stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round;
 }
-.agent-entry .agent-graph {background:var(--soft)}
-.agent-graph h5,.agent-runtime h4 {margin:0 0 4px; color:var(--ink); font-size:13px; line-height:1.4; font-weight:750}
-.agent-graph h5 {padding-inline:4px}
-.agent-graph svg {display:block; width:100%; max-width:350px; margin:auto; overflow:visible}
-.agent-graph svg text,.agent-follow svg text {fill:var(--ink); text-anchor:middle; dominant-baseline:central}
-.agent-graph svg text {font-size:14px; font-family:inherit; font-weight:650}
-.agent-graph svg .small {font-size:12.5px; font-weight:550; fill:var(--muted)}
-.agent-graph .box,.agent-follow .box {fill:var(--soft); stroke:var(--line); stroke-width:1.15}
-.agent-graph .accent {fill:var(--graph-surface); stroke:var(--graph-line)}
-.agent-graph .blue {fill:var(--graph-blue); stroke:var(--graph-line)}
-.agent-graph .pending {fill:var(--graph-gold); stroke:var(--graph-line)}
-.agent-graph .edge,.agent-follow .edge {
-  fill:none; stroke:var(--graph-stroke); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;
-  marker-end:url(#agent-arrowhead);
+.diagram-wire {marker-end:url(#agent-map-arrow)}
+.diagram-main {stroke-width:1.8}
+.diagram-return {stroke:var(--diagram-teal); marker-end:url(#agent-map-return)}
+.diagram-arrow {fill:var(--diagram-wire)}
+.diagram-return-arrow {fill:var(--diagram-teal)}
+@container (max-width:646px) {
+  .agent-map .diagram-wide {display:none}
+  .agent-map .diagram-narrow {display:block; max-width:420px; margin:auto}
 }
-.agent-graph .bus {fill:none; stroke:var(--graph-stroke); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round}
-.agent-arrowhead {fill:var(--graph-stroke)}
-.agent-flow {text-align:center; color:var(--graph-ink); font-size:11px; font-weight:750; line-height:1.3; margin:6px 0}
-.agent-flow svg {display:block; margin:2px auto 0; color:var(--graph-ink)}
-.agent-runtime {padding:11px; border:1px solid var(--graph-line); border-radius:10px; background:var(--graph-surface)}
-.agent-runtime h4 {margin:0 0 8px; padding-left:2px; color:var(--graph-ink)}
-.agent-run-grid {grid-template-columns:minmax(0,1fr) minmax(0,1.04fr) minmax(0,.82fr); grid-template-areas:"state policy output" "verify tools output"}
-.agent-state {grid-area:state} .agent-policy {grid-area:policy} .agent-tools {grid-area:tools}
-.agent-verify {grid-area:verify} .agent-output {grid-area:output}
-.agent-policy {border-color:var(--graph-stroke)}
-.agent-output {align-self:start; background:var(--soft)}
-.agent-entry .agent-graph:first-child::after,.agent-state::after,.agent-policy::after,
-.agent-policy::before,.agent-tools::after,.agent-verify::after {
-  position:absolute; color:var(--graph-ink); font-size:20px; font-weight:750; line-height:1;
+@media print {
+  .agent-map {break-inside:avoid; print-color-adjust:exact}
+  .agent-map .diagram-wide {display:block; max-height:182mm}
+  .agent-map .diagram-narrow {display:none}
 }
-.agent-entry .agent-graph:first-child::after,.agent-state::after,.agent-policy::before {
-  content:"→"; right:-21px; top:50%; transform:translateY(-50%);
-}
-.agent-policy::after {content:"↓"; left:50%; bottom:-21px; transform:translateX(-50%)}
-.agent-tools::after {content:"←"; left:-21px; top:50%; transform:translateY(-50%)}
-.agent-verify::after {content:"↑"; left:50%; top:-21px; transform:translateX(-50%)}
-.agent-legend {margin:7px 0 0; color:var(--graph-ink); font-size:11px; font-weight:650}
-.agent-follow {margin-top:10px; border-style:dashed; background:var(--soft)}
-.agent-follow svg {max-width:340px}
-.agent-mobile-rail {display:none}
-@container (max-width:680px) {
-  .agent-entry,.agent-run-grid {grid-template-columns:1fr; gap:19px}
-  .agent-run-grid {grid-template-areas:"state" "policy" "tools" "verify" "output"; padding-inline:12px}
-  .agent-entry .agent-graph:first-child::after,.agent-state::after,.agent-tools::after {
-    content:"↓"; left:50%; right:auto; top:auto; bottom:-19px; transform:translateX(-50%);
-  }
-  .agent-policy::before,.agent-verify::after {content:none}
-  .agent-policy::after {bottom:-19px}
-  .agent-mobile-rail {
-    display:block; grid-column:1; position:relative; width:10px; margin-block:50px;
-    border-block:1.5px solid var(--graph-stroke); pointer-events:none;
-  }
-  .agent-back-rail {grid-row:1/5; justify-self:start; left:-10px; border-left:1.5px solid var(--graph-stroke); border-radius:5px 0 0 5px}
-  .agent-stop-rail {grid-row:2/6; justify-self:end; right:-10px; border-right:1.5px dashed var(--graph-stroke); border-radius:0 5px 5px 0}
-  .agent-back-rail::after,.agent-stop-rail::after {
-    position:absolute; color:var(--graph-ink); font-size:12px; font-weight:750; line-height:1;
-  }
-  .agent-back-rail::after {content:"▸"; top:-7px; right:-1px}
-  .agent-stop-rail::after {content:"◂"; bottom:-5px; left:-1px}
-  .agent-output {margin-top:1px}
-  .agent-graph h5 {font-size:14px}
-}
-@media print {.agent-graph {break-inside:avoid}}
 </style><style id="reader-layout-fix">
 .reader-toolbar{position:fixed!important;inset:0 0 auto 0!important;width:100%!important;max-width:none!important;margin:0!important;min-height:44px!important;padding:4px max(18px,calc((100vw - 1220px)/2))!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;flex-wrap:nowrap!important;box-sizing:border-box!important;z-index:1000!important}
 .reader-brand{flex:0 1 auto!important;min-width:0!important;white-space:nowrap!important}
@@ -311,7 +275,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T15:11:22+08:00">2026-11-19 15:11（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T15:31:48+08:00">2026-11-19 15:31（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -352,128 +316,161 @@ html[data-theme="dark"] .agent-map {
 <h3 id="foundation-title">4.1 初始搜索框架（Initial Search Framework，RQ1–RQ3）</h3>
 <p>在无用户历史反馈的条件下，先召回候选专家，再为每位候选维护约束证据状态。检索智能体根据候选排名、证据缺口和剩余预算，决定是否补召回、定位原文、复核归属或停止。</p>
 <figure class="agent-map" id="base-agent-architecture" aria-labelledby="agent-map-title">
-  <figcaption id="agent-map-title">图 1. 首次查询的专家搜索 Agent <span>拟议架构 · 无需历史用户反馈</span></figcaption>
-  <svg class="agent-defs" aria-hidden="true">
-    <defs><marker id="agent-arrowhead" markerWidth="7" markerHeight="7" refX="6.2" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path class="agent-arrowhead" d="M0 0 L7 3.5 L0 7 Z"/></marker></defs>
+  <figcaption id="agent-map-title">图 1. 首次查询的专家搜索 Agent <span>拟议架构</span></figcaption>
+  <svg class="diagram-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="agent-map-arrow" markerWidth="7" markerHeight="7" refX="6.8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path class="diagram-arrow" d="M0 0 7 3.5 0 7Z"/></marker>
+      <marker id="agent-map-return" markerWidth="7" markerHeight="7" refX="6.8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path class="diagram-return-arrow" d="M0 0 7 3.5 0 7Z"/></marker>
+      <g id="agent-map-index">
+        <rect class="diagram-card" width="320" height="134" rx="9"/>
+        <text class="diagram-text diagram-title" x="13" y="18">离线构建 · 专家证据树</text>
+        <g class="diagram-center">
+          <path class="diagram-branch" d="M72 80H84M138 80H146V59M146 80V103"/>
+          <path class="diagram-wire" d="M146 59H155"/><path class="diagram-wire" d="M146 103H155"/><path class="diagram-wire" d="M208 59H218"/>
+          <path class="diagram-branch" d="M254 59H262V45M262 59V74"/>
+          <path class="diagram-wire" d="M262 45H272"/><path class="diagram-wire" d="M262 74H272"/>
+          <rect class="diagram-node" x="12" y="46" width="60" height="68" rx="5"/>
+          <text class="diagram-text" x="42" y="66">教师画像</text><text class="diagram-text diagram-label" x="42" y="84">论文 · 专利</text><text class="diagram-text diagram-label" x="42" y="101">项目</text>
+          <rect class="diagram-pass" x="84" y="66" width="54" height="28" rx="5"/><text class="diagram-text" x="111" y="80">专家</text>
+          <rect class="diagram-key" x="155" y="46" width="53" height="26" rx="5"/><text class="diagram-text" x="181.5" y="59">能力 A</text>
+          <rect class="diagram-key" x="155" y="90" width="53" height="26" rx="5"/><text class="diagram-text" x="181.5" y="103">能力 B</text>
+          <rect class="diagram-node" x="218" y="46" width="36" height="26" rx="5"/><text class="diagram-text" x="236" y="59">来源</text>
+          <rect class="diagram-node" x="272" y="34" width="38" height="22" rx="4"/><text class="diagram-text diagram-label" x="291" y="45">原文 1</text>
+          <rect class="diagram-node" x="272" y="63" width="38" height="22" rx="4"/><text class="diagram-text diagram-label" x="291" y="74">原文 2</text>
+        </g>
+      </g>
+      <g id="agent-map-recall">
+        <rect class="diagram-card" width="320" height="134" rx="9"/>
+        <text class="diagram-text diagram-title" x="13" y="18">需求与双路召回</text>
+        <g class="diagram-center">
+          <path class="diagram-wire" d="M106 80H116V57H127"/><path class="diagram-wire" d="M116 80V103H127"/><path class="diagram-wire" d="M200 57H212V80H226"/><path class="diagram-branch" d="M200 103H212V80"/>
+          <rect class="diagram-node" x="12" y="54" width="94" height="52" rx="6"/>
+          <text class="diagram-text" x="59" y="69">企业需求</text><text class="diagram-text diagram-label" x="59" y="90">技术目标 · 硬约束</text>
+          <rect class="diagram-key" x="127" y="44" width="73" height="26" rx="5"/><text class="diagram-text" x="163.5" y="57">关键词</text>
+          <rect class="diagram-key" x="127" y="90" width="73" height="26" rx="5"/><text class="diagram-text" x="163.5" y="103">向量</text>
+          <rect class="diagram-pass" x="226" y="54" width="81" height="52" rx="6"/>
+          <text class="diagram-text" x="266.5" y="69">候选融合</text><text class="diagram-text diagram-label" x="266.5" y="90">专家 · 来源</text>
+        </g>
+      </g>
+      <g id="agent-map-state">
+        <rect class="diagram-card" width="320" height="134" rx="9"/>
+        <text class="diagram-text diagram-title" x="13" y="18">候选 × 约束状态</text>
+        <g class="diagram-center">
+          <rect class="diagram-node" x="13" y="35" width="294" height="84" rx="5"/>
+          <rect class="diagram-pass" x="104" y="63" width="99" height="27"/>
+          <rect class="diagram-pass" x="203" y="63" width="104" height="27"/>
+          <rect class="diagram-pass" x="104" y="90" width="99" height="29"/>
+          <rect class="diagram-warn" x="203" y="90" width="104" height="29"/>
+          <path class="diagram-branch" opacity=".42" d="M13 63H104M13 90H104M104 35V63M203 35V63"/>
+          <text class="diagram-text diagram-label" x="58.5" y="49">候选</text><text class="diagram-text" x="153.5" y="49">工艺经验</text><text class="diagram-text" x="255" y="49">工况实测</text>
+          <text class="diagram-text" x="58.5" y="76.5">专家 A</text><text class="diagram-text" x="153.5" y="76.5">支持</text><text class="diagram-text" x="255" y="76.5">支持</text>
+          <text class="diagram-text" x="58.5" y="104.5">专家 B</text><text class="diagram-text" x="153.5" y="104.5">支持</text><text class="diagram-text" x="255" y="104.5">待证</text>
+        </g>
+      </g>
+      <g id="agent-map-policy">
+        <rect class="diagram-card" width="320" height="134" rx="9"/>
+        <text class="diagram-text diagram-title" x="13" y="18">开源 Decision Model</text>
+        <g class="diagram-center">
+          <path class="diagram-wire" d="M54 58V66H124V72"/><path class="diagram-wire" d="M160 58V72"/><path class="diagram-wire" d="M266 58V66H196V72"/>
+          <path class="diagram-wire" d="M160 99V106H87V111"/><path class="diagram-wire" d="M160 106H237V111"/>
+          <rect class="diagram-node" x="14" y="34" width="80" height="24" rx="5"/><text class="diagram-text" x="54" y="46">证据缺口</text>
+          <rect class="diagram-node" x="120" y="34" width="80" height="24" rx="5"/><text class="diagram-text" x="160" y="46">排名</text>
+          <rect class="diagram-node" x="226" y="34" width="80" height="24" rx="5"/><text class="diagram-text" x="266" y="46">剩余预算</text>
+          <rect class="diagram-pass" x="102" y="72" width="116" height="27" rx="5"/><text class="diagram-text" x="160" y="85.5">估计取证收益</text>
+          <rect class="diagram-key" x="36" y="111" width="102" height="23" rx="5"/><text class="diagram-text" x="87" y="122.5">继续</text>
+          <rect class="diagram-warn" x="186" y="111" width="102" height="23" rx="5"/><text class="diagram-text" x="237" y="122.5">停止</text>
+        </g>
+      </g>
+      <g id="agent-map-tools">
+        <rect class="diagram-card" width="320" height="134" rx="9"/>
+        <text class="diagram-text diagram-title" x="13" y="18">定向取证</text>
+        <g class="diagram-center">
+          <path class="diagram-wire" d="M57 87V94H126V103"/><path class="diagram-wire" d="M160 87V103"/><path class="diagram-wire" d="M263 87V94H194V103"/>
+          <rect class="diagram-node" x="12" y="40" width="90" height="47" rx="5"/>
+          <text class="diagram-text" x="57" y="54">补召回</text><text class="diagram-text diagram-label" x="57" y="73">补充候选</text>
+          <rect class="diagram-key" x="112" y="40" width="96" height="47" rx="5"/>
+          <text class="diagram-text" x="160" y="54">PageIndex 式</text><text class="diagram-text diagram-label" x="160" y="73">沿证据树定位</text>
+          <rect class="diagram-node" x="218" y="40" width="90" height="47" rx="5"/>
+          <text class="diagram-text" x="263" y="54">复核 / 澄清</text><text class="diagram-text diagram-label" x="263" y="73">归属 · 歧义</text>
+          <rect class="diagram-pass" x="102" y="103" width="116" height="23" rx="5"/><text class="diagram-text" x="160" y="114.5">小批候选证据</text>
+        </g>
+      </g>
+      <g id="agent-map-verify">
+        <rect class="diagram-card" width="320" height="134" rx="9"/>
+        <text class="diagram-text diagram-title" x="13" y="18">核验与状态更新</text>
+        <g class="diagram-center">
+          <path class="diagram-wire" d="M100 74H110V51H118"/><path class="diagram-wire" d="M110 74V97H118"/><path class="diagram-wire" d="M204 51H214V74H224"/><path class="diagram-branch" d="M204 97H214V74"/>
+          <rect class="diagram-node" x="12" y="51" width="88" height="46" rx="5"/>
+          <text class="diagram-text" x="56" y="66">原文短窗</text><text class="diagram-text diagram-label" x="56" y="85">必要时扩读</text>
+          <rect class="diagram-key" x="118" y="36" width="86" height="30" rx="5"/>
+          <text class="diagram-text" x="161" y="51">支持 / 反证</text>
+          <rect class="diagram-key" x="118" y="82" width="86" height="30" rx="5"/>
+          <text class="diagram-text" x="161" y="97">个人归属</text>
+          <rect class="diagram-pass" x="224" y="51" width="84" height="46" rx="5"/>
+          <text class="diagram-text" x="266" y="66">回写状态</text><text class="diagram-text diagram-label" x="266" y="85">证据·排名·预算</text>
+        </g>
+      </g>
+      <g id="agent-map-result">
+        <rect class="diagram-card" width="320" height="134" rx="9"/>
+        <text class="diagram-text diagram-title" x="13" y="18">停止并输出</text>
+        <g class="diagram-center">
+          <path class="diagram-wire" d="M160 0V29H76V37"/><path class="diagram-wire" d="M160 29H244V37"/>
+          <path class="diagram-wire" d="M76 67V91"/><path class="diagram-wire" d="M244 67V91"/>
+          <rect class="diagram-pass" x="12" y="37" width="128" height="30" rx="5"/><text class="diagram-text" x="76" y="52">质量达标</text>
+          <rect class="diagram-warn" x="180" y="37" width="128" height="30" rx="5"/><text class="diagram-text" x="244" y="52">预算耗尽</text>
+          <rect class="diagram-pass" x="12" y="91" width="128" height="30" rx="5"/><text class="diagram-text" x="76" y="106">Top-K · 原文引用</text>
+          <rect class="diagram-node" x="180" y="91" width="128" height="30" rx="5"/><text class="diagram-text" x="244" y="106">已有证据 · 未决约束</text>
+        </g>
+      </g>
+      <g id="agent-map-feedback">
+        <rect class="diagram-card diagram-dashed" width="320" height="108" rx="9"/>
+        <text class="diagram-text diagram-title" x="13" y="18">后续版本 · 在线 / 离线迭代</text>
+        <g class="diagram-center">
+          <path class="diagram-wire" d="M110 51H121V68H133"/><path class="diagram-wire" d="M207 68H225"/><path class="diagram-branch" d="M110 85H121V68"/>
+          <rect class="diagram-node" x="12" y="38" width="98" height="26" rx="5"/><text class="diagram-text" x="61" y="51">在线纠错</text>
+          <rect class="diagram-node" x="12" y="72" width="98" height="26" rx="5"/><text class="diagram-text" x="61" y="85">离线回放</text>
+          <rect class="diagram-pass" x="133" y="55" width="74" height="26" rx="5"/><text class="diagram-text" x="170" y="68">策略更新</text>
+          <rect class="diagram-key" x="225" y="55" width="82" height="26" rx="5"/><text class="diagram-text" x="266" y="68">独立评测</text>
+        </g>
+      </g>
+    </defs>
   </svg>
-  <div class="agent-entry">
-    <section class="agent-graph">
-      <h5>离线索引</h5>
-      <svg viewBox="0 0 320 125" role="img" aria-label="画像、论文、专利与项目汇入专家证据树，证据树分出能力、来源与原文。">
-        <path class="edge" d="M91 23H107"/><path class="edge" d="M91 52H107"/>
-        <path class="edge" d="M91 81H107"/><path class="edge" d="M91 110H107"/>
-        <path class="edge" d="M182 64H195V24H210"/><path class="edge" d="M261 37V49"/>
-        <path class="edge" d="M261 76V87"/>
-        <rect class="box" x="9" y="11" width="82" height="24" rx="5"/><text x="50" y="23">教师画像</text>
-        <rect class="box" x="9" y="40" width="82" height="24" rx="5"/><text x="50" y="52">论文</text>
-        <rect class="box" x="9" y="69" width="82" height="24" rx="5"/><text x="50" y="81">专利</text>
-        <rect class="box" x="9" y="98" width="82" height="24" rx="5"/><text x="50" y="110">项目</text>
-        <rect class="accent" x="108" y="10" width="74" height="112" rx="7"/>
-        <text x="145" y="55">专家 ID</text><text class="small" x="145" y="77">证据树</text>
-        <rect class="blue" x="211" y="11" width="100" height="26" rx="5"/><text x="261" y="24">能力节点</text>
-        <rect class="blue" x="211" y="50" width="100" height="26" rx="5"/><text x="261" y="63">来源节点</text>
-        <rect class="blue" x="211" y="88" width="100" height="26" rx="5"/><text x="261" y="101">原文坐标</text>
-      </svg>
-    </section>
-    <section class="agent-graph">
-      <h5>在线初始化</h5>
-      <svg viewBox="0 0 320 119" role="img" aria-label="企业需求拆成目标和硬约束，走关键词与向量召回，再融合候选和来源。">
-        <path class="edge" d="M96 64H111V33H126"/><path class="edge" d="M96 64H111V95H126"/>
-        <path class="edge" d="M207 33H217V64H231"/><path class="edge" d="M207 95H217V64H231"/>
-        <rect class="accent" x="5" y="34" width="91" height="60" rx="6"/>
-        <text x="50.5" y="53">企业需求</text><text class="small" x="50.5" y="76">目标 · 硬约束</text>
-        <rect class="box" x="127" y="19" width="80" height="28" rx="5"/><text x="167" y="33">关键词</text>
-        <rect class="box" x="127" y="81" width="80" height="28" rx="5"/><text x="167" y="95">向量</text>
-        <rect class="blue" x="232" y="34" width="83" height="60" rx="6"/>
-        <text x="273.5" y="53">候选融合</text><text class="small" x="273.5" y="76">来源优先级</text>
-      </svg>
-    </section>
-  </div>
-  <div class="agent-flow">候选 · 约束 · 预算
-    <svg width="18" height="15" viewBox="0 0 18 15" aria-hidden="true"><path d="M9 1v11m-4-4 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
-  </div>
 
-  <section class="agent-runtime" aria-labelledby="agent-runtime-title">
-    <h4 id="agent-runtime-title">首查 Agent · 在线决策回路</h4>
-    <div class="agent-run-grid">
-      <section class="agent-graph agent-state">
-        <h5>候选 × 约束状态</h5>
-        <svg viewBox="0 0 260 115" role="img" aria-label="两位候选专家的约束矩阵。专家甲两项获支持，专家乙的实测待核验。">
-          <rect class="box" x="2" y="8" width="256" height="102" rx="6"/>
-          <path class="bus" opacity=".48" d="M2 43H258M2 77H258M76 8V110M165 8V110"/>
-          <rect class="accent" x="78" y="45" width="85" height="30" rx="4"/>
-          <rect class="accent" x="167" y="45" width="89" height="30" rx="4"/>
-          <rect class="accent" x="78" y="79" width="85" height="29" rx="4"/>
-          <rect class="pending" x="167" y="79" width="89" height="29" rx="4"/>
-          <text class="small" x="39" y="25">候选</text><text x="120.5" y="25">工艺经验</text><text x="211" y="25">工况实测</text>
-          <text x="39" y="60">专家 A</text><text x="120.5" y="60">✓</text><text x="211" y="60">✓</text>
-          <text x="39" y="94">专家 B</text><text x="120.5" y="94">✓</text><text x="211" y="94">待证</text>
-        </svg>
-      </section>
-      <section class="agent-graph agent-policy">
-        <h5>开源 Decision Model</h5>
-        <svg viewBox="0 0 260 115" role="img" aria-label="用证据缺口、排名和预算选动作，分成继续核验和停止。">
-          <path class="edge" d="M44 30V42H75V48"/><path class="edge" d="M130 30V48"/>
-          <path class="edge" d="M218 30V42H185V48"/>
-          <path class="edge" d="M99 78V85H69V89"/><path class="edge" d="M161 78V85H192V89"/>
-          <rect class="box" x="3" y="5" width="82" height="25" rx="5"/><text x="44" y="17.5">证据缺口</text>
-          <rect class="box" x="91" y="5" width="78" height="25" rx="5"/><text x="130" y="17.5">Top-K</text>
-          <rect class="box" x="175" y="5" width="82" height="25" rx="5"/><text x="216" y="17.5">剩余预算</text>
-          <rect class="accent" x="65" y="49" width="130" height="29" rx="6"/><text x="130" y="63.5">收益 / 成本</text>
-          <rect class="blue" x="20" y="90" width="98" height="24" rx="5"/><text x="69" y="102">继续取证</text>
-          <rect class="pending" x="143" y="90" width="98" height="24" rx="5"/><text x="192" y="102">停止</text>
-        </svg>
-      </section>
-      <section class="agent-graph agent-tools">
-        <h5>工具调度</h5>
-        <svg viewBox="0 0 260 115" role="img" aria-label="通过补召回、原文定位、归属复核或澄清获取证据，然后小批汇合。">
-          <path class="edge" d="M45 36V54H107V81"/><path class="edge" d="M130 36V81"/><path class="edge" d="M214 36V54H151V81"/>
-          <rect class="box" x="4" y="10" width="82" height="26" rx="5"/><text x="45" y="23">补召回</text>
-          <rect class="box" x="90" y="10" width="80" height="26" rx="5"/><text x="130" y="23">定向读原文</text>
-          <rect class="box" x="174" y="10" width="82" height="26" rx="5"/><text x="215" y="23">复核 / 澄清</text>
-          <rect class="blue" x="61" y="82" width="138" height="26" rx="6"/><text x="130" y="95">小批量证据</text>
-        </svg>
-      </section>
-      <section class="agent-graph agent-verify">
-        <h5>证据核验与回写</h5>
-        <svg viewBox="0 0 260 115" role="img" aria-label="原文分别做支持、反证与个人归属核验，回写证据、排名和预算。">
-          <path class="edge" d="M129 29V39H69V46"/><path class="edge" d="M129 29V39H192V46"/>
-          <path class="edge" d="M69 74V84H110V90"/><path class="edge" d="M192 74V84H151V90"/>
-          <rect class="box" x="75" y="3" width="110" height="26" rx="6"/><text x="130" y="16">原文 / 声明</text>
-          <rect class="blue" x="15" y="47" width="108" height="27" rx="5"/><text x="69" y="60.5">支持 / 反证</text>
-          <rect class="blue" x="137" y="47" width="110" height="27" rx="5"/><text x="192" y="60.5">个人归属</text>
-          <rect class="accent" x="37" y="91" width="186" height="24" rx="5"/><text x="130" y="103">证据 · 排名 · 预算</text>
-        </svg>
-      </section>
-      <section class="agent-graph agent-output">
-        <h5>停止与输出</h5>
-        <svg viewBox="0 0 222 195" role="img" aria-label="质量达标时返回前 K 位和原文，预算耗尽时返回已有支持并附未决项。">
-          <path class="edge" d="M111 42V55H54V67"/><path class="edge" d="M111 42V55H168V67"/>
-          <path class="edge" d="M54 96V115"/><path class="edge" d="M168 96V115"/>
-          <rect class="pending" x="64" y="14" width="94" height="28" rx="6"/><text x="111" y="28">停止条件</text>
-          <rect class="accent" x="3" y="68" width="101" height="28" rx="5"/><text x="53.5" y="82">质量达标</text>
-          <rect class="box" x="118" y="68" width="101" height="28" rx="5"/><text x="168.5" y="82">预算耗尽</text>
-          <rect class="accent" x="3" y="116" width="101" height="51" rx="6"/>
-          <text x="53.5" y="132">Top-K</text><text class="small" x="53.5" y="151">原文引用</text>
-          <rect class="box" x="118" y="116" width="101" height="51" rx="6"/>
-          <text x="168.5" y="132">已有支持</text><text class="small" x="168.5" y="151">未决约束</text>
-        </svg>
-      </section>
-      <span class="agent-mobile-rail agent-back-rail" aria-hidden="true"></span>
-      <span class="agent-mobile-rail agent-stop-rail" aria-hidden="true"></span>
-    </div>
-    <div class="agent-legend">↶ 证据回写</div>
-  </section>
+  <svg class="diagram diagram-wide" viewBox="0 0 740 835" role="img" aria-label="拟议的首次查询框架。离线专家证据树提供检索来源；在线双路召回初始化约束状态。决策模型可继续取证和核验，再回写状态，也可直接停止并输出。在线纠错和离线回放供后续版本迭代。">
+    <rect class="diagram-zone" x="8" y="182" width="724" height="502" rx="13"/>
+    <text class="diagram-text diagram-zone-title" x="30" y="204">首查 Agent · 在线决策回路</text>
+    <path class="diagram-wire diagram-main" d="M350 75H390"/><path class="diagram-wire diagram-main" d="M550 142V163H293V224"/><path class="diagram-wire diagram-main" d="M350 292H390"/><path class="diagram-wire diagram-main" d="M477 358V392"/><path class="diagram-wire diagram-main" d="M390 465H350"/>
+    <path class="diagram-wire diagram-main diagram-return" d="M30 465H18V292H30"/>
+    <path class="diagram-wire diagram-main" d="M627 358V373H720V534H370V542"/>
+    <path class="diagram-wire diagram-main diagram-dashed" d="M370 676V721"/>
+    <use href="#agent-map-index" x="30" y="8"/>
+    <use href="#agent-map-recall" x="390" y="8"/>
+    <use href="#agent-map-state" x="30" y="224"/>
+    <use href="#agent-map-policy" x="390" y="224"/>
+    <use href="#agent-map-tools" x="390" y="392"/>
+    <use href="#agent-map-verify" x="30" y="392"/>
+    <use href="#agent-map-result" x="210" y="542"/>
+    <use href="#agent-map-feedback" x="210" y="721"/>
+    <text class="diagram-text diagram-label" x="384" y="702">交互与运行轨迹</text>
+  </svg>
 
-  <section class="agent-graph agent-follow">
-    <h5>后续迭代</h5>
-    <svg viewBox="0 0 320 38" role="img" aria-label="线上纠错及离线回放用于策略更新和独立评测。">
-      <path class="edge" d="M110 19H136"/><path class="edge" d="M218 19H240"/>
-      <rect class="box" x="3" y="5" width="107" height="28" rx="5"/><text x="56.5" y="19">纠错 / 回放</text>
-      <rect class="accent" x="137" y="5" width="81" height="28" rx="5"/><text x="177.5" y="19">策略更新</text>
-      <rect class="blue" x="241" y="5" width="76" height="28" rx="5"/><text x="279" y="19">独立评测</text>
-    </svg>
-  </section>
+  <svg class="diagram diagram-narrow" viewBox="0 0 374 1336" role="img" aria-label="拟议的首次查询框架。离线专家证据树提供检索来源；在线双路召回初始化约束状态。决策模型可继续取证和核验，再回写状态，也可直接停止并输出。在线纠错和离线回放供后续版本迭代。">
+    <rect class="diagram-zone" x="4" y="333" width="366" height="851" rx="11"/>
+    <text class="diagram-text diagram-zone-title" x="27" y="354">首查 Agent · 在线决策回路</text>
+    <path class="diagram-wire diagram-main" d="M187 140V167"/><path class="diagram-wire diagram-main" d="M187 301V316H323V374"/><path class="diagram-wire diagram-main" d="M187 508V540"/><path class="diagram-wire diagram-main" d="M114 674V711"/><path class="diagram-wire diagram-main" d="M187 845V876"/>
+    <path class="diagram-wire diagram-main diagram-return" d="M27 943H15V441H27"/>
+    <path class="diagram-wire diagram-main" d="M264 674V692H359V1028H187V1042"/>
+    <path class="diagram-wire diagram-main diagram-dashed" d="M187 1176V1221"/>
+    <use href="#agent-map-index" x="27" y="6"/>
+    <use href="#agent-map-recall" x="27" y="167"/>
+    <use href="#agent-map-state" x="27" y="374"/>
+    <use href="#agent-map-policy" x="27" y="540"/>
+    <use href="#agent-map-tools" x="27" y="711"/>
+    <use href="#agent-map-verify" x="27" y="876"/>
+    <use href="#agent-map-result" x="27" y="1042"/>
+    <use href="#agent-map-feedback" x="27" y="1221"/>
+    <text class="diagram-text diagram-label" x="200" y="1200">交互与运行轨迹</text>
+  </svg>
 </figure>
 <h3 id="demand-taxonomy">4.2 需求理解（Demand Understanding，RQ1）</h3>
 <p>将需求转为技术方向、硬约束、软偏好及可追溯的原文片段。区分现有工况、既往资质和未来交付。如果不同解释会改变推荐，则保留解释并核对其共同依据，必要时请求澄清。</p>
