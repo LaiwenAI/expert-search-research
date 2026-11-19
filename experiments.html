@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T22:51:52+08:00">2026-11-19 22:51（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-20T01:59:07+08:00">2026-11-20 01:59（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -255,6 +255,18 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>固定四段候选且起始证据由人工提供时，QASPER 轻量选证与冻结重排分别补齐 50 和 42／137 题，组件 P95 为 8.25 和 42.56 ms。改用系统首段且给定论文时，结果为 21 和 20／137，P95 为 9.13 和 56.38 ms。扩到 416 篇论文后，给标题线索时来源直查使可补齐窗口由 7 增至 19，实际补齐由 2 增至 7，P95 从 16.72 降至 9.62 ms。无线索时，来源优先的命中变化在两组方向相反。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/5595014/benchmarks/qasper-completion-selector-v1">选择器</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/9eb3773/benchmarks/qasper-predicted-completion-v1">系统首段</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/df8f29b/benchmarks/qasper-source-first-completion-v1">来源定位</a></p>
 <h3 id="plos-open-role-applicability">竞争来源中的职责判定与本人证据</h3>
 <p>在 197 篇公开论文、72 个目标请求上，来源确认能减少缺源错荐，职责扩充则在提高覆盖的同时增加错挂。含摘录／关键词时，固定扩充职责定义后，来源确认把缺源错荐从 29／24 降至 0／2，目标在库的干净命中从 19／17 降至 18／14。两种目录外对照均由固定的外部措辞构造。该实验测量指定论文和出版方声明的职责，不测企业需求下的实际能力。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b57563de014c1047b7a8f5d307689e538f896d5a/benchmarks/plos-open-role-applicability-v1">全链路对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b5e5456/benchmarks/plos-role-applicability-v1">职责适用性</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/36a613d/benchmarks/trec-citation-rescue-audit-v1">TREC 归属回放</a></p>
+<h3 id="open-duty-routing-transfer">共享向量纠正与职责门控迁移</h3>
+<p>在 197 篇公开论文上，先用已有查询向量做轻量判定，只在未决时核验两个候选职责。与直接做职责纠正相比，72 条摘录／关键词请求的干净命中从 17／14 增至 31／23，模型调用从 31／23 降至 13／9。平均组件耗时下降约 2.0／1.6 ms，P95 基本持平。隐藏目标论文时，关键词组仍有一次错源。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/692208a436a974e9ae8b4bb956da227de3374ff5/benchmarks/plos-open-role-vector-v1">共享向量对照</a></p>
+<div class="result-table-scroll"><table>
+<caption>同一语料与目标职责下的措辞对照</caption>
+<thead><tr><th scope="col">措辞与路线</th><th scope="col">摘录干净命中</th><th scope="col">关键词干净命中</th></tr></thead>
+<tbody>
+<tr><th scope="row">尾部排除句，原始门控</th><td>0／72</td><td>0／72</td></tr>
+<tr><th scope="row">尾部排除句，提取主职责</th><td>16／72</td><td>10／72</td></tr>
+<tr><th scope="row">独立措辞，提取前后</th><td>8／72</td><td>5／72</td></tr>
+</tbody>
+</table></div>
+<p>尾部排除句下，已有正确来源且正确职责进入前两位的请求有 51／41 条，职责门控全部拦截。直接绕过该门控虽找回 40／31 条，也误收 4／3 条目录外职责。后续应验证能识别职责主体和句段范围的解析方法，并与固定门控对照。该对照只评价出版方声明的个人职责。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/59cf7d88ed49aa77a33867c11115e6677376bdba/benchmarks/plos-open-role-scope-v1">分阶段计数与独立措辞复测</a></p>
 <h3 id="cof-packed-verifier-load">共享权重的无填充核验</h3>
 <p>CoF KDD／SciRepEval 在单张 RTX 5090 上各回放 432 条请求，按每秒 12 条持续 36 秒。逐段观察时，填充基线的 P95 随排队上升；无填充路线分别为 138／182／129 ms 和 124／124／124 ms。四线程闭环完成速率提高 32.5%／29.8%，两种负载下共 1,411 条无填充响应复现原专家顺序与引用。测试含实时编码、全库检索、核验和等待，采用进程内回放。闭环速率限于本负载，引用一致性衡量实现对照。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/4a76bb6cee846295e7f9a84540e92fc607b8f80e/benchmarks/cof-ragged-sustained-v1">代码与完整结果</a></p>
 <h3 id="cof-profile-first">全量评分与画像筛选</h3>
