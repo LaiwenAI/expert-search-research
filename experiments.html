@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T18:30:16+08:00">2026-11-19 18:30（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T19:43:03+08:00">2026-11-19 19:43（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -168,6 +168,16 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>固定引用预算的补救实验也观察到，KDD 新增的 17 位已标注正例中，有 12 位排在第 6 至 10 位；这 12 位各核验最多六条来源时，均未达到两条支持的要求。这个诊断仍需独立证据标注区分源文本缺证和模型漏判。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/18e6d1272ce1aa476702e4953a874d73f999fe66/benchmarks/cof-evidence-rescue-v1">补证诊断</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/42dfbdba240e0632c4a961920832ee47a134bea2/benchmarks/cof-contrastive-shortlist-v1">居中融合</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/18e6d1272ce1aa476702e4953a874d73f999fe66/benchmarks/cof-method-query-view-v1">完整查询与摘句</a></p>
 <h3 id="rank-sensitive-cost">共享读取、停止与真实耗时</h3>
 <p>在 TREC 2006 Enterprise 的 49 个主题中，允许替换等量支持引用、保持专家顺序后，优先读共享来源减少约 5% 的读取，核验次数无明确变化。CoF KDD 实测中，共享取证相对延迟核验将平均模型调用由 6.70 降至 5.63，P95 由 218.39 降至 214.11 ms。按需分词少构造 21.1% 的提示词输入，与预分词共享取证的专家顺序、引用相同，P95 为 214.89 ms。前者是标注池回放，后者包含在线模型推理且采用顺序负载。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/ed857c1c19892a215e7b737575f51b9b517ee062/benchmarks/trec-reorder-witnesses-v1">TREC 回放</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7601acccf56743f963ce3394c3b12709163ce784/benchmarks/cof-lazy-frontier-v1">CoF 实测</a></p>
+<h3 id="cof-typed-cost">二次核验的覆盖、延迟与输出一致性</h3>
+<p>固定 CoF 的十位候选和取证池。通用核验使用冻结的 0.6B 模型，4B 复核区分支持、反证与证据不足。表中正例是公开标注为相关且附有模型选中引用的推荐。</p>
+<div class="result-table-scroll" tabindex="0" role="region" aria-label="二次核验的质量与成本"><table>
+<thead><tr><th scope="col">路线</th><th scope="col">带引用正例，KDD／SciRepEval</th><th scope="col">带引用的已标注负例</th><th scope="col">完整 P95，ms</th></tr></thead>
+<tbody>
+<tr><th scope="row">仅轻量核验</th><td>15／27</td><td>44／26</td><td>263／264</td></tr>
+<tr><th scope="row">分数临界区内立即复核</th><td>8／18</td><td>21／8</td><td>613／589</td></tr>
+<tr><th scope="row">分数临界区内延后复核</th><td>8／17</td><td>22／8</td><td>567／578</td></tr>
+</tbody></table></div>
+<p>第二、三行来自两次配对运行。延后复核相对同次立即复核约省 59% 的 4B 调用，排序或引用改变 8／181 条。仅固定 4B 形状修复 7 条，两级固定后两种调度 181／181 条一致，延后方案 P95 升至 915／724 ms。新形状与原动态立即复核仍有 12 条输出差异。CoF 缺独立引用标签，带引用的已标注负例减少也伴随覆盖下降。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/dc1808bc68346b8963925723c884dfbbaae2aa8b/benchmarks/cof-typed-evidence-v1">复核</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/d17a6d6480c28a091d57e29f989d323f7beef86b/benchmarks/cof-deferred-typed-v1">调度</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/db99c0b0d416edbe690290d818c3ac57bae16151/benchmarks/cof-typed-shape-audit-v1">形状审计</a></p>
 <h3 id="cof-shared-frontier">CoF 共享引用的按需核验</h3>
 <p>在 122 条与此前并发压测样本分离的 CoF KDD 查询上，复用同一查询下可共享的来源相关性判断，只核验有机会进入 Top-5 的引用。计入实时编码、召回、核验和排序。</p>
 <div class="result-table-scroll"><table aria-label="共享取证与既有调度的对照"><thead><tr><th scope="col">策略</th><th scope="col">P95</th><th scope="col">平均 GPU 调用</th><th scope="col">与全检同序同引用</th></tr></thead><tbody>
@@ -220,6 +230,9 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">读取给定章节全文</th><td>500／500</td><td>333／500</td><td>21.67</td><td>77.57 ms</td></tr>
 </tbody></table></div>
 <p>相对固定两轮，自适应少读 13.2%，正确率差值为 −2.2 个百分点，按关联试验分组的配对 95% 区间为 −4.7 至 −0.2。该段的延迟范围止于单次核验，完整首查仍需纳入检索与专家归属。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/6d7a7a2b7f1490bd6f8916325f9450f1e3c5a70d/benchmarks/nli4ct-adaptive-depth-v1">补读策略</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/db833987ffa4bdfece7e0d8fe2e3a553ef294fca/benchmarks/nli4ct-adaptive-reader-v1">核验实验</a></p>
+<h3 id="verifier-label-controls">核验错误与标签呈现</h3>
+<p>NLI4CT 上，固定两轮补读判对 322／500，换成标注行后判对 330／500，配对 95% 区间为 −0.92 至 +4.00 个百分点。保持固定两轮证据、交换输出数字和标签顺序后判对 354／500，P95 约 40 ms。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/60fc61b83806de501de04ffd3e1174ca93b76664/benchmarks/nli4ct-evidence-intervention-v1">证据替换</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/f195b69267e5291f0db75d3de94f07e8729d21b0/benchmarks/nli4ct-label-bias-v1">标签对照</a></p>
+<p>迁移到 VitaminC 的 600 条样本后，正确数从 382 增至 413，正确识别的反证从 121 降至 93，误放从 40 增至 47。在与本轮开发集及早期复验样本按页面和原句隔离的另 800 条测试样本上，提高接受阈值少误放 12 条，也少接受 11 条真支持；选择性复核根据开发集选择了原始单次规则。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/df4d8f499c0b1dbb45e838a5438ac6575ef19e8a/benchmarks/vitaminc-label-transfer-v1">跨数据集复验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0036badda53b4f5dc5aec8eeac677c7eafbf1688/benchmarks/vitaminc-selective-support-v1">独立校准与测试</a></p>
 <h3 id="plos-jats-discovery">来源发现与出版字段核验回放</h3>
 <p>在 171 篇 PLOS 论文上，先用结果摘录或关键词寻找同人关联的来源，再用冻结的角色核验器检查出版字段。178 条角色请求复用 11 个论文对，分别回放双源可用、缺左源、缺右源三种情境。双源可用时，扩展召回相对前四候选将正确正例由 41／89 提至 51／89（结果摘录），由 21／89 提至 37／89（关键词）。缺一来源时，扩展召回分别误收 20／356 和 8／356 次，合计有一次进一步生成无支持的专家推荐。前四候选在两个缺源对照中均无误收。轻量学习门控未改善该权衡。计数包含重复来源，适用于受控误差分析。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/163c5d4cc894a402883ccde99df56c55327ca47b/benchmarks/plos-jats-discovery-v1">完整结果与复现</a></p>
 <h3 id="plos-jats-linked-gate">原始出版字段与语义解释交集</h3>

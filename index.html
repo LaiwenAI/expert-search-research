@@ -275,7 +275,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T19:01:47+08:00">2026-11-19 19:01（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T19:43:03+08:00">2026-11-19 19:43（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -413,9 +413,9 @@ html[data-theme="dark"] .agent-map {
           <rect class="diagram-key" x="168" y="35" width="64" height="30" rx="5"/>
           <text class="diagram-text diagram-label" x="200" y="50">字段核验</text>
           <rect class="diagram-key" x="168" y="77" width="64" height="30" rx="5"/>
-          <text class="diagram-text diagram-label" x="200" y="92">文本核验</text>
+          <text class="diagram-text diagram-label" x="200" y="92">文本三分类</text>
           <rect class="diagram-pass" x="248" y="50" width="64" height="44" rx="5"/>
-          <text class="diagram-text" x="280" y="66">回写状态</text><text class="diagram-text diagram-label" x="280" y="82">证据与排序</text>
+          <text class="diagram-text" x="280" y="66">回写状态</text><text class="diagram-text diagram-label" x="280" y="82">三态 · 排序</text>
           <text class="diagram-text diagram-label" x="185" y="117">来源或归属未确认</text>
         </g>
       </g>
@@ -490,7 +490,7 @@ html[data-theme="dark"] .agent-map {
 
 <h3>4.4 搜索决策与停止（Search Decisions and Stopping，RQ3）</h3>
 <p id="expert-action-routing-prior-work">首轮保留完整需求，以小候选池做批量核验。同一来源的读取可共享，个人归属按专家分别核验。维护仅凭已验证证据得到的 Top-K，以及考虑未决证据后仍可能得到的结果。两者一致时结束当前池的核验。候选覆盖不足时仍可补召回，预算耗尽时返回已有证据和未决条件。</p>
-<p>当结果仍可能变化时，开源决策器比较补召回、定向读原文和复核归属的预期收益及成本。发布者字段可溯源时优先核验字段，其余来源依据原文区分支持、反证与未决。多个合理解释并存时，仅返回各解释均支持的专家。</p>
+<p>当结果仍可能变化时，开源决策器比较补召回、定向读原文和复核归属的预期收益及成本。可溯源的发布者字段优先核验，其余来源依据原文区分支持、反证与未决。文本核验分别控制反证误放和缺证误放。高成本复核仅作为预算内的对照，另测其对正确推荐、引用覆盖和首查耗时的影响。多个合理解释并存时，仅返回各解释均支持的专家。</p>
 
 <h3>4.5 在线与离线迭代（Online and Offline Improvement，RQ4–RQ5）</h3>
 <p>冻结初始框架后，在线复用经核查的纠错；离线将回放轨迹中的问题归因到需求理解、证据判断、排序或调度，再更新策略。在同等反馈预算下检验新任务收益、旧任务退化及更新成本。</p>
@@ -503,7 +503,7 @@ html[data-theme="dark"] .agent-map {
 <tbody>
 <tr><th scope="row">决策器</th><td>规则、MLP、冻结 Qwen、Qwen LoRA</td><td>轻量模型能否以较低决策开销选对工具与停止时机？</td></tr>
 <tr><th scope="row">向量编码</th><td>Qwen3-Embedding 与 BGE-M3，分别对照冻结与微调</td><td>企业需求与专家证据的对齐能否提高等候选预算下的召回？</td></tr>
-<tr><th scope="row">证据核验</th><td>通用重排、轻量自然语言推断、三分类阅读器</td><td>在相同误放门槛下，能否保留更多真支持并控制回退开销？</td></tr>
+<tr><th scope="row">证据核验</th><td>通用重排作对照，比较轻量三分类与按需复核</td><td>分别限制反证误放和缺证误放，在相同风险与覆盖下比较真支持、输出一致性和开销。</td></tr>
 <tr><th scope="row">训练信号</th><td>监督微调与开源教师蒸馏对照；通过验证后再试离线强化学习</td><td>收益是否来自更好的证据定位与动作选择，能否抵消训练成本？</td></tr>
 </tbody>
 </table></div>
@@ -563,7 +563,8 @@ html[data-theme="dark"] .agent-map {
 <tr><th scope="row">CoF 全库召回</th><td>双路召回的已标注正例 Recall@10 为 16.94%，纯稠密为 13.64%。延迟计算候选来源融合后，双路端到端 P95 由 172.7 降至 157.9 ms，122 条输出一致。 <a href="experiments.html#cof-deferred-union">对照</a></td><td>保留快速纯稠密对照。以更完整的候选标注复核排序差异。</td></tr>
 <tr><th scope="row">MERIT 取证门控</th><td>129 条配对中，向量首筛省去 38 次完整履历核验，但只完整保留 22／27 个含正例的组。 <a href="experiments.html#merit-recall-screen">对照</a></td><td>先用轻量分数排取证顺序，另测筛除的漏召。</td></tr>
 <tr><th scope="row">QASPER 多段选证</th><td>137 道多段证据题中，固定重排 16 与 32 段均完整命中 43 题。在相同 16 段候选上，轻量联合选证完整命中 51 题，新增 13 题、损失 5 题，选择阶段 P95 为 0.58 ms。 <a href="experiments.html#qasper-set-repair">选证对照</a></td><td>固定浅深度作为强基线。验证轻量联合选证能否扩展到跨来源约束，并复核丢失的原有证据。</td></tr>
-<tr><th scope="row">NLI4CT 自适应补读</th><td>500 条给定来源的测试中，自适应比固定补读两轮多找齐 4 套证据，但判对数从 322 降至 311，核验 P95 从 41.09 降至 37.57 ms。 <a href="experiments.html#nli4ct-adaptive-verification">对照</a></td><td>分别验收证据覆盖与核验判定，将判定风险纳入停止策略。</td></tr>
+<tr><th scope="row">选证与核验</th><td>NLI4CT 固定两轮补读判对 322／500。改用标注证据判对 330／500，差值区间跨零。固定证据、交换标签呈现则判对 354／500。 <a href="experiments.html#verifier-label-controls">误差对照</a></td><td>分别验收证据覆盖与核验判定，检查标签提示在反证、缺证两类上的误放。</td></tr>
+<tr><th scope="row">专家搜索中的二次核验</th><td>CoF KDD／SciRepEval 的按需 4B 复核将完整 P95 从 263／264 ms 增至 613／589 ms，带引用正例从 15／27 降至 8／18。 <a href="experiments.html#cof-typed-cost">完整对照</a></td><td>保留轻量核验基线。按相同引用覆盖和误放门槛检验高成本复核的价值。</td></tr>
 <tr><th scope="row">PLOS 跨来源取证</th><td>四次读取预算下，按缺口取证在跨论文子集找回 308／764 个参考专家位置，固定顺序为 246／764；全库未见增益。 <a href="experiments.html#plos-budgeted-article">对照</a></td><td>按证据是否分散分层评估增益。</td></tr>
 <tr><th scope="row">跨论文来源确认</th><td>25 对论文上的扩展召回将正确来源对从 30／50 提至 40／50，缺源误收由 3／100 增至 8／100。只复核扩展候选时为 31／50 与 4／100。 <a href="experiments.html#plos-source-confirmation">缺源对照</a></td><td>关联扩展负责补召回。来源是否匹配、证据是否归属于同一人分别核验。</td></tr>
 <tr><th scope="row">结构化归属核验</th><td>PLOS 同一批 178 条配对请求上，查验原始出版字段并对解释取交集，正确正例从 15／89 提至 51／89，负例误荐从 6／89 降至 1／89，P95 从 25.49 降至 8.66 ms。 <a href="experiments.html#plos-jats-linked-gate">字段核验对照</a></td><td>适用于字段可核验且来源和身份已确认的情况。企业自由文本上的覆盖与误荐仍待检验。</td></tr>
@@ -628,7 +629,8 @@ html[data-theme="dark"] .agent-map {
 <tbody>
 <tr><th scope="row">首查能快多少</th><td>企业开发集 80 条，完整首查 P95 从 2.15 秒降至 1.18 秒，参考输出一致。 <a href="#enterprise-cross-precision-result">首查对照</a></td><td>保留这条快路径作强基线。用独立盲审确认输出质量，再用相同并发负载测成功查询成本。</td></tr>
 <tr><th scope="row">召回能否转化为正确推荐</th><td>CoF 两组中，轻量双路和按方法词摘句均未提高前五名带引用正例。现有引用由模型选择。 <a href="experiments.html#cof-candidate-to-citation">对照</a></td><td>固定候选池与核验器，补标新增候选的来源和归属。分辨排序过低、未找到支持来源、核验漏判三类损失。</td></tr>
-<tr><th scope="row">调度能省多少</th><td>TREC 中，理想核验时自适应有据 P@5 高于固定轮询，加入模拟误判后结果反转。CoF 实测中，共享核验减少模型调用，按需分词未进一步降低 P95。 <a href="experiments.html#trec-expert-evidence-replay">TREC 回放</a> · <a href="experiments.html#rank-sensitive-cost">工作量与耗时</a></td><td>将共享读取和排序停止纳入执行基线。主实验用实际核验器比较同预算的正确推荐、错源、误荐和端到端开销。</td></tr>
+<tr><th scope="row">调度能否保住同一输出</th><td>CoF 延后复核约省 59% 的 4B 调用，动态批次下有 8／181 条排序或引用不一致。固定形状后两种调度的输出一致，但相对原动态基线仍有差异。 <a href="experiments.html#cof-typed-cost">成本与一致性</a></td><td>用固定形状核对调度算法，另用动态负载实测部署。工作量节省、输出一致性与人工证据质量分别验收。</td></tr>
+<tr><th scope="row">核验增益能否迁移</th><td>VitaminC 的标签交换提高总体准确率，同时增加误放。独立测试中校准后少误放 12 条，也少保留 11 条真支持；按需复核退回原始单次规则。 <a href="experiments.html#verifier-label-controls">核验对照</a></td><td>用标注数据训练并校准轻量核验器，按反证、证据不足和错归属分开评价。同一质量门槛下再比较是否需要额外模型调用。</td></tr>
 <tr><th scope="row">结构化取证何时可用</th><td>PLOS 在已知来源下，字段核验把正确正例从 15／89 提至 51／89。来源需检索时，关键词线索下扩展召回将正确正例从 21／89 提至 37／89，也在缺源情境误收 8／356 次。 <a href="experiments.html#plos-jats-linked-gate">字段核验</a> · <a href="experiments.html#plos-jats-discovery">来源发现回放</a></td><td>在完整首查中记录错源、错人、语义误判及未决。字段优先用于能确认来源的证据，企业自由文本回退另作对照。</td></tr>
 </tbody></table></div>
 
@@ -639,7 +641,7 @@ html[data-theme="dark"] .agent-map {
 <li><strong>按实验证据收窄主张。</strong>仅复现同输出提速时，定位为低成本执行。收益集中在跨来源硬约束时，限定到该需求类型，并报告简单查询与迁移场景的结果。</li>
 <li><strong>持续优化独立验收。</strong>以已冻结的首查框架为对照，在等反馈预算下报告在线与离线各自的质量增量、旧任务退化及更新成本。</li>
 </ul>
-<p>目前的强证据覆盖同输出提速和可确认来源上的字段核验。SIGIR 长文的关键缺口是，提高召回后能否在独立标注上交付更多有据推荐。先补标同一候选池的适配和来源，再做同预算的决策消融，最后用企业盲审及公开数据检验端到端收益。 <a href="https://sigir.hosting.acm.org/general-information/fact-sheet/">SIGIR 研究范围</a></p>
+<p>目前的强证据覆盖同输出提速和可确认来源上的字段核验。SIGIR 长文仍缺两项结果：轻量核验在独立标注上保留更多真支持并控制误放，以及决策器在同预算下把这项增益转化为更多有据推荐。先用同一批候选标注适配、来源及个人归属，再比较固定与动态调度，最后在企业盲审和公开专家检索上核算端到端收益。 <a href="https://sigir.hosting.acm.org/general-information/fact-sheet/">SIGIR 研究范围</a></p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>
