@@ -195,21 +195,43 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T12:03:10+08:00">2026-11-19 12:03（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T12:05:25+08:00">2026-11-19 12:05（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
-<p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
-<ul class="research-challenges">
-<li><strong>需求理解。</strong>识别企业场景中的硬约束、偏好和待澄清信息。</li>
-<li><strong>证据归属。</strong>从多源材料核对专家个人贡献、能力时效和约束支持。</li>
-<li id="expertise-transfer" style="scroll-margin-top:78px"><strong>能力迁移。</strong>直接经验不足时，寻找方法机制可迁移的专家，指出需要适配或验证的条件。</li>
-</ul>
+<p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
+<p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
+<ol class="research-challenges">
+<li><strong>需求差异与语义鸿沟（Demand Heterogeneity &amp; Semantic Gap）</strong>：企业需求不仅任务类型不同，明确程度、约束数量、知识跨度和所需检索推理也存在差异。例如“找一位研究计算机视觉的教授”可以直接检索，而涉及复杂工艺条件或跨学科问题的需求可能需要澄清、拆解和多轮搜索；不能对所有查询套用同一种推理流程。</li>
+<li><strong>多源异构证据融合（Heterogeneous Evidence Fusion）</strong>：论文、专利和科研项目分别反映专家的不同能力，单项成果与需求相关并不意味着专家整体适合；需要根据具体需求融合多源证据，评估专家的技术适配程度与实际贡献。<a class="inline-ref" href="https://doi.org/10.1145/1148170.1148181" target="_blank" rel="noopener noreferrer">[1]</a><a class="inline-ref" href="https://arxiv.org/abs/2412.18004" target="_blank" rel="noopener noreferrer">[16]</a></li>
+<li><strong>多维匹配与约束满足（Multi-criteria Expert Matching）</strong>：企业不仅关注专家的研究方向，还可能要求特定的技术能力、工程经验、成果成熟度及合作条件。不同需求类型对应不同的匹配标准，需要区分硬性约束与软性偏好，并动态调整专家排序。</li>
+<li><strong>能力时效与贡献归因（Expertise Dynamics &amp; Contribution Attribution）</strong>：专家的研究重点与实际能力随时间变化，且参与同一成果的不同人员，其具体贡献可能存在差异。仅凭成果发表时间、数量或署名信息，难以准确判断专家当前的研究能力及其在相关技术方向上的实际贡献。<a class="inline-ref" href="https://doi.org/10.1016/j.knosys.2010.04.008" target="_blank" rel="noopener noreferrer">[15]</a></li>
+
+<li><strong>复杂检索与停止决策（Agentic Retrieval Decisions）</strong>：不同需求需要不同的查询拆解、检索轮次、工具调用与证据读取深度；智能体必须判断何时继续探索、何时已有足够证据可以停止。<a class="inline-ref" href="https://arxiv.org/abs/2503.09516" target="_blank" rel="noopener noreferrer">[2]</a></li>
+<li><strong>反馈利用与持续学习（Feedback Learning）</strong>：用户的文字纠错、对专家的选择行为与后续合作结果分别构成显式、隐式和延迟反馈，且存在信号稀疏、偏好混杂及结果延迟等问题。需要从这些反馈中学习可迁移的检索策略，同时控制旧任务能力退化。<a class="inline-ref" href="https://proceedings.mlr.press/v306/song26c.html" target="_blank" rel="noopener noreferrer">[3]</a></li>
+<li><strong>质量、延迟与成本权衡（Quality–Efficiency Trade-off）</strong>：更复杂的推理和更多次检索可能提高匹配质量，却增加响应延迟与计算费用。不同任务应采用不同的模型和搜索预算，而优化时还需要考虑反馈生成及训练的总成本。<a class="inline-ref" href="https://proceedings.iclr.cc/paper_files/paper/2025/hash/5503a7c69d48a2f86fc00b3dc09de686-Abstract-Conference.html" target="_blank" rel="noopener noreferrer">[7]</a></li>
+</ol>
+
 <h2>2. 核心科研问题（Research Questions）</h2>
+<p class="english-question">How Can Expert Search Agents Achieve Evidence-Grounded Matching and Continually Improve Retrieval Quality and Computational Efficiency?</p>
+<p><strong>如何构建能够理解复杂技术需求、进行可信专家匹配的智能体，并通过在线与离线经验持续优化其检索质量、决策策略和计算效率？</strong></p>
+
 <ol class="research-challenges research-questions">
-<li><strong>初始搜索。</strong>从首次查询起，如何以更低的端到端延迟和成本获得可靠的专家推荐与证据？</li>
-<li><strong>持续改进。</strong>冻结初始系统后，在线反馈与离线学习能带来多少收益，能否保留旧任务能力？</li>
+<li><strong>RQ1：需求分层理解与语义匹配（Demand Understanding &amp; Semantic Matching）</strong>：如何识别需求类型、技术方向、显性与隐含约束、信息完整性及跨领域知识跨度，将简单主题查询与复杂场景需求转化为准确、可执行的检索表示？如何避免不必要的复杂推理，同时保证复杂需求得到充分理解？<a class="inline-ref" href="https://doi.org/10.1145/1148170.1148181" target="_blank" rel="noopener noreferrer">[1]</a></li>
+<li><strong>RQ2：多源证据融合与专家能力评估（Evidence-grounded Expertise Assessment）</strong>：如何利用已有教师画像中的论文、专利和项目，结合需求类型、能力时效与个人成果贡献差异，识别专家的技术优势并满足硬性约束，形成有来源支持的专家级排序？<a class="inline-ref" href="https://doi.org/10.1145/1148170.1148181" target="_blank" rel="noopener noreferrer">[1]</a><a class="inline-ref" href="https://doi.org/10.1016/j.knosys.2010.04.008" target="_blank" rel="noopener noreferrer">[15]</a><a class="inline-ref" href="https://arxiv.org/abs/2412.18004" target="_blank" rel="noopener noreferrer">[16]</a></li>
+<li><strong>RQ3：质量约束下的自适应检索决策（Quality-constrained Retrieval Decisions）</strong>：如何根据技术需求的复杂程度与当前检索结果，动态调整检索策略、工具调用和模型选择，并判断何时停止搜索，以在保证专家匹配质量的前提下降低响应延迟和计算成本？<a class="inline-ref" href="https://arxiv.org/abs/2503.09516" target="_blank" rel="noopener noreferrer">[2]</a><a class="inline-ref" href="https://proceedings.iclr.cc/paper_files/paper/2025/hash/5503a7c69d48a2f86fc00b3dc09de686-Abstract-Conference.html" target="_blank" rel="noopener noreferrer">[7]</a></li>
+<li><strong>RQ4：反馈驱动的持续学习（Feedback-driven Continual Learning）</strong>：如何从自然语言纠错、最终选择的专家、交互轨迹和后续对接结果中提取学习信号，区分需求理解、证据判断、排序和搜索决策中的错误，并结合离线经验更新策略、控制遗忘？<a class="inline-ref" href="https://proceedings.mlr.press/v306/song26c.html" target="_blank" rel="noopener noreferrer">[3]</a><a class="inline-ref" href="https://arxiv.org/abs/2601.19897" target="_blank" rel="noopener noreferrer">[4]</a></li>
+<li><strong>RQ5：检索质量与计算效率的联合进化（Joint Quality–Efficiency Evolution）</strong>：如何联合优化专家匹配质量、证据支持度和总计算成本，通过经验积累、策略训练、评估及版本发布，使不同需求类型上的收益持续存在，而非仅改进单次查询？<a class="inline-ref" href="https://arxiv.org/abs/2508.03680" target="_blank" rel="noopener noreferrer">[8]</a></li>
 </ol>
 <h2>3. 研究目标（Research Objectives）</h2>
-<p>建立可复现的专家检索方法与评测。</p>
+<p><strong>主线与研究假设：</strong>构建无需用户历史反馈即可运行的高效、低成本且有证据支持的专家搜索框架，结合公开与企业数据检验其相对强基线的质量—成本表现。探索开源决策模型、向量模型训练、层次索引和可选教师蒸馏；在线／离线反馈驱动的持续优化作为次要贡献，单独验证。现有实验尚未证明整体质量和效率同时提升。</p>
+<p>围绕上述五个科研问题，本研究以可独立运行的专家检索 Agent 为基础，拟实现以下目标：</p>
+<ol class="research-challenges">
+<li><strong>需求分层理解与准确召回（对应 RQ1）</strong>：构建任务类型、技术方向、约束、明确度和知识跨度的结构化表示，使简单查询可直接匹配，复杂场景能准确拆解并召回相关专家。</li>
+<li><strong>专家能力评估与多源匹配（对应 RQ2）</strong>：利用已有教师画像综合论文、专利、项目、近期研究与个人成果贡献信号，区分方向相关性和实际技术适配性，提升专家级排序及约束满足程度。</li>
+<li><strong>质量可控的高效搜索（对应 RQ3）</strong>：依据需求表示与当前证据状态动态选择检索路径、模型、工具和停止动作，避免简单需求过度推理，在质量约束下降低延迟及成本。</li>
+<li><strong>基于反馈的长期能力提升（对应 RQ4）</strong>：利用在线反馈和离线经验改善未见过的查询，在持续更新中控制旧任务遗忘，提升跨领域泛化。</li>
+<li><strong>端到端的质量—成本协同优化（对应 RQ5）</strong>：将推理、反馈、训练和评估成本统一核算，降低单位成功检索的总成本，并通过长期实验验证净收益。</li>
+</ol>
+<p><strong>阶段依赖：</strong>P0 评测 → P1 开源强基线 → P2 轻量决策、索引与表示 → P3 初始框架端到端比较；P4 单独验证反馈驱动的后续迭代。</p>
 <h2>4. 研究内容与技术路线（Methodology）</h2>
 <h3 id="foundation-title">4.1 初始高效搜索框架</h3>
 <p>离线索引专家与证据。首查从低成本候选生成起步，按需编码和核验。</p>
@@ -279,7 +301,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <p id="expert-action-routing-prior-work">已结构化的可信证据直接核对。其余按预期增益和成本取证；判定稳定且排名与引用可证不变时停止。</p>
 <h3 id="demand-taxonomy">4.3 企业需求理解</h3>
 <p>区分工况、既往资质与未来交付。歧义会改变推荐时保留多种解释，核对共同证据或请求澄清。</p>
-<h3>4.4 专家证据索引与能力迁移</h3>
+<h3 id="expertise-transfer">4.4 专家证据索引与能力迁移</h3>
 <p>索引按「专家 → 能力 → 来源 → 原文」组织。篇内用平面精确检索，跨来源对照 PageIndex 式导航。仅对证据覆盖完整的约束预筛。</p>
 <p id="expertise-transfer-protocol">直接经验不足时，核对可迁移的方法、专家个人贡献及适配缺口。数值约束需有同对象、同指标、同工况的实测依据。</p>
 <h3>4.5 在线／离线迭代</h3>
