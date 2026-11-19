@@ -275,7 +275,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T17:46:12+08:00">2026-11-19 17:46（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T18:13:15+08:00">2026-11-19 18:13（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -558,7 +558,7 @@ html[data-theme="dark"] .agent-map {
 <tbody>
 <tr><th scope="row">CoF 全库召回</th><td>双路召回的已标注正例 Recall@10 为 16.94%，纯稠密为 13.64%。延迟计算候选来源融合后，双路端到端 P95 由 172.7 降至 157.9 ms，122 条输出一致。 <a href="experiments.html#cof-deferred-union">对照</a></td><td>保留快速纯稠密对照。以更完整的候选标注复核排序差异。</td></tr>
 <tr><th scope="row">MERIT 取证门控</th><td>129 条配对中，向量首筛省去 38 次完整履历核验，但只完整保留 22／27 个含正例的组。 <a href="experiments.html#merit-recall-screen">对照</a></td><td>先用轻量分数排取证顺序，另测筛除的漏召。</td></tr>
-<tr><th scope="row">QASPER 篇内取证</th><td>48 个问题中，固定重排 16 与 32 段均找齐 34 题，P95 分别为 76.3 与 122.0 ms。 <a href="experiments.html#qasper-section-relation-graph">对照</a></td><td>以固定浅深度为强基线，重点检验跨来源导航。</td></tr>
+<tr><th scope="row">QASPER 多段选证</th><td>137 道多段证据题中，固定重排 16 与 32 段均完整命中 43 题。在相同 16 段候选上，轻量联合选证完整命中 51 题，新增 13 题、损失 5 题，选择阶段 P95 为 0.58 ms。 <a href="experiments.html#qasper-set-repair">选证对照</a></td><td>固定浅深度作为强基线。验证轻量联合选证能否扩展到跨来源约束，并复核丢失的原有证据。</td></tr>
 <tr><th scope="row">NLI4CT 自适应补读</th><td>500 条给定来源的测试中，自适应比固定补读两轮多找齐 4 套证据，但判对数从 322 降至 311，核验 P95 从 41.09 降至 37.57 ms。 <a href="experiments.html#nli4ct-adaptive-verification">对照</a></td><td>分别验收证据覆盖与核验判定，将判定风险纳入停止策略。</td></tr>
 <tr><th scope="row">PLOS 跨来源取证</th><td>四次读取预算下，按缺口取证在跨论文子集找回 308／764 个参考专家位置，固定顺序为 246／764；全库未见增益。 <a href="experiments.html#plos-budgeted-article">对照</a></td><td>按证据是否分散分层评估增益。</td></tr>
 <tr><th scope="row">跨论文来源确认</th><td>25 对论文上的扩展召回将正确来源对从 30／50 提至 40／50，缺源误收由 3／100 增至 8／100。只复核扩展候选时为 31／50 与 4／100。 <a href="experiments.html#plos-source-confirmation">缺源对照</a></td><td>关联扩展负责补召回。来源是否匹配、证据是否归属于同一人分别核验。</td></tr>
@@ -623,6 +623,7 @@ html[data-theme="dark"] .agent-map {
 <thead><tr><th scope="col">检验</th><th scope="col">当前证据</th><th scope="col">主会长文所需证据</th></tr></thead>
 <tbody>
 <tr><th scope="row">取证与核验</th><td>NLI4CT 上，相对固定补读两轮，自适应多找齐 4 套证据，少判对 11 条。 <a href="experiments.html#nli4ct-adaptive-verification">配对实验</a></td><td>等预算提高有据专家命中，并在独立人工标注上控制误荐。按证据分散程度与直接／迁移适配分别报告。</td></tr>
+<tr><th scope="row">同预算联合选证</th><td>QASPER 篇内轻量联合选证净增 8／137 题，配对重采样区间下界为零。逐个生成段落编号的 4B 对照延迟较高。 <a href="experiments.html#qasper-set-repair">固定候选实验</a></td><td>在相同候选、核验器和输出预算下，与逐段排序及集合检索方法对照。用跨来源人工标注检验硬约束、个人归属与原有正确结果的保留。</td></tr>
 <tr><th scope="row">企业首查效率</th><td>本地完整首查 P95 降低 45%，80 条开发请求的参考输出一致。 <a href="#enterprise-cross-precision-result">首查对照</a></td><td>同等有据推荐和误荐风险下，完整首查 P95 与成本下降。保留索引、核验、回退和服务开销，公开并发负载与比较口径。</td></tr>
 <tr><th scope="row">来源与归属</th><td>扩大同人关联能找回更多来源，也增加缺源误收。现有文本门控尚未在相同误收水平下提高召回。 <a href="experiments.html#plos-source-confirmation">来源实验</a></td><td>用错源、同人异文和缺源配对样本，验证来源确认与归属判定能否减少误荐。按不同来源数报告收益与额外核验成本。</td></tr>
 <tr><th scope="row">召回到有据推荐</th><td>固定画像聚合可以低成本改善候选召回。CoF 两组的已标注正例 P@5 增量区间均跨零，引用交付未随召回提高。 <a href="experiments.html#cof-global-profile-pooling">候选与引用对照</a></td><td>对照最高表现的固定画像聚合，固定候选池比较核验与排序，再固定核验器比较召回。以独立标注检验新增候选能否满足硬约束和个人归属。</td></tr>

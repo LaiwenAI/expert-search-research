@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T17:46:12+08:00">2026-11-19 17:46（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T18:13:15+08:00">2026-11-19 18:13（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -121,6 +121,17 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <section aria-labelledby="action-selection"><h2 id="action-selection">证据选择与决策模型</h2>
 <h3 id="qasper-section-relation-graph">章节引导与段落关系选证</h3>
 <p>在已知论文内，保持 16 段交叉编码预算，比较平面召回和章节引导，再对照关系图选证。章节引导在既有面板上均为 79／105，在另取的可评问题上是 35／48 对平面 34／48。校准将关系权重设为零，强制启用后各组完整证据数均减少。在后一个面板上，平面 16 段和 32 段均为 34／48，P95 分别为 76.3 和 122.0 ms。该结果继续支持把固定浅深度纳入强对照。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/fe8b11d0247e8177bcfd82b38cf604c030933116/benchmarks/qasper-section-relation-graph-v1">两组样本、汇总与复现</a></p>
+<h3 id="qasper-set-repair">固定候选预算下的多段证据组合</h3>
+<p>在 137 道至少需要两段证据的问题中，把候选从 16 段扩到 32 段后，候选池含完整证据的题数由 83 增至 117，逐段排序的最终前五仍只覆盖 43 题。在固定 16 段候选和五段输出的条件下，比较以下方法。</p>
+<div class="result-table-scroll" tabindex="0" role="region" aria-label="固定预算多段证据组合"><table>
+<thead><tr><th scope="col">方法</th><th scope="col">完整命中</th><th scope="col">相对逐段排序新增／损失</th><th scope="col">选择阶段 P95</th></tr></thead>
+<tbody>
+<tr><th scope="row">逐段排序</th><td>43／137</td><td>0／0</td><td>&lt;0.01 ms</td></tr>
+<tr><th scope="row">4B 逐个选择段落编号</th><td>47／137</td><td>14／10</td><td>108.16 ms</td></tr>
+<tr><th scope="row">轻量联合选证（最多换两段）</th><td>51／137</td><td>13／5</td><td>0.58 ms</td></tr>
+</tbody></table></div>
+<p>轻量方法使用官方训练集拟合、开发集校准。配对重采样的描述性 95% 区间为 0.00 至 +11.68 个百分点。各实验沿用相同测试面板；4B 对照和轻量方法分别计时。QASPER 提供原论文和段落证据，跨论文专家排序与个人归属需另行验证。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/d49d321dddca3ef0e1a29d18e22dc2c13b2dbad5/benchmarks/qasper-evidence-gap-audit-v1">召回与选证诊断</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/1c117b2f64ca41177374149a9525b2214e3dc270/benchmarks/qasper-listwise-evidence-v1">4B 对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/e91e0bd004430fa54dc626a635a95970ee1d97e6/benchmarks/qasper-set-repair-v1">轻量选证与复现</a></p>
+
 <h3 id="merit-evidence-dispatch">MERIT 自评标签下的证据读取</h3>
 <p>610 条论文—评审者自评按标题分组，231 条拟合、134 条校准、245 条测试。各组用同一冻结开源模型。固定前两篇、全量、置信度补读和学习补读的准确率分别为 70.61%、68.16%、67.35%、66.94%，P95 分别为 149.0、237.3、266.8、241.6 ms。两种补读的平均延迟较全量低，但串行重读抬高了 P95。全量的正类 F1 最高（67.77%）；固定前两篇的准确率差值区间包含零。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/89f30cba02b1f4579aa41d204c2443c0e18adb3b/benchmarks/merit-evidence-dispatch-v1">六组对照与复现</a></p>
 <h3 id="merit-prefix-dispatch">补读的上下文复用与单次选深</h3>
