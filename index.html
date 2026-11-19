@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T07:42:48+08:00">2026-11-19 07:42（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T08:06:33+08:00">2026-11-19 08:06（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
 <ul class="research-challenges">
@@ -254,7 +254,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <text x="342" y="205">比较预期收益和增量成本</text>
 <text x="342" y="230">选择动作和目标专家／约束</text>
 <text x="625" y="171">补召回候选</text>
-<text x="625" y="209">沿证据树读原文</text>
+<text x="625" y="209">按需定位并读原文</text>
 <text x="625" y="247">复查冲突与归属</text>
 <text x="625" y="285">扩大范围或精确回退</text>
 <text x="304" y="402">核对专家归属与约束是否得到支持</text>
@@ -282,7 +282,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <h3 id="demand-taxonomy">4.3 企业需求理解</h3>
 <p>提取任务、场景和硬约束，多主体需求先区分约束归属。</p>
 <h3>4.4 专家证据索引与能力迁移</h3>
-<p>索引按「专家 → 能力 → 来源 → 原文」组织。在跨来源取证上比较 PageIndex 式导航和平面索引，篇内采用句级检索。</p>
+<p>索引按「专家 → 能力 → 来源 → 原文」组织。结构化来源覆盖完整时可预筛，未覆盖的来源按需回查。篇内默认平面精确检索，跨来源保留 PageIndex 式导航对照。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c4736cc55cfa9937c466e16ff8ce77e4a826008f/benchmarks/qasper-section-bounds-v1">篇内对照</a></p>
 <p id="expertise-transfer-protocol">直接经验不足时，按可迁移的方法召回专家，核对其个人贡献和方法适用条件，标明适配缺口。数值约束须由相同对象、指标和工况的原文实测支持。</p>
 <h3>4.5 在线／离线迭代</h3>
 <p>在线复用已核查的纠错，离线回放反馈更新策略。</p>
@@ -296,8 +296,8 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <p>主贡献是首查即高效、低成本的证据检索智能体。配套贡献是可控需求合成与可归属证据指标，次要贡献是可独立验证的在线／离线迭代。</p>
 <h2>7. 实验设计与评价（Experiments and Evaluation）</h2>
 <h3>7.1 数据与标注</h3>
-<p>基于真实需求构造双语、单约束变更与跨来源配对，对照等量普通扩写。按企业、父需求和近重复组切分，测试集双人盲审并仲裁。</p>
-<p id="judgment-coverage">公开基准覆盖排序（CoF／TREC Enterprise）、适配（MERIT）、取证（EvidenceBench／LitSearch）和个人归属（CRediT）。</p>
+<p>基于真实需求构造双语、单约束变更与跨来源配对，对照等量普通扩写。按企业、父需求和近重复组切分，测试集双人盲审并仲裁，检验对新专家、来源和措辞的泛化。</p>
+<p id="judgment-coverage">公开基准覆盖排序（CoF／TREC Enterprise）、适配（MERIT）、取证（QASPER／EvidenceBench／LitSearch）和个人归属（CRediT）。</p>
 <h3 id="experiment-results">7.2 主实验</h3>
 <p>统一语料、硬件和负载，对照 BM25、稠密召回、混合重排、固定核验深度及分差调度。校准与测试按来源隔离。</p>
 <ul>
@@ -305,7 +305,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <li><strong>等预算。</strong>比专家 P@K、证据归属 P@K 和硬约束误放率。证据归属 P@K 只计有原文支持且可归属于该专家的正确推荐，直接适配与能力迁移分开报告。</li>
 </ul>
 <h3 id="experiment-comparison-chart">7.3 消融与稳健性</h3>
-<p id="experiment-ablation-results"><span id="experiment-grounding">消融索引、编码器、决策状态和回退。</span>用双语、约束变更与证据遮蔽检验漏召、误放和错误早停，盲审替代来源。</p>
+<p id="experiment-ablation-results"><span id="experiment-grounding">消融索引、编码器、决策状态和回退。</span>改变索引覆盖率，测完整证据召回、误放与回查成本。用双语、约束变更和证据遮蔽检验稳健性，盲审替代来源。</p>
 <h3 id="experiment-continual-results">7.4 迭代实验</h3>
 <p>等反馈预算下对照冻结、仅在线、仅离线和联合更新，测新任务收益、旧任务退化及更新成本。</p>
 <h2>8. 实施顺序（Implementation Plan）</h2>
@@ -320,8 +320,8 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 </ul></details>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p id="expert-evidence-precedent"><strong>创新点。</strong>把有界停止从排序扩展到专家归属、硬约束和引用同时稳定。</p>
-<p><strong>SIGIR／The Web Conference 投稿门槛。</strong>相对最快的合格固定策略，在公开基准和未经预切分的企业盲审需求上复现首查收益。合成训练收益须在新专家、新来源和新措辞上复现。</p>
+<p id="expert-evidence-precedent"><strong>主张待证。</strong>将保守预筛与有界停止结合，减少首查取证，同时维持专家排名、关键约束支持与引用。</p>
+<p><strong>SIGIR／The Web Conference 投稿门槛。</strong>结构化预筛已有组件收益。投稿前须在公开全文与完整企业盲审需求上，相对同样使用缓存的最强固定策略复现等质量首查收益。</p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>
