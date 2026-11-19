@@ -204,6 +204,8 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">读取给定章节全文</th><td>500／500</td><td>333／500</td><td>21.67</td><td>77.57 ms</td></tr>
 </tbody></table></div>
 <p>相对固定两轮，自适应少读 13.2%，正确率差值为 −2.2 个百分点，按关联试验分组的配对 95% 区间为 −4.7 至 −0.2。该段的延迟范围止于单次核验，完整首查仍需纳入检索与专家归属。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/6d7a7a2b7f1490bd6f8916325f9450f1e3c5a70d/benchmarks/nli4ct-adaptive-depth-v1">补读策略</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/db833987ffa4bdfece7e0d8fe2e3a553ef294fca/benchmarks/nli4ct-adaptive-reader-v1">核验实验</a></p>
+<h3 id="plos-jats-discovery">来源发现与出版字段核验回放</h3>
+<p>在 171 篇 PLOS 论文上，先用结果摘录或关键词寻找同人关联的来源，再用冻结的角色核验器检查出版字段。178 条角色请求复用 11 个论文对，分别回放双源可用、缺左源、缺右源三种情境。双源可用时，扩展召回相对前四候选将正确正例由 41／89 提至 51／89（结果摘录），由 21／89 提至 37／89（关键词）。缺一来源时，扩展召回分别误收 20／356 和 8／356 次，合计有一次进一步生成无支持的专家推荐。前四候选在两个缺源对照中均无误收。轻量学习门控未改善该权衡。计数包含重复来源，适用于受控误差分析。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/163c5d4cc894a402883ccde99df56c55327ca47b/benchmarks/plos-jats-discovery-v1">完整结果与复现</a></p>
 <h3 id="plos-jats-linked-gate">原始出版字段与语义解释交集</h3>
 <p>从 17 篇原始 JATS 文件核对文件指纹、作者顺位、ORCID 和贡献角色，再离线编译逐来源、逐人的角色索引。178 条请求沿用已知来源和子句范围，其中 89 条为可支持正例，89 条为错源绑定或单角色替换负例。角色分类在 84 条独立措辞上拟合，14 条 NISO 例句定阈值，其余 35 条例句用于测试请求。</p>
 <div class="result-table-scroll" tabindex="0" role="region" aria-label="出版字段与语义核验对照"><table>

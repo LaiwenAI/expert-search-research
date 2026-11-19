@@ -275,7 +275,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T18:30:16+08:00">2026-11-19 18:30（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T18:36:16+08:00">2026-11-19 18:36（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -595,42 +595,46 @@ html[data-theme="dark"] .agent-map {
 </ul>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p><strong>核心论点。</strong>构建首次查询即可高效、低成本运行的专家搜索框架，在等预算下找到更多有据专家，并在同等质量下降低完整首查成本。拟由智能体结合候选排序、硬约束、个人归属与未决证据，选择补召回、定向取证、复核冲突或停止。初始策略在无用户历史反馈的条件下独立验收，在线与离线迭代作为次要贡献。</p>
+<p><strong>主张。</strong>构建首查即高效、低成本的专家搜索框架。初始版本无需用户历史反馈，目标是在同预算下找到更多通过证据核验的专家，在达到同一质量门槛时降低端到端延迟和单次成功查询成本。首查框架独立验收，在线与离线更新在其冻结后单独评估。</p>
 
-<h3 id="expert-evidence-precedent">10.1 与最接近工作的区别</h3>
-<div class="plan-table" tabindex="0" role="region" aria-label="相关方法与对照">
+<h3 id="expert-evidence-precedent">10.1 方法创新在哪里</h3>
+<p><strong>把预算用于最可能改变有据推荐的动作。</strong>智能体维护每位候选的硬约束状态、证据归属及排序位置。先用轻量召回和批量核验建立初始状态，再决定补召回、定向读原文、复核归属或停止。若前两名缺少同工况实测，而第三名只差一条可验证的个人贡献证据，下一步优先检查能使第三名进入结果的来源。固定相同的候选池、核验器和预算，即可验证这个决策能否增加有据命中。</p>
+<div class="plan-table" tabindex="0" role="region" aria-label="最接近的方法和区分实验">
 <table class="study-table">
-<caption>表 4. 技术边界与对应强基线</caption>
-<thead><tr><th scope="col">已有方法</th><th scope="col">已解决的问题</th><th scope="col">本研究的区分实验</th></tr></thead>
+<caption>表 4. 最接近的方法与区分实验</caption>
+<thead><tr><th scope="col">方法</th><th scope="col">对照如何做</th><th scope="col">增益归因</th></tr></thead>
 <tbody>
-<tr><th scope="row">专家检索</th><td>由专家画像或相关文档归并得到候选排序。 <a href="https://doi.org/10.1145/1148170.1148181">Balog 等，SIGIR 2006</a></td><td>固定候选池与核验器，检验按个人归属和硬约束组织的证据能否改善有据专家排序。</td></tr>
-<tr><th scope="row">查询复杂度路由</th><td>按问题复杂度选取无检索、单步或多步策略。 <a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG，NAACL 2024</a></td><td>用只读初始查询的路由作对照，检验逐轮观察证据后再分配预算的增量。</td></tr>
-<tr><th scope="row">联合选证与层次索引</th><td>联合选择覆盖多个信息需求的段落，或在固定预算内进行粗到细取证。 <a href="https://aclanthology.org/2025.acl-long.861/">SetR，ACL 2025</a> · <a href="https://aclanthology.org/2026.emnlp-main.1348/">BEAR，EMNLP 2026</a></td><td>适配为同候选池、同预算的强对照，检验加入专家归属、逐项约束和前 K 入选影响后，是否得到更多有据推荐。</td></tr>
+<tr><th scope="row">画像与文档聚合</th><td>比较表现最好的固定画像排名及 GroundedPipeline。 <a href="https://doi.org/10.1145/1148170.1148181">专家检索</a></td><td>先固定候选，测个人归属与硬约束如何改变专家排序；再固定核验，测新候选能否成为有据推荐。</td></tr>
+<tr><th scope="row">路由与按需检索</th><td>比较只读初始查询的路由、固定批量，以及随证据更新的自适应策略。 <a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a> · <a href="https://proceedings.iclr.cc/paper_files/paper/2024/hash/25f7be9694d7b32d5cc670927b8091e1-Abstract-Conference.html">Self-RAG</a></td><td>用同一动作集合，先比较优先补缺口，再加入补证对专家入选的影响，分离排序反馈的价值。</td></tr>
+<tr><th scope="row">集合选证与树索引</th><td>同候选、同核验预算下比较逐段排序、联合选证和平面浅检索与树导航。 <a href="https://aclanthology.org/2025.acl-long.861/">SetR</a> · <a href="https://github.com/VectifyAI/PageIndex">PageIndex</a></td><td>在相同证据组织上更换决策，再固定决策更换索引，分开测量证据覆盖、读取和端到端开销。</td></tr>
+</tbody></table></div>
+<p>决策器先对照规则、轻量分类器与冻结开源模型。只有在相同误荐约束下获得额外端到端收益，才保留微调或蒸馏版本。向量微调同样以新增候选能否成为有据推荐验收。</p>
+
+<h3 id="submission-contributions">10.2 数据与指标如何成为论文贡献</h3>
+<ul>
+<li><strong>数据。</strong>从授权的企业需求与专家证据构造只改变一个条件的成对样本，例如调换证据归属、改变工况，或加入目标场景的迁移条件。原文位置和变化理由随样本保存。与等量普通改写比较，检验受控合成能否改善独立人工标注集上的表现。发布可公开的数据、分割清单、合成及基准代码。</li>
+<li><strong>指标。</strong>有据命中率以 K 为分母，专家适配、证据属于本人且全部硬约束获支持才计入分子；空位和未决计零。同步报告至少返回一位专家的查询比例，以及已推荐专家中被人工判为不适配、归属错误或缺少硬约束证据的比例。迁移适配单列，要求核对可复用机制、个人贡献与目标工况。成功查询成本用全部请求的执行及回退成本除以达到预设成功条件的请求数。</li>
+</ul>
+
+<h3 id="submission-gates">10.3 现有证据如何改变研究优先级</h3>
+<div class="plan-table" tabindex="0" role="region" aria-label="实验证据和对应研究决策">
+<table class="study-table">
+<caption>表 5. 当前结果与优先决策</caption>
+<thead><tr><th scope="col">问题</th><th scope="col">已知结果</th><th scope="col">研究决策</th></tr></thead>
+<tbody>
+<tr><th scope="row">首查能快多少</th><td>企业开发集 80 条，完整首查 P95 从 2.15 秒降至 1.18 秒，参考输出一致。 <a href="#enterprise-cross-precision-result">首查对照</a></td><td>保留这条快路径作强基线。用独立盲审确认输出质量，再用相同并发负载测成功查询成本。</td></tr>
+<tr><th scope="row">应先改调度还是核验</th><td>TREC 回放中，自适应调度相对固定轮询的有据 P@5 在理想核验下增 1.10 个百分点，模拟核验错误后降 1.01 个百分点。NLI4CT 补齐更多证据后也出现判对数下降。 <a href="experiments.html#trec-expert-evidence-replay">TREC 回放</a> · <a href="experiments.html#nli4ct-adaptive-verification">NLI4CT 对照</a></td><td>先测真实核验器的误放与漏判，再对比预算调度。记录推荐因哪一步改变，避免把取证覆盖增量当成匹配收益。</td></tr>
+<tr><th scope="row">结构化取证何时可用</th><td>PLOS 在已知来源下，字段核验把正确正例从 15／89 提至 51／89。来源需检索时，关键词线索下扩展召回将正确正例从 21／89 提至 37／89，也在缺源情境误收 8／356 次。 <a href="experiments.html#plos-jats-linked-gate">字段核验</a> · <a href="experiments.html#plos-jats-discovery">来源发现回放</a></td><td>在完整首查中记录错源、错人、语义误判及未决。字段优先用于能确认来源的证据，企业自由文本回退另作对照。</td></tr>
 </tbody></table></div>
 
-<h3 id="submission-contributions">10.2 可检验的论文贡献</h3>
-<ol>
-<li><strong>方法。</strong>对每位候选逐项记录已支持、被反证和未决的硬约束。用同一批查询的配对动作轨迹，估计一次补证能改变入选或纠正误判的概率及代价。依次移除归属、约束状态和入选影响，检验各部分的作用。开放权重决策模型和层次索引是实现选项。</li>
-<li><strong>数据。</strong>从真实企业需求和专家来源构造配对样本，只改变约束、归属或迁移条件中的一项，保留可核验的原文。按企业及证据来源隔离训练与测试，独立盲审企业样本；用公开专家检索与证据核验数据作外部对照。</li>
-<li><strong>指标。</strong>有据命中率以 K 为分母。只有专家匹配、个人归属及全部硬约束均经核验才计入分子，空位和未决项计零。另报误荐风险与覆盖率，并在同一质量门槛下比较完整首查的 P95、吞吐和单次成功查询成本。</li>
-</ol>
-
-<p>关键对照使用同一批需求、同一初始候选池和同一核验器。若前两名都缺工况实测证据，固定策略按相关性读取下一条来源；拟议策略可优先检查一条可能使第三名满足全部硬约束的证据。两条路线在相同读取预算下比较最终有据命中和误荐，再在相同质量门槛下比较完整首查开销。这样可以直接检验收益是否来自逐轮决策。</p>
-
-<h3 id="submission-gates">10.3 当前证据与投稿门槛</h3>
-<div class="plan-table" tabindex="0" role="region" aria-label="当前实验证据与投稿门槛">
-<table class="study-table">
-<caption>表 5. 哪些证据已具备，哪些仍决定投稿</caption>
-<thead><tr><th scope="col">检验</th><th scope="col">当前证据</th><th scope="col">主会长文所需证据</th></tr></thead>
-<tbody>
-<tr><th scope="row">取证与核验</th><td>NLI4CT 上，相对固定补读两轮，自适应多找齐 4 套证据，少判对 11 条。 <a href="experiments.html#nli4ct-adaptive-verification">配对实验</a></td><td>等预算提高有据专家命中，并在独立人工标注上控制误荐。按证据分散程度与直接／迁移适配分别报告。</td></tr>
-<tr><th scope="row">同预算联合选证</th><td>QASPER 篇内轻量联合选证净增 8／137 题，配对重采样区间下界为零。逐个生成段落编号的 4B 对照延迟较高。 <a href="experiments.html#qasper-set-repair">固定候选实验</a></td><td>在相同候选、核验器和输出预算下，与逐段排序及集合检索方法对照。用跨来源人工标注检验硬约束、个人归属与原有正确结果的保留。</td></tr>
-<tr><th scope="row">企业首查效率</th><td>本地完整首查 P95 降低 45%，80 条开发请求的参考输出一致。 <a href="#enterprise-cross-precision-result">首查对照</a></td><td>同等有据推荐和误荐风险下，完整首查 P95 与成本下降。保留索引、核验、回退和服务开销，公开并发负载与比较口径。</td></tr>
-<tr><th scope="row">来源与归属</th><td>结构化角色声明上的同人、同源核验同时改善质量和时延。放宽解释保留更多可能性，但在最宽阈值下有 111／178 条请求仍未决。来源未给定时，关联扩展也会增加缺源误收。 <a href="experiments.html#plos-jats-linked-gate">字段核验</a> · <a href="experiments.html#plos-source-confirmation">缺源对照</a></td><td>验证真实来源发现、字段缺失与过期，以及文本回退的整体收益。用独立人工标注比较错源、错人和语义漏判，并报告未决与误荐的权衡。</td></tr>
-<tr><th scope="row">召回到有据推荐</th><td>固定画像聚合可以低成本改善候选召回。CoF 两组的已标注正例 P@5 增量区间均跨零，引用交付未随召回提高。 <a href="experiments.html#cof-global-profile-pooling">候选与引用对照</a></td><td>对照最高表现的固定画像聚合，固定候选池比较核验与排序，再固定核验器比较召回。以独立标注检验新增候选能否满足硬约束和个人归属。</td></tr>
-<tr><th scope="row">创新归因</th><td>按缺口取证在 PLOS 跨论文子集有增益，企业开发集尚未复现覆盖提升。 <a href="experiments.html#plos-budgeted-article">跨来源实验</a></td><td>同索引、同模型、同负载比较最快固定策略及相关自适应强基线，消融后仍能解释收益；在独立企业集和公开专家检索集按查询报告区间。</td></tr>
-</tbody></table></div>
-<p><strong>投稿判断。</strong>首选 SIGIR 长文。先用开发集确定质量门槛和可接受的误荐增幅，再冻结方案。在独立盲审的企业需求与公开专家检索集上，按查询配对报告差值和置信区间。若等预算的有据命中有增益，且同等质量下的端到端延迟与成本都有下降，才能支撑首查框架的主贡献。若只复现同输出下的提速，论文主张收窄为低成本执行；若收益只出现在证据分散的需求，主张限定到该场景。在线与离线优化单独报告新增收益、退化和更新成本。 <a href="https://sigir.hosting.acm.org/general-information/fact-sheet/">SIGIR 研究范围</a></p>
+<h3 id="submission-decision">10.4 SIGIR 长文的投稿判据</h3>
+<p><strong>关键实验。</strong>在独立企业盲审集做端到端比较，在 CoF 和 TREC Enterprise 检验公开可复现的排序和来源证据；按各数据集的标注范围报告结果。开发集确定并冻结预算、质量非劣界、覆盖下限和误荐上限。测试按查询配对，报告效应量和 95% 区间，重采样时保留同企业及共享来源的分组。</p>
+<ul>
+<li><strong>首查主张成立。</strong>等预算的有据命中增量区间下界大于零；达到相同质量和风险门槛时，端到端 P95 与成功查询成本的差值区间上界均低于零；关键消融能确认收益来自哪一项机制。</li>
+<li><strong>按实验证据收窄主张。</strong>仅复现同输出提速时，定位为低成本执行。收益集中在跨来源硬约束时，限定到该需求类型，并报告简单查询与迁移场景的结果。</li>
+<li><strong>持续优化独立验收。</strong>以已冻结的首查框架为对照，在等反馈预算下报告在线与离线各自的质量增量、旧任务退化及更新成本。</li>
+</ul>
+<p>当前最接近可投稿的部分是首查提速和特定证据上的核验改进。优先完成独立企业盲审、同预算决策消融以及公开专家检索复现，这三项决定首查框架能否支撑 SIGIR 长文。 <a href="https://sigir.hosting.acm.org/general-information/fact-sheet/">SIGIR 研究范围</a></p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>
