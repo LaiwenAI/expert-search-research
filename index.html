@@ -623,7 +623,7 @@ html[data-theme="dark"] .agent-map {
 <thead><tr><th scope="col">已有工作覆盖什么</th><th scope="col">本研究需要证明什么</th><th scope="col">关键对照</th></tr></thead>
 <tbody>
 <tr><th scope="row">专家检索已有画像排序、文档聚合与证据文档返回。</th><td>在候选主题相关度接近时，联合核对硬约束与本人归属，能提高专家级推荐质量。</td><td>与最强固定画像排序、混合召回加重排及最快 GroundedPipeline 比较。固定候选和来源，去掉本人归属，测错归属和有据 P@5 的变化。 <a href="https://doi.org/10.1145/1148170.1148181">经典专家检索</a> · <a href="https://trec.nist.gov/pubs/trec15/papers/ibm-watson.ent.final.pdf">TREC 证据文档</a></td></tr>
-<tr><th scope="row">通用搜索已有按信息价值分配预算，以及按证据覆盖停止。</th><td>专家级约束缺口能指明预算应该花在哪位候选的哪项证据上，并降低错荐。</td><td>共用候选池、可执行动作、开源核验器与预算，对比固定深度、轮询、分差探测、通用信息价值路由和证据覆盖停止。再分别去掉约束、归属或成本信号。 <a href="https://arxiv.org/abs/2605.05701">双预算信息价值控制（预印本）</a> · <a href="https://arxiv.org/abs/2608.02009">HALT（预印本）</a></td></tr>
+<tr><th scope="row">通用搜索已有按信息价值分配预算，以及按证据覆盖停止。</th><td>专家级约束缺口能指明预算应该花在哪位候选的哪项证据上，并降低错荐。</td><td>共用候选池、可执行动作、开源核验器与预算，对比固定深度、轮询、分差探测、通用信息价值路由和证据覆盖停止。再分别去掉约束、归属或成本信号。 <a href="https://arxiv.org/abs/2605.05701">双预算信息价值控制（预印本）</a> · <a href="https://aclanthology.org/2026.findings-emnlp.343/">HALT（Findings of EMNLP 2026）</a></td></tr>
 <tr><th scope="row">集合选证已有联合覆盖需求的方法，树索引已有分层导航。</th><td>在相同读取量下，联合选证能跨来源补齐同一专家的条件。层次索引能以更少的原文读取找到整组证据。</td><td>固定读取结果比较逐段与联合选证，固定选证器比较平面与树索引。分别测在线读取、在线延迟和建索引成本。将规则与开源小决策模型作为对照，单测微调或离线蒸馏的增量。 <a href="https://aclanthology.org/2025.acl-long.861/">SetR</a> · <a href="https://github.com/VectifyAI/PageIndex">PageIndex</a></td></tr>
 </tbody></table></div>
 
