@@ -275,7 +275,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T23:01:51+08:00">2026-11-19 23:01（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T23:25:20+08:00">2026-11-19 23:25（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -412,11 +412,11 @@ html[data-theme="dark"] .agent-map {
           <path class="diagram-wire diagram-dashed" d="M50 88V122H99"/>
           <path class="diagram-wire diagram-dashed" d="M222 122H272V92"/>
           <rect class="diagram-node" x="10" y="48" width="80" height="40" rx="5"/>
-          <text class="diagram-text" x="50" y="62">检查来源</text><text class="diagram-text diagram-label" x="50" y="76">与本人归属</text>
+          <text class="diagram-text" x="50" y="62">确认来源</text><text class="diagram-text diagram-label" x="50" y="76">低置信查正文</text>
           <rect class="diagram-pass" x="116" y="30" width="94" height="36" rx="5"/>
           <text class="diagram-text" x="163" y="42">字段匹配</text><text class="diagram-text diagram-label" x="163" y="55">有结构化字段</text>
           <rect class="diagram-key" x="116" y="74" width="94" height="36" rx="5"/>
-          <text class="diagram-text" x="163" y="86">按声明核验</text><text class="diagram-text diagram-label" x="163" y="99">逐项查本人证据</text>
+          <text class="diagram-text" x="163" y="86">本人声明核验</text><text class="diagram-text diagram-label" x="163" y="99">门控后按需复核</text>
           <rect class="diagram-pass" x="239" y="48" width="72" height="44" rx="5"/>
           <text class="diagram-text" x="275" y="63">约束状态</text><text class="diagram-text diagram-label" x="275" y="78">支 / 反 / 未决</text>
           <rect class="diagram-warn" x="99" y="114" width="123" height="16" rx="5"/>
@@ -494,7 +494,7 @@ html[data-theme="dark"] .agent-map {
 
 <h3>4.4 搜索决策与停止（Search Decisions and Stopping，RQ3）</h3>
 <p id="expert-action-routing-prior-work">首轮保留完整需求，以小候选池做批量核验。同一来源的读取可共享。优先为同一专家组合跨来源证据，按每位专家的约束缺口分配读取预算。维护仅凭已验证证据得到的 Top-K，以及考虑未决证据后仍可能得到的结果。两者一致时结束当前池的核验。候选覆盖不足时仍可补召回，预算耗尽时返回已有证据和未决条件。</p>
-<p>当结果仍可能变化时，先判断一次读取能否补足特定专家缺失的证据，再估计该证据会如何改变排序及错荐风险。用固定轮询和优先补足已有支持的规则对照开源决策器。归属与来源确认后，优先查可定位的发布者字段。只有原文可用时，把硬约束写成可以逐条查证的声明，并保留目标专家和上下文。记录支持状态及原文位置。缺源、归属待查或文本证据不足时保留未决，发现明确反证时更新状态。补读优先处理会改变入选结果且仍有可定位证据的约束。将固定深度、按分差扩读和按约束缺口取证置于同一预算对照。多个合理解释并存时，仅返回各解释均支持的专家。</p>
+<p>当结果仍可能变化时，先判断一次读取能否补足特定专家缺失的证据，再估计该证据会如何改变排序及错荐风险。用固定轮询和优先补足已有支持的规则对照开源决策器。先确认来源，低置信时才查候选来源的局部正文。随后核对本人归属，有结构化字段时优先查字段。只有原文可用时，把硬约束拆成可查声明，保留目标专家和上下文，以轻量门控处理明确项，仅复核未决项。来源分数和归属阈值分别校准。记录支持状态及原文位置。缺源、归属待查或文本证据不足时保留未决，发现明确反证时更新状态。补读优先处理会改变入选结果且仍有可定位证据的约束。将固定深度、按分差扩读和按约束缺口取证置于同一预算对照。多个合理解释并存时，仅返回各解释均支持的专家。</p>
 
 <h3>4.5 在线与离线迭代（Online and Offline Improvement，RQ4–RQ5）</h3>
 <p>冻结初始框架后，在线复用经核查的纠错；离线将回放轨迹中的问题归因到需求理解、证据判断、排序或调度，再更新策略。在同等反馈预算下检验新任务收益、旧任务退化及更新成本。</p>
@@ -581,7 +581,7 @@ html[data-theme="dark"] .agent-map {
 <tr id="owner-budget-result"><th scope="row">按作者组织取证</th><td>给定来源与结构化字段，固定核验器和两次读取预算，按同一作者组织取证找回 34／59 条正例，来源轮询为 28／59；两者各误荐 1／59 条。 <a href="experiments.html#candidate-role-and-owner-routing">同预算对照</a></td><td>在来源开放与专家池扩大的条件下复测，保留轮询作强对照。</td></tr>
 <tr id="followup-coverage-result"><th scope="row">等预算取证决策</th><td>CoF 四组共 240 条查询。SIGIR、KDD、SciRepEval、NIPS 在对齐引用数量后，学习策略相对「优先补足已有支持」增加的带引用正例依次为 +2、−1、+1、0。</td><td>保留规则基线。联合报告覆盖与错荐，将来源误判和本人职责误判分开。 <a href="experiments.html#matched-evidence-routing">阶段对照</a></td></tr>
 <tr id="source-expansion-risk-result"><th scope="row">来源扩展的迁移风险</th><td>独立 PLOS 测试中，前四、直接扩展和冻结词汇门控均找回 9／12 对，缺源误收分别为 0、7、3／24。迁移到 LitSearch，冻结阈值接受了全部扩展候选。 <a href="experiments.html#source-expansion-transfer-proof">独立复测</a></td><td>保留前四关联作对照。对新增来源分别测正确补证、已标注错误和未标注结果。</td></tr>
-<tr id="attribution-risk-result"><th scope="row">字段与正文的归属核验</th><td>独立 PLOS 的 46 篇论文中，难措辞下按作者查字段接受 34／46 条正确归属、3／46 条错归属，成对 P95 为 8.50 ms。20 篇旧版贡献正文中，轻量模型裁到本人句子后，冻结阈值下接受 0／20 条正确归属。4B 接受 15／20 条正确归属和 3／20 条错归属，P95 为 23.71 ms。</td><td>有字段时保留本人范围。只有正文时，以覆盖率和错荐率共同校准，证据不足保留未决。 <a href="experiments.html#claim-attribution-stage">归属核验对照</a></td></tr>
+<tr id="attribution-risk-result"><th scope="row">来源确认与本人归属</th><td>72 条指定论文查询的独立复验中，首选来源的正文回退使无错荐的查询数从 30／72 增至 37／72（摘录）、20／72 增至 27／72（关键词），缺源时错源次数未增加。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0f2035b761b7c500b6ffb6c93d8b02f64568233c/benchmarks/plos-body-transfer-v1">独立复验</a></td><td>把正文回退作为低成本来源对照。扩查到第四候选未增加无错荐查询。扩召回前先定位是来源漏召回还是本人归属漏判。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/2ae7607bbcf33459cba53456df12df7a76940553/benchmarks/plos-source-expansion-depth-v1">深度对照</a></td></tr>
 <tr id="attribution-load-result"><th scope="row">归属核验的排队成本</th><td>已定位的 45 篇 PLOS 说明，冻结字符门控少送 17／45 次 4B 调用。每秒实际到达约 53 次时，模块 P95 从 353.60 降至 71.35 ms。门控在两批说明上的错归属变化方向不同。</td><td>在固定格式下保留快速门控作候选。分开验证少调用、合批输出一致性及端到端延迟。 <a href="experiments.html#attribution-queue-stage">独立复测与负载对照</a></td></tr>
 <tr><th scope="row">公开全候选召回</th><td>CoF KDD／SciRepEval 中，画像中心与最佳来源等权融合将已标注正例 Recall@10 从 13.64%／50.98% 提至 18.60%／53.59%，检索 P95 均低于 10 ms。 <a href="experiments.html#cof-global-profile-pooling">完整对照</a></td><td>保留完整需求及原始画像融合作强基线。居中融合与按方法词摘句均未在两组提高前五名带引用正例。 <a href="experiments.html#cof-candidate-to-citation">候选到引用对照</a></td></tr>
 <tr id="enterprise-cross-precision-result"><th scope="row">企业完整首查</th><td>80 条开发请求、52,667 条来源。按需双精度复核相对 BF16 回退基线将首查 P95 从 2.15 降至 1.18 秒。三条路线的资格条件、候选顺序、专家排序、引用与未决状态一致。 <a href="experiments.html#enterprise-cross-precision-search">配对实验</a></td><td>四组回环负载的客户端 P95 降低 48.1%–57.2%，320 对响应一致。独立盲审和持续负载下的容量仍需验证。 <a href="experiments.html#enterprise-cross-precision-load">负载对照</a></td></tr>
@@ -644,7 +644,7 @@ html[data-theme="dark"] .agent-map {
 <tr><th scope="row">80 条企业开发请求上，首查 P95 从 2.15 降到 1.18 秒，排序、引用和未决状态一致。</th><td>把 1.18 秒路径用作端到端强基线。配对验证新方法的质量收益与新增成本。123 个候选需求组仍需独立标注。 <a href="#enterprise-cross-precision-result">企业首查</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b829a5152f25ef8b9f44c3a7f05f4c8a3af45469/benchmarks/enterprise-blind-panel-v1">面板审计</a></td></tr>
 <tr><th scope="row">CoF 四组在相同引用覆盖下，学习策略相对规则的正例变化为 +2、−1、+1、0，区间均含零。</th><td>规则作为首查决策基线。事后最优取证可将带引用正例从 57 增到 83，而穷尽同一候选池的现有来源仅在该上限上再加 2 条。优先区分候选漏召回、原文缺证、读到却漏判，再决定是否训练决策器。 <a href="experiments.html#matched-evidence-routing">决策与上限诊断</a></td></tr>
 <tr><th scope="row">PLOS 受控取证中，按作者读取命中 34／59，轮询为 28／59，各有 1 条误荐。QASPER 相同 16 段预算下，联合选证完整命中 51／137，逐段排序为 43／137。</th><td>优先试验跨来源联合选证与本人归属的组合。这两项结果分别来自受控取证和已知论文的段落任务，须在全库召回下复核有据专家排序。 <a href="#owner-budget-result">归属对照</a> · <a href="experiments.html#qasper-set-repair">选证对照</a></td></tr>
-<tr><th scope="row">PLOS 指定研究检索中，隐藏目标来源后，来源门控把摘录查询的错源推荐从 40／45 降到 0／45；在目标来源存在时，有据作者覆盖从 41／45 降到 31／45。</th><td>扩召回与停止策略必须同时看错源和覆盖。企业盲审单列缺源与错认来源，以正确来源到手后仍出错的案例评估核验器。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/a928c832df74db47a88b497f68fd0967273fab75/benchmarks/plos-open-legacy-attribution-v1">来源门控对照</a></td></tr>
+<tr><th scope="row">PLOS 的来源回退在独立题组提高无错荐覆盖。在同一题组的后续归属对照中，仅收紧未决项的核验阈值，无错荐查询从 37／72 增至 46／72、27／72 增至 33／72，两组模型调用数与原路径相同。</th><td>把来源回退和分开校准的归属阈值纳入强基线。选择性追加调用与扩查均未在该题组增加无错荐覆盖；后续须证明决策相对校准规则有额外收益，并用开放企业专家检索验证。 <a href="#attribution-risk-result">来源复验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/8f07ca90420834295b9b2a3af99edfa918d9b5c0/benchmarks/plos-selective-author-recheck-v1">归属交叉对照</a></td></tr>
 </tbody></table></div>
 
 <h3 id="submission-decision">10.4 投稿门槛与结果对应的主张（Submission Criteria）</h3>
