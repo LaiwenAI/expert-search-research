@@ -203,6 +203,9 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 .verifier-grid .metric-value{display:grid;grid-template-columns:minmax(0,1fr) 4em;align-items:center;gap:6px}
 .verifier-grid .metric-value strong{text-align:right;font-variant-numeric:tabular-nums}
 .verifier-grid .metric-value i{background:var(--accent)}
+#shared-source-confirmation-result{scroll-margin-top:72px}
+#shared-source-confirmation-result .metric-value{grid-template-columns:minmax(0,1fr) auto}
+#shared-source-confirmation-result .metric-value strong{white-space:nowrap}
 .verifier-grid .error i{background:#a76231}
 html[data-theme="dark"] .verifier-grid .error i{background:#e3a176}
 @media(max-width:580px){.verifier-grid{gap:8px;font-size:11px}.verifier-grid .metric-value{display:flex;flex-direction:column-reverse;align-items:stretch;gap:3px}}
@@ -275,7 +278,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-20T06:01:05+08:00">2026-11-20 06:01（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-20T06:37:25+08:00">2026-11-20 06:37（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -314,7 +317,7 @@ html[data-theme="dark"] .agent-map {
 <p><strong>阶段依赖：</strong>P0 评测 → P1 开源强基线 → P2 轻量决策、索引与表示 → P3 初始框架端到端比较；P4 单独验证反馈驱动的后续迭代。</p>
 <h2>4. 研究内容与技术路线（Methodology）</h2>
 <h3 id="foundation-title">4.1 初始搜索框架（Initial Search Framework，RQ1–RQ3）</h3>
-<p>首次查询依赖离线整理的专家证据和本人职责线索。在线召回后，轻量决策器在固定核验名额内保留候选或作有限替换，再批量核验原文短窗。核验结果写入逐人逐约束状态，供停止或定向补查使用。</p>
+<p>首次查询依赖离线整理的专家证据和本人职责线索。在线召回后，轻量决策器在固定核验名额内保留候选或作有限替换，再批量核验候选证据。同一查询内，同一来源的匹配判断可复用。本人归属和逐项职责仍分别核对，结果供停止或定向补查使用。</p>
 <figure class="agent-map" id="base-agent-architecture" aria-labelledby="agent-map-title">
   <figcaption id="agent-map-title">图 1. 首次查询的专家搜索 Agent <span>拟议架构 · 首轮单批核验</span></figcaption>
   <svg class="diagram-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -445,17 +448,17 @@ html[data-theme="dark"] .agent-map {
       </g>
       <g id="agent-map-verify">
         <rect class="diagram-card" width="320" height="166" rx="9"/>
-        <text class="diagram-text diagram-title" x="13" y="18">首轮核验 · 原文短窗单批送入</text>
+        <text class="diagram-text diagram-title" x="13" y="18">首轮单批核验 · 同源结果复用</text>
         <g class="diagram-center">
           <rect class="diagram-key" x="13" y="33" width="294" height="69" rx="7"/>
           <path class="diagram-wire" d="M101 68H115"/>
           <path class="diagram-wire" d="M204 68H218"/>
           <rect class="diagram-node" x="21" y="49" width="80" height="38" rx="5"/>
-          <text class="diagram-text" x="61" y="62">来源</text><text class="diagram-text diagram-label" x="61" y="76">任务与工况</text>
+          <text class="diagram-text" x="61" y="62">来源确认</text><text class="diagram-text diagram-label" x="61" y="76">每篇一次</text>
           <rect class="diagram-node" x="115" y="49" width="89" height="38" rx="5"/>
-          <text class="diagram-text" x="159.5" y="62">本人</text><text class="diagram-text diagram-label" x="159.5" y="76">身份与分工</text>
+          <text class="diagram-text" x="159.5" y="62">绑定本人</text><text class="diagram-text diagram-label" x="159.5" y="76">身份与分工</text>
           <rect class="diagram-node" x="218" y="49" width="80" height="38" rx="5"/>
-          <text class="diagram-text" x="258" y="62">职责</text><text class="diagram-text diagram-label" x="258" y="76">原文支持</text>
+          <text class="diagram-text" x="258" y="62">逐项核约束</text><text class="diagram-text diagram-label" x="258" y="76">原文或字段</text>
           <path class="diagram-branch" d="M160 102V112H58M160 112H262"/>
           <path class="diagram-wire" d="M58 112V121"/>
           <path class="diagram-wire" d="M160 112V121"/>
@@ -500,7 +503,7 @@ html[data-theme="dark"] .agent-map {
     </defs>
   </svg>
 
-  <svg class="diagram diagram-wide" viewBox="0 0 740 1088" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。在线双路召回后，轻量决策保留候选或只换末位，短窗按固定名额单批核验。记录每位专家对各约束的支持、反证与未决。需要时选择同源补证、全库补召回或冲突与迁移核验，并重新核验。后续版本独立评估在线和离线反馈。">
+  <svg class="diagram diagram-wide" viewBox="0 0 740 1088" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。在线双路召回后，轻量决策保留候选或只换末位，短窗按固定名额单批核验。同一来源只确认一次，再核对每位专家的本人职责，记录支持、反证与未决。需要时选择同源补证、全库补召回或冲突与迁移核验，并重新核验。后续版本独立评估在线和离线反馈。">
     <rect class="diagram-zone" x="8" y="5" width="724" height="175" rx="13"/>
     <text class="diagram-text diagram-zone-title" x="30" y="23">离线准备 · 教师画像、论文、专利与项目</text>
     <rect class="diagram-zone" x="8" y="202" width="724" height="748" rx="13"/>
@@ -532,7 +535,7 @@ html[data-theme="dark"] .agent-map {
     <text class="diagram-text diagram-label" x="384" y="965">交互与运行轨迹</text>
   </svg>
 
-  <svg class="diagram diagram-narrow" viewBox="0 0 374 1785" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。在线双路召回后，轻量决策保留候选或只换末位，短窗按固定名额单批核验。记录每位专家对各约束的支持、反证与未决。需要时选择同源补证、全库补召回或冲突与迁移核验，并重新核验。后续版本独立评估在线和离线反馈。">
+  <svg class="diagram diagram-narrow" viewBox="0 0 374 1785" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。在线双路召回后，轻量决策保留候选或只换末位，短窗按固定名额单批核验。同一来源只确认一次，再核对每位专家的本人职责，记录支持、反证与未决。需要时选择同源补证、全库补召回或冲突与迁移核验，并重新核验。后续版本独立评估在线和离线反馈。">
     <rect class="diagram-zone" x="4" y="4" width="366" height="342" rx="11"/>
     <text class="diagram-text diagram-zone-title" x="27" y="23">离线准备 · 教师画像与多源证据</text>
     <rect class="diagram-zone" x="4" y="370" width="366" height="1250" rx="11"/>
@@ -564,7 +567,7 @@ html[data-theme="dark"] .agent-map {
     <text class="diagram-text diagram-label" x="201" y="1641">交互与运行轨迹</text>
   </svg>
 </figure>
-<p>职责索引记录证据出处，用于找人和定位原文。只有核验确认来源、本人和约束均对应时，才写入已证状态。首查实验共用核验器与固定名额。条件回退单独比较每多一轮带来的正例、错荐和开销。</p>
+<p>职责索引记录证据出处，用于找人和定位原文。只有核验确认来源、本人和约束均对应时，才写入已证状态。首查实验共用核验器与固定名额。结构化职责字段完整时，直接核对同一专家的各项记录。缺源、身份歧义或字段不足时保留未决，按需定向补查。</p>
 <h3 id="demand-taxonomy">4.2 需求理解（Demand Understanding，RQ1）</h3>
 <p>将需求转为技术方向、硬约束、软偏好及可追溯的原文片段。区分现有工况、既往资质和未来交付。如果不同解释会改变推荐，则保留解释并核对其共同依据，必要时请求澄清。</p>
 
@@ -586,7 +589,7 @@ html[data-theme="dark"] .agent-map {
 <caption>表 1. 开源模型的对照设计</caption>
 <thead><tr><th scope="col">组件</th><th scope="col">对照</th><th scope="col">检验问题</th></tr></thead>
 <tbody>
-<tr><th scope="row">决策器</th><td>语法规则、线性监督、MLP、冻结 Qwen、Qwen LoRA</td><td>比较保留或替换候选的收益。多轮动作选择另测。</td></tr>
+<tr><th scope="row">决策器</th><td>语法规则、线性监督、MLP、冻结 Qwen、Qwen LoRA</td><td>评价候选替换与来源确认。对比同批小模型、监督与蒸馏决策头、双篇比较，并独立校准目标场景的弃答阈值。</td></tr>
 <tr><th scope="row">向量编码</th><td>Qwen3-Embedding 与 BGE-M3，分别对照冻结与微调</td><td>企业需求与专家证据的对齐能否提高等候选预算下的召回？</td></tr>
 <tr><th scope="row">证据核验</th><td>结构化归属加职责核验、冻结联合核验器、近邻职责对照训练</td><td>固定候选与原文窗口，对比跨格式的正确接受、错人、错职责、未决与核验成本。</td></tr>
 <tr><th scope="row">训练信号</th><td>监督微调与开源教师蒸馏对照；通过验证后再试离线强化学习</td><td>收益是否来自更好的证据定位与动作选择，能否抵消训练成本？</td></tr>
@@ -649,6 +652,16 @@ html[data-theme="dark"] .agent-map {
 </div>
 <p>含来源检索、作者核验与输出序列化。跨线索、索引深度和来源可用性共 1,440 次配对，来源和作者输出一致。 <a href="experiments.html#batched-source-role-proof">对照与复现</a></p>
 </figure>
+<figure class="research-roadmap latency-figure" id="shared-source-confirmation-result">
+<figcaption>图 5. 同源复用对核验质量与延迟的影响</figcaption>
+<p>PLOS 贡献声明实验。各线索组沿用同一批候选，均有 69 个正确作者–论文组合。</p>
+<div class="verifier-grid" role="table" aria-label="联合逐人核验和按来源确认的 P95 与正例数">
+<div role="row" style="display:contents"><span role="columnheader" class="metric-title">线索</span><span role="columnheader" class="metric-title">逐人联合核验</span><span role="columnheader" class="metric-title">同源确认＋本人字段</span></div>
+<div role="row" style="display:contents"><span role="rowheader">标题片段</span><span role="cell" class="metric-value"><span class="latency-track" aria-hidden="true"><i style="--bar:90.6%;background:var(--muted)"></i></span><strong>82.8 ms · 34</strong></span><span role="cell" class="metric-value"><span class="latency-track" aria-hidden="true"><i style="--bar:42.3%"></i></span><strong>38.7 ms · 65</strong></span></div>
+<div role="row" style="display:contents"><span role="rowheader">摘要片段</span><span role="cell" class="metric-value"><span class="latency-track" aria-hidden="true"><i style="--bar:100%;background:var(--muted)"></i></span><strong>91.4 ms · 8</strong></span><span role="cell" class="metric-value"><span class="latency-track" aria-hidden="true"><i style="--bar:40.0%"></i></span><strong>36.6 ms · 32</strong></span></div>
+</div>
+<p>每格为串行 P95 与找对的组合数。线索由论文原词构造，词项匹配在此对照中最强。移除目标来源后，同源复用方案分别在 8／120 与 6／120 条请求中接受了其他来源。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/6621c5508bc623861319eaf132a8470cf0e340c8/benchmarks/plos-compound-contributor-search-v1">完整对照与复现</a></p>
+</figure>
 <div class="plan-table" tabindex="0" role="region" aria-label="公开数据集关键对照结果">
 <table class="study-table">
 <caption>表 3. 首查架构的实验依据</caption>
@@ -679,7 +692,7 @@ html[data-theme="dark"] .agent-map {
 
 <h2>8. 研究实施与开源（Implementation and Release）</h2>
 <figure class="research-roadmap">
-<figcaption>图 5. 研究阶段与交付依赖</figcaption>
+<figcaption>图 6. 研究阶段与交付依赖</figcaption>
 <ol class="roadmap-main" aria-label="首查研究阶段">
 <li><span>P0</span><strong>冻结评测</strong><small>数据、标注与质量门槛</small></li>
 <li><span>P1</span><strong>建立强基线</strong><small>开源模型与可复现检索</small></li>
@@ -702,10 +715,10 @@ html[data-theme="dark"] .agent-map {
 </ul>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p><strong>投稿判断。</strong>主线是无需历史反馈、首次查询就具备竞争力的低延迟、低成本专家搜索。最有潜力的创新是<strong>用本人职责证据同时约束首轮找人、选证和后续搜索</strong>。关键假设是，预索引能把更多正确专家放进同一批核验，逐人逐约束的状态能进一步减少无收益的补查。现有公开结果支持前一机制在名称准确时的局部增益，企业结果支持同输出提速。SIGIR 长文的决定性证据是冻结首查框架后，相对共享快速执行层的强基线，同时改善等成本质量与等质量效率。 <a href="https://sigir2027.org/pages/submit-full.html">SIGIR 2027 长文征稿</a></p>
+<p><strong>投稿判断。</strong>主线是无需历史反馈、首次查询就具备竞争力的低延迟、低成本专家搜索。最有潜力的创新是<strong>用本人职责证据同时约束首轮找人、选证和后续搜索</strong>。核心主张需要证明，职责索引能在固定核验名额下多找对人，而且将同一来源的确认与各人职责核对拆开，能在控制错源后减少重复推理。现有 PLOS 对照支持拆分的局部收益，来源阈值迁移和真实企业质量仍待验证。SIGIR 长文的决定性证据是冻结首查框架后，相对共享快速执行层的强基线，同时改善等成本质量与等质量效率。 <a href="https://sigir2027.org/pages/submit-full.html">SIGIR 2027 长文征稿</a></p>
 
 <h3 id="expert-evidence-precedent">10.1 主方法的创新与边界（Method Novelty）</h3>
-<p>以「专家 × 硬约束」维护证据状态，将<em>来源涉及该任务</em>、<em>证据归属该专家</em>和<em>证据支持该约束</em>分开核验。首轮先从索引提议候选和证据窗口，再按固定名额批量核验。首轮原型最多替换末位一人。补查需判断还有哪些证据可能改变合格专家名单，以及新增核验是否值得。同一篇论文中，若甲完成了目标工况测试、乙只参与方案设计，乙的工况经验仍待查。可在原文补查乙的分工，也可从职责索引查找有实测证据的其他人。已知池内排序稳定后，仍须检查全库召回风险，再决定停止或保留未决。</p>
+<p>以「专家 × 硬约束」维护证据状态，将<em>来源涉及该任务</em>、<em>证据归属该专家</em>和<em>证据支持该约束</em>分开核验。首轮先从索引提议候选和证据窗口，再按固定名额批量核验。候选原型最多替换末位一人。同一来源在本次查询只确认一次，完整的本人职责字段可逐项核对。来源无法确认或证据不完整时，保留未决，再判断补查能否改变合格专家名单。同一篇论文中，若甲完成了目标工况测试、乙只参与方案设计，乙的工况经验仍待查。可在原文补查乙的分工，也可从职责索引查找有实测证据的其他人。已知池内排序稳定后，仍须检查全库召回风险，再决定停止或保留未决。</p>
 <div class="plan-table" tabindex="0" role="region" aria-label="最接近的先行工作与检验设计">
 <table class="study-table">
 <caption>表 4. 方法的新意如何验证</caption>
@@ -716,7 +729,7 @@ html[data-theme="dark"] .agent-map {
 <tr><th scope="row">Top-K 按需探查</th><td>Minimal Probing 已用分数界限减少昂贵探查。本研究要验证区分漏召回、个人证据缺失与反证后，跨候选补召回和原候选补证的选择是否更有效。共享候选入口和动作预算，对照按分差探查与单批核验。 <a href="https://experts.illinois.edu/en/publications/minimal-probing-supporting-expensive-predicates-for-top-k-queries/">Minimal Probing</a></td></tr>
 <tr><th scope="row">联合选证与覆盖停止</th><td>SetR 已做联合选证，HALT 已用证据覆盖决定停止。对照「同一专家覆盖全部硬约束后停止」与「同一覆盖规则加全库召回风险判断」，检查加入后者能否减少提前停止造成的漏荐。 <a href="https://aclanthology.org/2025.acl-long.861/">SetR</a> · <a href="https://aclanthology.org/2026.findings-emnlp.343/">HALT</a></td></tr>
 </tbody></table></div>
-<p>开源决策器、嵌入微调和 PageIndex 式导航是实现选择。分别用规则决策、冻结向量和同源浅索引做替换，量化它们各自对真实成本和最终推荐的贡献。</p>
+<p>开源决策器、嵌入微调和 PageIndex 式导航是实现选择。RankGPT 已验证过排名蒸馏。本研究应证明小模型在同样的真实错荐门槛下能否接近双篇核验，并报告目标格式变化时的阈值迁移。 <a href="https://aclanthology.org/2023.emnlp-main.923/">RankGPT</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c4d445a470580b2a9b454f80678ab5f0c0e10483/benchmarks/litsearch-distilled-pair-decision-v1">轻量决策对照</a></p>
 
 <h3 id="submission-contributions">10.2 数据、指标与持续学习（Complementary Contributions）</h3>
 <ul>
@@ -732,7 +745,7 @@ html[data-theme="dark"] .agent-map {
 <thead><tr><th scope="col">已有证据</th><th scope="col">研究判断与下一步</th></tr></thead>
 <tbody>
 <tr><th scope="row">执行提速可复现</th><td>企业开发集同输出串行 P95 由 1.155 秒降至 1.076 秒。所有强基线共享这套快速核验实现，另测可持续负载下的端到端效率。 <a href="#enterprise-packed-role-load-result">首查与负载</a></td></tr>
-<tr><th scope="row">本人取证有条件地有效</th><td>来源已知且同为两次读取时，按作者取证保留 34／59 个正例，来源轮询保留 28／59 个，各误荐 1 个。优先复测分开判断归属与职责，覆盖项目分工、论文贡献声明和自由文本。 <a href="#owner-budget-result">同预算取证</a> · <a href="#open-role-gate-result">跨格式核验</a></td></tr>
+<tr><th scope="row">拆分核验有收益，错源须先控制</th><td>PLOS 同源复用提高了正确组合数并降低延迟，目标缺失时仍有错源。LitSearch 的双篇比较以更高延迟换得较少未标注替代来源。蒸馏在严格校准档保住了小模型速度，但冻结阈值移到 CSFCube 后几乎全弃答。优先做目标域校准与缺源对照，再测试本人职责绑定。 <a href="#shared-source-confirmation-result">拆分核验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/d38d01fa9badfbc8ef82f765c2bbcdb2b3d2f836/benchmarks/litsearch-contrastive-confirmation-v1">作者问题</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/231a70bc92721cf3e1d77961ce903667104e284e/benchmarks/csfcube-distilled-facet-transfer-v1">迁移对照</a></td></tr>
 <tr><th scope="row">首轮候选决策优先</th><td>索引增益主要来自换入更合适的人，普通监督可减少需要补审的候选，对照训练并未进一步改善。优先在新来源中核验替换的证据质量。等预算的通用两阶段分流未超过单批对照，多轮路径保留为受限回退。 <a href="#indexed-role-first-batch">固定预算首轮对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/312d95b9a192eb14039d85b1fbc751bd340a2f74/benchmarks/redocred-recovery-dispatch-v1">多轮对照</a></td></tr>
 <tr><th scope="row">企业新推荐待确认</th><td>全库补召回让 3 条开发需求获得暂定推荐。先盲审新增候选，再用独立样本检查收益来自专家漏召回还是原候选缺证，决定扩充职责索引或改善取证。 <a href="#enterprise-routed-review-result">企业首查对照</a></td></tr>
 </tbody></table></div>
@@ -741,7 +754,7 @@ html[data-theme="dark"] .agent-map {
 <ol>
 <li><strong>锁定独立评测。</strong>CoF 检验公开全库专家排序，TREC 检验公开专家及支持文档，企业隔离留出集检验逐人逐约束的真实推荐。两位审阅者独立判断合并去重后的候选与引文，经仲裁定标。用开发集预先确定效应门槛、覆盖下限、错荐上限与样本量。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b829a5152f25ef8b9f44c3a7f05f4c8a3af45469/benchmarks/enterprise-blind-panel-v1">企业盲审面板</a></li>
 <li><strong>质量与效率各通过一项主检验。</strong>同成本时，有据 P@5 配对增益的 95% 置信区间下界须超过预设最小效应。质量非劣且满足覆盖和错荐门槛时，端到端 P95 与每成功查询成本差值的区间上界均须低于零。将决策、失败和回退计入全链路成本，并在独立负载下测排队延迟。</li>
-<li><strong>按消融结果确定论文主张。</strong>依次移除本人职责索引、候选替换、选证和后续搜索决策。主检验通过且消融能把收益归因于搜索机制，才主张首查质量与效率同时改善。若收益只在预先定义的多约束需求复现，限定论文适用范围。若只复现同输出提速，论文主张限定为执行效率。</li>
+<li><strong>按消融结果确定论文主张。</strong>分别消融本人职责索引、候选替换、同源确认复用和定向回退。将错源、错人和同一人的错职责分别计入。主检验通过且消融能把收益归因于搜索机制，才主张首查质量与效率同时改善。若收益只在预先定义的多约束需求复现，限定论文适用范围。若只复现同输出提速，论文主张限定为执行效率。</li>
 </ol>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
