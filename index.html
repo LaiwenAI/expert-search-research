@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T09:13:14+08:00">2026-11-19 09:13（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T09:51:41+08:00">2026-11-19 09:51（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
 <ul class="research-challenges">
@@ -240,7 +240,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <rect x="288" y="477" width="514" height="61" rx="8" fill="#263d46"/>
 <g fill="#20343d" font-size="16" font-weight="700">
 <text x="34" y="47">企业需求</text>
-<text x="148" y="47" font-size="13" font-weight="500">拆出硬约束与偏好 · 一次轻量召回建立初始候选</text>
+<text x="148" y="47" font-size="13" font-weight="500">保留硬约束的可能解释 · 一次轻量召回建立候选</text>
 <text x="34" y="151">当前状态 · 专家 × 约束</text>
 <text x="342" y="151">轻量 Decision Model</text>
 <text x="625" y="140">可选工具动作</text>
@@ -276,9 +276,9 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 </div>
 </div>
 <h3>4.2 按证据缺口调度</h3>
-<p id="expert-action-routing-prior-work">排名与引用可证不变时精确停止。其余查询按预期增益与耗时取证，并校准误放风险。</p>
+<p id="expert-action-routing-prior-work">排名与引用可证不变时精确停止。其余查询按预期增益与耗时取证，核对跨来源的互补证据。</p>
 <h3 id="demand-taxonomy">4.3 企业需求理解</h3>
-<p>提取任务、工况和硬约束，并区分既往资质与未来交付要求。</p>
+<p>区分工况、既往资质与未来交付。歧义会改变推荐时保留多种解释，核对共同证据或请求澄清。</p>
 <h3>4.4 专家证据索引与能力迁移</h3>
 <p>索引按「专家 → 能力 → 来源 → 原文」组织。篇内用平面精确检索，跨来源对照 PageIndex 式导航。仅对证据覆盖完整的约束预筛。</p>
 <p id="expertise-transfer-protocol">直接经验不足时，核对可迁移的方法、专家个人贡献及适配缺口。数值约束需有同对象、同指标、同工况的实测依据。</p>
@@ -299,11 +299,11 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <h3 id="experiment-results">7.2 主实验</h3>
 <p id="implemented-agent-architecture">同语料、硬件、缓存和流量，比较 BM25、稠密召回、混合重排、GroundedPipeline、最优固定深度及自适应截断。深度与阈值仅用验证集选择。</p>
 <ul>
-<li><strong>等质量。</strong>预设非劣界与误放上限，比较端到端 P95、吞吐和成功查询成本。计入回退，单列训练与建索引。</li>
+<li><strong>等质量。</strong>预设质量非劣界、覆盖率下限和误放上限，比较端到端 P95、吞吐和成功查询成本。计入回退，单列训练与建索引。</li>
 <li><strong>等预算。</strong>比较专家 P@K、硬约束误放率和证据归属 P@K。后者只计原文支持且归属正确的推荐，直接与迁移适配分别计分。</li>
 </ul>
 <h3 id="experiment-comparison-chart">7.3 消融与稳健性</h3>
-<p id="experiment-ablation-results"><span id="experiment-grounding">消融索引、编码器、决策和回退。</span>改变索引覆盖、请求负载和证据可见性，盲审新专家及替代来源。</p>
+<p id="experiment-ablation-results"><span id="experiment-grounding">消融索引、编码器、决策和回退。</span>用已知约束定位解析误差。改变证据可见性和请求负载，盲审新专家及替代来源。</p>
 <h3 id="experiment-continual-results">7.4 迭代实验</h3>
 <p>等反馈预算下对照冻结、仅在线、仅离线和联合更新，测新任务收益、旧任务退化及更新成本。</p>
 <h2>8. 实施顺序（Implementation Plan）</h2>
@@ -314,13 +314,14 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <li><a href="https://research.ibm.com/publications/optimal-aggregation-algorithms-for-middleware">Fagin et al. · Optimal Aggregation Algorithms for Middleware</a></li>
 <li><a href="https://aclanthology.org/2024.naacl-long.389/">Jeong et al. · Adaptive-RAG</a></li>
 <li><a href="https://doi.org/10.1145/3626772.3657864">Meng et al. · Ranked List Truncation</a></li>
+<li><a href="https://aclanthology.org/2025.acl-long.861/">Lee et al. · Shifting from Ranking to Set Selection</a></li>
 <li><a href="https://proceedings.iclr.cc/paper_files/paper/2024/hash/25f7be9694d7b32d5cc670927b8091e1-Abstract-Conference.html">Asai et al. · Self-RAG</a></li>
 <li><a href="https://github.com/VectifyAI/PageIndex">VectifyAI · PageIndex</a></li>
 </ul></details>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p id="expert-evidence-precedent"><strong>创新检验。</strong>用证据缺口决定何时取证、查谁、何时停止，检验能否同时保住专家适配、硬约束和证据归属。</p>
-<p><strong>SIGIR／The Web Conference。</strong>同输出提速已有组件证据。投稿门槛是公开全文与独立企业盲审均达到质量和误放要求，并超过最强固定深度与自适应截断的首查效率。 <a href="experiments.html#plan-evidence">研究依据</a></p>
+<p id="expert-evidence-precedent"><strong>创新检验。</strong>联合调度需求消歧与跨来源取证，检验能否以更低的首查成本提供有归属证据的专家推荐。</p>
+<p><strong>SIGIR／The Web Conference。</strong>投稿需在公开基准和独立企业盲审上通过各自质量门槛，并在约束推荐覆盖和误放的条件下，证明首查效率优于最强基线。 <a href="experiments.html#plan-evidence">研究依据</a></p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>

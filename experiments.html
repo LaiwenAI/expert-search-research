@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T09:13:14+08:00">2026-11-19 09:13（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T09:51:41+08:00">2026-11-19 09:51（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -19,8 +19,10 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <section aria-labelledby="plan-evidence"><h2 id="plan-evidence">研究计划依据</h2>
 <div class="result-table-scroll"><table><thead><tr><th scope="col">对照</th><th scope="col">已观察到的结果</th><th scope="col">对主实验的影响</th></tr></thead><tbody>
 <tr><th scope="row">QASPER 全文</th><td>全量重排、有界停止、固定 32 段的 P95 为 292、234、132 ms，完整证据率同为 69.9%。</td><td>篇内保留精确召回。把固定深度纳入效率对照，另报顺序一致性。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7293064b0246180c231df42352f2f701fb472555/benchmarks/qasper-certified-reranking-v1">重排实验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c4736cc55cfa9937c466e16ff8ce77e4a826008f/benchmarks/qasper-section-bounds-v1">索引实验</a></td></tr>
+<tr><th scope="row">QASPER 证据组合</th><td>在 232 条可评估查询中，固定重排 32 段后返回 170 组完整证据，同一候选池的标注上限为 219 组。试验中的补证策略未超过逐段排序。</td><td>分别评估候选池是否含完整证据，以及最终选择能否保留。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/cee2040d86e99b7c0f846103ae739b3c24fbdc7b/benchmarks/qasper-final-evidence-sets-v1">选证对照</a></td></tr>
 <tr><th scope="row">CoF 评审检索</th><td>同一并发配置下，延迟取证与最快固定批次策略同输出，P95 为 3.08 对 3.61 s（约 10 请求／秒）。</td><td>控制缓存和批策略，同时报告低负载与过载。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/70deba449b8ce5c314cf05a4a897f2f15ec51f10/benchmarks/cof-verification-microbatch-v1">并发实验</a></td></tr>
 <tr><th scope="row">TREC 专家与引用</th><td>在已判定来源池、理想核验条件下，最省检查的固定策略距理论下界约 1.0%–1.4%。</td><td>重点验证来源选择和真实核验成本。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7293064b0246180c231df42352f2f701fb472555/benchmarks/trec-check-lower-bound-v1">下界回放</a></td></tr>
+<tr><th scope="row">PLOS 作者归属</th><td>角色已知时 120 条全部返回正确排序与引用，自然语言最佳方案为 60 条。多解释的宽阈值在 28 条给出推荐的查询中观察到 0 次误放，另有 89 条未决。</td><td>分开测解析与归属，并联合报告推荐覆盖率、误放率和未决率。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/78151673214393f86334eefed9097bbbd0586548/benchmarks/plos-live-expert-bundles-v1">首查实测</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/3e384d80ae95612ecefb8f5caa279743c35860b0/benchmarks/plos-robust-role-bundles-v1">歧义对照</a></td></tr>
 <tr><th scope="row">企业需求</th><td>冻结 123 个候选需求组，尚无人工判定。原 20 条用于可行性验证。</td><td>复核企业归属和近重复，再按误放上限确定正式样本量。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b829a5152f25ef8b9f44c3a7f05f4c8a3af45469/benchmarks/enterprise-blind-panel-v1">样本审计</a></td></tr>
 </tbody></table></div>
 </section>
