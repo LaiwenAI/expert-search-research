@@ -162,11 +162,8 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 .demand-taxonomy-table{font-size:12.5px}.demand-taxonomy-table caption{caption-side:top;text-align:left;font-size:13px;font-weight:650;padding-bottom:9px;color:var(--ink)}.demand-taxonomy-table td:first-child{min-width:145px}.demand-taxonomy-table td{line-height:1.6}
 
 .agent-diagram-scroll{overflow-x:auto;overscroll-behavior-inline:contain}
-.agent-diagram-scroll:focus-visible,.implementation-note summary:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.agent-diagram-scroll:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
 .agent-diagram-scroll .agent-diagram{min-width:690px}
-.implementation-note{margin:14px 0 27px;padding:10px 14px;border:1px solid var(--line);border-radius:5px;background:var(--soft)}
-.implementation-note summary{cursor:pointer;font-weight:650;font-size:14px}
-.implementation-note p{font-size:14px;margin:10px 0 4px}
 @media print{.agent-diagram-scroll .agent-diagram{min-width:0}}
 
 .foundation-overview{margin:16px 0 23px}
@@ -195,7 +192,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T12:05:25+08:00">2026-11-19 12:05（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T12:13:23+08:00">2026-11-19 12:13（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -308,7 +305,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <p>在线复用已核查的纠错，离线回放反馈更新策略。</p>
 <h2>5. 模型对照</h2>
 <p>决策器对照规则、MLP、冻结 Qwen 与 LoRA；编码器对照冻结及微调的 Qwen3-Embedding 与 BGE-M3。</p>
-<details><summary>训练路线</summary><p>比较有无开源教师蒸馏；监督学习通过验证后再试离线强化学习。</p></details>
+<p><strong>训练路线</strong>　比较有无开源教师蒸馏；监督学习通过验证后再试离线强化学习。</p>
 <h2>6. 预期贡献</h2>
 <p><strong>主贡献</strong>　首查高效、低成本的证据搜索框架。<br>
 <strong>次贡献</strong>　在线与离线迭代。基准配套约束驱动的需求合成与证据归属评测。</p>
@@ -322,17 +319,16 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <tr id="experiment-continual-results"><th scope="row">持续迭代</th><td>等反馈预算比较冻结、在线、离线与联合更新；衡量新任务收益、旧任务退化及更新成本。</td></tr>
 </tbody>
 </table>
-<details><summary>数据、基线与评测控制</summary>
+<h3>数据、基线与评测控制</h3>
 <ul>
 <li id="judgment-coverage"><strong>数据</strong>　CoF、TREC Enterprise（排名），MERIT（适配），QASPER、EvidenceBench、LitSearch（取证），CRediT（归属）。企业样本按企业与近重复组拆分，双人盲审、分歧仲裁。</li>
 <li id="implemented-agent-architecture"><strong>对照</strong>　领域先验、BM25、稠密与混合检索、GroundedPipeline、固定批量、最短约束优先、自适应截断。统一语料及负载，取证实验固定候选。</li>
 <li><strong>质量控制</strong>　合成样本与等量常规改写对照；用人工约束定位解析误差；复查候选替换及证据可见性变化。超参数在验证集确定，训练和建索引成本单列。</li>
 </ul>
-</details>
 <h2>8. 开源产物</h2>
 <p>检索方法、数据合成、基准代码及可公开的数据。</p>
 <h2>9. 参考文献（References）</h2>
-<details><summary>展开核心参考</summary><ul class="refs">
+<ul class="refs">
 <li><a href="https://doi.org/10.1145/1148170.1148181">Balog et al. · Formal Models for Expert Finding</a></li>
 <li><a href="https://research.ibm.com/publications/optimal-aggregation-algorithms-for-middleware">Fagin et al. · Optimal Aggregation Algorithms for Middleware</a></li>
 <li><a href="https://doi.org/10.1145/564691.564731">Chang and Hwang · Minimal Probing for Top-K Queries</a></li>
@@ -341,7 +337,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <li><a href="https://aclanthology.org/2025.acl-long.861/">Lee et al. · Shifting from Ranking to Set Selection</a></li>
 <li><a href="https://proceedings.iclr.cc/paper_files/paper/2024/hash/25f7be9694d7b32d5cc670927b8091e1-Abstract-Conference.html">Asai et al. · Self-RAG</a></li>
 <li><a href="https://github.com/VectifyAI/PageIndex">VectifyAI · PageIndex</a></li>
-</ul></details>
+</ul>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
 <p id="expert-evidence-precedent"><strong>SIGIR／The Web Conference 投稿判据</strong>　跨来源取证与归属联合决策须通过公开基准与企业盲审，并在等质量下超过最强固定与自适应基线。 <a href="experiments.html#plan-evidence">研究依据</a></p>
