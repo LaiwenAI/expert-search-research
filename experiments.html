@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T19:43:03+08:00">2026-11-19 19:43（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T22:02:34+08:00">2026-11-19 22:02（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -166,6 +166,19 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">方法指令，按词摘三句</th><td>14.46%／45.75%</td><td>1.15%／6.78%</td></tr>
 </tbody></table></div>
 <p>固定引用预算的补救实验也观察到，KDD 新增的 17 位已标注正例中，有 12 位排在第 6 至 10 位；这 12 位各核验最多六条来源时，均未达到两条支持的要求。这个诊断仍需独立证据标注区分源文本缺证和模型漏判。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/18e6d1272ce1aa476702e4953a874d73f999fe66/benchmarks/cof-evidence-rescue-v1">补证诊断</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/42dfbdba240e0632c4a961920832ee47a134bea2/benchmarks/cof-contrastive-shortlist-v1">居中融合</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/18e6d1272ce1aa476702e4953a874d73f999fe66/benchmarks/cof-method-query-view-v1">完整查询与摘句</a></p>
+<h3 id="matched-evidence-routing">等读取与等引用覆盖的取证决策</h3>
+<p>固定十位候选、每人最多三篇来源，先查每人的首篇，再允许五次额外读取。直接回归净收益会减少有据推荐。分别估计补证成功和专家相关性后，四组共 240 条查询的引用覆盖恢复。表中逐条查询裁到两种方法的共同引用数量，相关性用公开评审标签，引用用冻结模型核验。</p>
+<div class="plan-table" tabindex="0" role="region" aria-label="相同引用覆盖下的专家推荐">
+<table class="study-table">
+<thead><tr><th scope="col">评测组</th><th scope="col">共同引用位置</th><th scope="col">带引用正例，规则／学习</th><th scope="col">已标注的带引用负例，规则／学习</th></tr></thead>
+<tbody>
+<tr><th scope="row">SIGIR</th><td>12</td><td>3／5</td><td>9／7</td></tr>
+<tr><th scope="row">KDD</th><td>268</td><td>11／10</td><td>38／37</td></tr>
+<tr><th scope="row">SciRepEval</th><td>82</td><td>18／19</td><td>17／19</td></tr>
+<tr><th scope="row">NIPS</th><td>72</td><td>23／23</td><td>23／24</td></tr>
+</tbody></table></div>
+<p>各组配对区间均含零，三个迁移面板的缺失标注仍容许正负两向变化。保留固定轮询和优先补足已有支持两条基线。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/5b6bd16ad2664babe6ac08f83b7d025da3c765b3/benchmarks/cof-factorized-followup-v1">代码与配对结果</a></p>
+<p>在独立 PLOS 快照的两来源任务上，额外确认完整结果句的来源保留了 53 条有据推荐，错来源由 9 降至 5，P95 由约 9 升至 21 ms。同一阈值拒绝了关键词组全部 40 条有据推荐。两种职责模型取交集也过滤掉 12 条有据推荐，减少 3 条职责误荐。按线索完整度分别报覆盖和错误，强复核作为条件分支。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/2f91931cef1e91bb6e2fcb96f10e634ca4ae197f/benchmarks/plos-confirm-source-and-role-v1">来源和本人职责的交叉对照</a></p>
 <h3 id="rank-sensitive-cost">共享读取、停止与真实耗时</h3>
 <p>在 TREC 2006 Enterprise 的 49 个主题中，允许替换等量支持引用、保持专家顺序后，优先读共享来源减少约 5% 的读取，核验次数无明确变化。CoF KDD 实测中，共享取证相对延迟核验将平均模型调用由 6.70 降至 5.63，P95 由 218.39 降至 214.11 ms。按需分词少构造 21.1% 的提示词输入，与预分词共享取证的专家顺序、引用相同，P95 为 214.89 ms。前者是标注池回放，后者包含在线模型推理且采用顺序负载。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/ed857c1c19892a215e7b737575f51b9b517ee062/benchmarks/trec-reorder-witnesses-v1">TREC 回放</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7601acccf56743f963ce3394c3b12709163ce784/benchmarks/cof-lazy-frontier-v1">CoF 实测</a></p>
 <h3 id="cof-typed-cost">二次核验的覆盖、延迟与输出一致性</h3>
