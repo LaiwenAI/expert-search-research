@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T15:57:06+08:00">2026-11-19 15:57（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T16:32:57+08:00">2026-11-19 16:32（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -158,6 +158,14 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>在 1,000 字符上限下，五组要点覆盖依次为 31.47%、31.36%、29.20%、28.85%、30.10%。质心组评分约 45 个叶子和 21 个质心，平面组平均 168 句；质心保留的候选只覆盖约 69.49% 的标注要点。按论文分组的描述性 95% 区间显示质心相对全量变化为 −4.22 至 −0.44 个百分点。选证阶段 P95 为 0.062 → 0.035 毫秒，计入共享查询编码为 7.992 → 7.973 毫秒。质心增量构建约 0.037 秒，增加约 25 MB 向量。计时与覆盖限于预热的已知单篇，不含跨来源召回或语义核验。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/a03244ff61f740b996cdb04338afc4ec8136315e/experiments/retrieval/evidencebench_block_navigation.py">复现实验代码</a></p>
 </section>
 <section aria-labelledby="verification"><h2 id="verification">来源核验、冲突与停止</h2>
+<h3 id="enterprise-cross-precision-search">按需双精度复核的完整首查</h3>
+<p>在 80 条企业开发请求、52,667 条来源上，三条路线均独立执行需求解析、向量编码、全库检索、来源核验与排序。预热后串行计时。按需复核仅在 BF16 缓存结果接近资格边界时调用 FP16，遇到分歧或低置信度再回退到完整 BF16。</p>
+<div class="result-table-scroll"><table><thead><tr><th scope="col">路线</th><th scope="col">首查 P50</th><th scope="col">首查 P95</th><th scope="col">整块回退数</th></tr></thead><tbody>
+<tr><th scope="row">独立 BF16</th><td>571 ms</td><td>5.48 s</td><td>直接全量</td></tr>
+<tr><th scope="row">BF16 回退</th><td>194 ms</td><td>2.15 s</td><td>25</td></tr>
+<tr><th scope="row">按需双精度复核</th><td>195 ms</td><td>1.18 s</td><td>7</td></tr>
+</tbody></table></div>
+<p>相对 BF16 回退，P95 提速倍数的配对 95% 区间为 1.01–2.72。三条路线的参考输出一致。两份解析模型均常驻，计时未含建索引、服务排队或网络。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/69136a73684f900581e241a817544e127f8d674d/benchmarks/enterprise-cross-precision-search-v1">完整实验与复现</a></p>
 <h3 id="enterprise-multi-criterion">企业多条件的核验、证据范围与补召回</h3>
 <p>80 条需求上，按缺口核验把核验阶段 P95 从 176.2 降至 147.4 ms，重现两轮完整核验输出。25 条多条件需求上，增加来源与窗口多核验 2,934 次，支持项从 46 增至 56，完整支持仍为 3 位专家；分条件融合增至 4 位，支持需求始终为 2 条。19 条私有盲审尚无人工判断。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/157a6e87a345c96045c049304eb8f29fa53ba626/benchmarks/enterprise-gap-verification-v1">缺口核验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/9ee8e58517509827babc31b19cea432ca5a741a7/benchmarks/enterprise-evidence-extent-v1">证据范围</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c170622e2291813fd6f768f089f780e307620730/benchmarks/enterprise-criterion-recall-v1">分条件召回</a></p>
 <h3 id="scifact-verifier-scope">公开核验、语种差异与领域微调</h3>
