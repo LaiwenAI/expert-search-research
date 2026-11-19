@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T18:13:15+08:00">2026-11-19 18:13（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T18:30:16+08:00">2026-11-19 18:30（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -204,6 +204,18 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">读取给定章节全文</th><td>500／500</td><td>333／500</td><td>21.67</td><td>77.57 ms</td></tr>
 </tbody></table></div>
 <p>相对固定两轮，自适应少读 13.2%，正确率差值为 −2.2 个百分点，按关联试验分组的配对 95% 区间为 −4.7 至 −0.2。该段的延迟范围止于单次核验，完整首查仍需纳入检索与专家归属。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/6d7a7a2b7f1490bd6f8916325f9450f1e3c5a70d/benchmarks/nli4ct-adaptive-depth-v1">补读策略</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/db833987ffa4bdfece7e0d8fe2e3a553ef294fca/benchmarks/nli4ct-adaptive-reader-v1">核验实验</a></p>
+<h3 id="plos-jats-linked-gate">原始出版字段与语义解释交集</h3>
+<p>从 17 篇原始 JATS 文件核对文件指纹、作者顺位、ORCID 和贡献角色，再离线编译逐来源、逐人的角色索引。178 条请求沿用已知来源和子句范围，其中 89 条为可支持正例，89 条为错源绑定或单角色替换负例。角色分类在 84 条独立措辞上拟合，14 条 NISO 例句定阈值，其余 35 条例句用于测试请求。</p>
+<div class="result-table-scroll" tabindex="0" role="region" aria-label="出版字段与语义核验对照"><table>
+<thead><tr><th scope="col">路线</th><th scope="col">正确返回／89</th><th scope="col">负例误荐／89</th><th scope="col">未决／178</th><th scope="col">P95</th></tr></thead>
+<tbody>
+<tr><th scope="row">通用文本核验</th><td>15</td><td>6</td><td>0</td><td>25.49 ms</td></tr>
+<tr><th scope="row">角色单点预测＋字段核验</th><td>64</td><td>7</td><td>13</td><td>8.65 ms</td></tr>
+<tr><th scope="row">校准阈值下的解释交集</th><td>51</td><td>1</td><td>38</td><td>8.66 ms</td></tr>
+<tr><th scope="row">最宽校准阈值</th><td>12</td><td>0</td><td>111</td><td>8.67 ms</td></tr>
+</tbody></table></div>
+<p>文本对照按同人排名取两份声明，未返回专家时记作空结果。字段路线的在线计时包含单批查询编码和输出组装，XML 校验和编译为离线开销。样本复用了 11 个论文对，阈值为小样本经验值。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/f5b5f7e958e1360a74669d1affb1e48ffaca203d/benchmarks/plos-jats-linked-gate-v1">完整结果与复现</a></p>
+
 <h3 id="plos-source-confirmation">跨论文补召回与缺源确认</h3>
 <p>在 171 篇论文中选择 25 对具有相同出版社 ORCID 的论文。每对使用结果短句与关键词，分别测试原始两篇均存在，以及掩蔽其中一篇。按 15 个关联分量留一校准，文本复核仅看到查询线索与候选文本。</p>
 <div class="result-table-scroll"><table><thead><tr><th scope="col">路线</th><th scope="col">有源找回／50</th><th scope="col">缺源误收／100</th><th scope="col">文本模型调用／150</th></tr></thead><tbody>

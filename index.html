@@ -275,7 +275,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T18:13:15+08:00">2026-11-19 18:13（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T18:30:16+08:00">2026-11-19 18:30（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -402,18 +402,18 @@ html[data-theme="dark"] .agent-map {
           <path class="diagram-wire" d="M72 70H84"/>
           <path class="diagram-wire" d="M150 70H158V50H168"/><path class="diagram-wire" d="M158 70V92H168"/>
           <path class="diagram-wire" d="M232 50H239V72H248"/><path class="diagram-branch" d="M232 92H239V72"/>
-          <path class="diagram-wire diagram-dashed" d="M117 92V119H280V94"/>
+          <path class="diagram-wire diagram-dashed" d="M117 92V124H280V94"/>
           <rect class="diagram-node" x="10" y="48" width="62" height="44" rx="5"/>
           <text class="diagram-text" x="41" y="64">原文短窗</text><text class="diagram-text diagram-label" x="41" y="80">可扩读</text>
           <rect class="diagram-key" x="84" y="48" width="66" height="44" rx="5"/>
-          <text class="diagram-text" x="117" y="64">来源匹配</text><text class="diagram-text diagram-label" x="117" y="80">独立确认</text>
+          <text class="diagram-text" x="117" y="64">来源·归属</text><text class="diagram-text diagram-label" x="117" y="80">先行确认</text>
           <rect class="diagram-key" x="168" y="35" width="64" height="30" rx="5"/>
-          <text class="diagram-text diagram-label" x="200" y="50">支持 / 反证</text>
+          <text class="diagram-text diagram-label" x="200" y="50">字段核验</text>
           <rect class="diagram-key" x="168" y="77" width="64" height="30" rx="5"/>
-          <text class="diagram-text diagram-label" x="200" y="92">个人归属</text>
+          <text class="diagram-text diagram-label" x="200" y="92">文本核验</text>
           <rect class="diagram-pass" x="248" y="50" width="64" height="44" rx="5"/>
           <text class="diagram-text" x="280" y="66">回写状态</text><text class="diagram-text diagram-label" x="280" y="82">证据与排序</text>
-          <text class="diagram-text diagram-label" x="160" y="110">来源未确认</text>
+          <text class="diagram-text diagram-label" x="185" y="117">来源或归属未确认</text>
         </g>
       </g>
       <g id="agent-map-result">
@@ -442,7 +442,7 @@ html[data-theme="dark"] .agent-map {
     </defs>
   </svg>
 
-  <svg class="diagram diagram-wide" viewBox="0 0 740 835" role="img" aria-label="拟议的首次查询框架。离线专家证据树提供检索来源；在线双路召回初始化约束状态。决策模型可继续取证，独立核对来源、语义支持与个人归属。来源未确认时回写未决状态。决策模型也可停止并输出。在线纠错和离线回放供后续版本迭代。">
+  <svg class="diagram diagram-wide" viewBox="0 0 740 835" role="img" aria-label="拟议的首次查询框架。离线专家证据树提供检索来源；在线双路召回初始化约束状态。决策模型可继续取证，先核对来源和个人归属，再按证据类型走字段核验或文本核验。来源或归属未确认时回写未决状态。决策模型也可停止并输出。在线纠错和离线回放供后续版本迭代。">
     <rect class="diagram-zone" x="8" y="182" width="724" height="502" rx="13"/>
     <text class="diagram-text diagram-zone-title" x="30" y="204">首查 Agent · 在线决策回路</text>
     <path class="diagram-wire diagram-main" d="M350 75H390"/><path class="diagram-wire diagram-main" d="M550 142V163H293V224"/><path class="diagram-wire diagram-main" d="M350 292H390"/><path class="diagram-wire diagram-main" d="M477 358V392"/><path class="diagram-wire diagram-main" d="M390 465H350"/>
@@ -460,7 +460,7 @@ html[data-theme="dark"] .agent-map {
     <text class="diagram-text diagram-label" x="384" y="702">交互与运行轨迹</text>
   </svg>
 
-  <svg class="diagram diagram-narrow" viewBox="0 0 374 1336" role="img" aria-label="拟议的首次查询框架。离线专家证据树提供检索来源；在线双路召回初始化约束状态。决策模型可继续取证，独立核对来源、语义支持与个人归属。来源未确认时回写未决状态。决策模型也可停止并输出。在线纠错和离线回放供后续版本迭代。">
+  <svg class="diagram diagram-narrow" viewBox="0 0 374 1336" role="img" aria-label="拟议的首次查询框架。离线专家证据树提供检索来源；在线双路召回初始化约束状态。决策模型可继续取证，先核对来源和个人归属，再按证据类型走字段核验或文本核验。来源或归属未确认时回写未决状态。决策模型也可停止并输出。在线纠错和离线回放供后续版本迭代。">
     <rect class="diagram-zone" x="4" y="333" width="366" height="851" rx="11"/>
     <text class="diagram-text diagram-zone-title" x="27" y="354">首查 Agent · 在线决策回路</text>
     <path class="diagram-wire diagram-main" d="M187 140V167"/><path class="diagram-wire diagram-main" d="M187 301V316H323V374"/><path class="diagram-wire diagram-main" d="M187 508V540"/><path class="diagram-wire diagram-main" d="M114 674V711"/><path class="diagram-wire diagram-main" d="M187 845V876"/>
@@ -486,7 +486,7 @@ html[data-theme="dark"] .agent-map {
 <p id="expertise-transfer-protocol">直接经验不足时，核对源领域的方法机制、专家个人贡献和目标场景的适配条件，标明待验证的差异。数值硬约束需有同对象、同指标、同工况的实测依据。</p>
 
 <h3>4.4 搜索决策与停止（Search Decisions and Stopping，RQ3）</h3>
-<p id="expert-action-routing-prior-work">先对少量来源做批量核验，再按证据缺口选择补召回、定向取证或复核归属。先确认来源，再依据原文分别判断支持、反证与证据不足。针对未决约束，比较补读原文、切换核验器和停止。用配对动作轨迹分别估计新增证据、误判风险与额外时延，校准停止门槛。语义证据不足或预算耗尽时标明相应未决项。</p>
+<p id="expert-action-routing-prior-work">先对少量来源做批量核验，再按证据缺口选择补召回、定向取证或复核归属。先确认来源与个人归属。可追溯的发布者声明优先做字段核验，其余证据依据原文区分支持、反证与证据不足。存在多种合理的需求解释时，仅返回各解释共同支持的专家。针对未决约束，比较补读原文、切换核验器和停止。用配对动作轨迹分别估计新增证据、误判风险与额外时延，校准停止门槛。语义证据不足或预算耗尽时标明相应未决项。</p>
 
 <h3>4.5 在线与离线迭代（Online and Offline Improvement，RQ4–RQ5）</h3>
 <p>冻结初始框架后，在线复用经核查的纠错；离线将回放轨迹中的问题归因到需求理解、证据判断、排序或调度，再更新策略。在同等反馈预算下检验新任务收益、旧任务退化及更新成本。</p>
@@ -562,6 +562,7 @@ html[data-theme="dark"] .agent-map {
 <tr><th scope="row">NLI4CT 自适应补读</th><td>500 条给定来源的测试中，自适应比固定补读两轮多找齐 4 套证据，但判对数从 322 降至 311，核验 P95 从 41.09 降至 37.57 ms。 <a href="experiments.html#nli4ct-adaptive-verification">对照</a></td><td>分别验收证据覆盖与核验判定，将判定风险纳入停止策略。</td></tr>
 <tr><th scope="row">PLOS 跨来源取证</th><td>四次读取预算下，按缺口取证在跨论文子集找回 308／764 个参考专家位置，固定顺序为 246／764；全库未见增益。 <a href="experiments.html#plos-budgeted-article">对照</a></td><td>按证据是否分散分层评估增益。</td></tr>
 <tr><th scope="row">跨论文来源确认</th><td>25 对论文上的扩展召回将正确来源对从 30／50 提至 40／50，缺源误收由 3／100 增至 8／100。只复核扩展候选时为 31／50 与 4／100。 <a href="experiments.html#plos-source-confirmation">缺源对照</a></td><td>关联扩展负责补召回。来源是否匹配、证据是否归属于同一人分别核验。</td></tr>
+<tr><th scope="row">结构化归属核验</th><td>PLOS 同一批 178 条配对请求上，查验原始出版字段并对解释取交集，正确正例从 15／89 提至 51／89，负例误荐从 6／89 降至 1／89，P95 从 25.49 降至 8.66 ms。 <a href="experiments.html#plos-jats-linked-gate">字段核验对照</a></td><td>适用于字段可核验且来源和身份已确认的情况。企业自由文本上的覆盖与误荐仍待检验。</td></tr>
 <tr><th scope="row">公开全候选召回</th><td>CoF KDD／SciRepEval 中，画像中心与最佳来源等权融合将已标注正例 Recall@10 从 13.64%／50.98% 提至 18.60%／53.59%，检索 P95 均低于 10 ms。 <a href="experiments.html#cof-global-profile-pooling">完整对照</a></td><td>扩大的候选池应纳入强基线。前五且附模型选中引用的已标注正例比例在两组均下降，需单独检验召回收益能否转化为有据推荐。</td></tr>
 <tr id="enterprise-cross-precision-result"><th scope="row">企业完整首查</th><td>80 条开发请求、52,667 条来源。按需双精度复核相对 BF16 回退基线将首查 P95 从 2.15 降至 1.18 秒。三条路线的资格条件、候选顺序、专家排序、引用与未决状态一致。 <a href="experiments.html#enterprise-cross-precision-search">配对实验</a></td><td>四组回环负载的客户端 P95 降低 48.1%–57.2%，320 对响应一致。独立盲审和持续负载下的容量仍需验证。 <a href="experiments.html#enterprise-cross-precision-load">负载对照</a></td></tr>
 <tr><th scope="row">企业多条件需求</th><td>25 条需求中，加深来源和窗口后，支持项由 46 增至 56，完全获支持的专家仍为 3 位。分条件召回增至 4 位，仍只覆盖 2 条需求。 <a href="experiments.html#enterprise-multi-criterion">对照</a></td><td>用盲审区分缺证、漏判与误放。</td></tr>
@@ -625,7 +626,7 @@ html[data-theme="dark"] .agent-map {
 <tr><th scope="row">取证与核验</th><td>NLI4CT 上，相对固定补读两轮，自适应多找齐 4 套证据，少判对 11 条。 <a href="experiments.html#nli4ct-adaptive-verification">配对实验</a></td><td>等预算提高有据专家命中，并在独立人工标注上控制误荐。按证据分散程度与直接／迁移适配分别报告。</td></tr>
 <tr><th scope="row">同预算联合选证</th><td>QASPER 篇内轻量联合选证净增 8／137 题，配对重采样区间下界为零。逐个生成段落编号的 4B 对照延迟较高。 <a href="experiments.html#qasper-set-repair">固定候选实验</a></td><td>在相同候选、核验器和输出预算下，与逐段排序及集合检索方法对照。用跨来源人工标注检验硬约束、个人归属与原有正确结果的保留。</td></tr>
 <tr><th scope="row">企业首查效率</th><td>本地完整首查 P95 降低 45%，80 条开发请求的参考输出一致。 <a href="#enterprise-cross-precision-result">首查对照</a></td><td>同等有据推荐和误荐风险下，完整首查 P95 与成本下降。保留索引、核验、回退和服务开销，公开并发负载与比较口径。</td></tr>
-<tr><th scope="row">来源与归属</th><td>扩大同人关联能找回更多来源，也增加缺源误收。现有文本门控尚未在相同误收水平下提高召回。 <a href="experiments.html#plos-source-confirmation">来源实验</a></td><td>用错源、同人异文和缺源配对样本，验证来源确认与归属判定能否减少误荐。按不同来源数报告收益与额外核验成本。</td></tr>
+<tr><th scope="row">来源与归属</th><td>结构化角色声明上的同人、同源核验同时改善质量和时延。放宽解释保留更多可能性，但在最宽阈值下有 111／178 条请求仍未决。来源未给定时，关联扩展也会增加缺源误收。 <a href="experiments.html#plos-jats-linked-gate">字段核验</a> · <a href="experiments.html#plos-source-confirmation">缺源对照</a></td><td>验证真实来源发现、字段缺失与过期，以及文本回退的整体收益。用独立人工标注比较错源、错人和语义漏判，并报告未决与误荐的权衡。</td></tr>
 <tr><th scope="row">召回到有据推荐</th><td>固定画像聚合可以低成本改善候选召回。CoF 两组的已标注正例 P@5 增量区间均跨零，引用交付未随召回提高。 <a href="experiments.html#cof-global-profile-pooling">候选与引用对照</a></td><td>对照最高表现的固定画像聚合，固定候选池比较核验与排序，再固定核验器比较召回。以独立标注检验新增候选能否满足硬约束和个人归属。</td></tr>
 <tr><th scope="row">创新归因</th><td>按缺口取证在 PLOS 跨论文子集有增益，企业开发集尚未复现覆盖提升。 <a href="experiments.html#plos-budgeted-article">跨来源实验</a></td><td>同索引、同模型、同负载比较最快固定策略及相关自适应强基线，消融后仍能解释收益；在独立企业集和公开专家检索集按查询报告区间。</td></tr>
 </tbody></table></div>
