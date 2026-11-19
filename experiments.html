@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T13:23:39+08:00">2026-11-19 13:23（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T13:31:51+08:00">2026-11-19 13:31（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -115,6 +115,8 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>实际到达 276.57 请求／秒的回放中，默认 BF16 微批的实测吞吐为 274.17 和 272.52 请求／秒，FP32 为 119.85 和 123.90 请求／秒；同两组 P95 分别从 43.25 和 55.29 毫秒升至 1,764.72 和 1,634.38 毫秒。全量 FP32 提供了数值稳定性对照，固定 BF16 词元位置也暂未显示跨集合稳定收益。后续以已标注相关性、来源支持及吞吐联合评估局部高精度或批次实现；同序同引用和字符串逐字节一致作为两种独立的复现指标。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/7b0ec45d818b258bc20fdab23eecb01b9a052940/experiments/retrieval/cof_batch_encoder_precision.py">数值精度消融代码</a> · <a href="https://docs.pytorch.org/docs/2.15/notes/numerical_accuracy.html#batched-computations-or-slice-computations">PyTorch 数值精度说明</a></p>
 </section>
 <section aria-labelledby="action-selection"><h2 id="action-selection">证据选择与决策模型</h2>
+<h3 id="qasper-section-relation-graph">章节引导与段落关系选证</h3>
+<p>在已知论文内，保持 16 段交叉编码预算，比较平面召回和章节引导，再对照关系图选证。章节引导在既有面板上均为 79／105，在另取的可评问题上是 35／48 对平面 34／48。校准将关系权重设为零，强制启用后各组完整证据数均减少。在后一个面板上，平面 16 段和 32 段均为 34／48，P95 分别为 76.3 和 122.0 ms。该结果继续支持把固定浅深度纳入强对照。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/fe8b11d0247e8177bcfd82b38cf604c030933116/benchmarks/qasper-section-relation-graph-v1">两组样本、汇总与复现</a></p>
 <h3 id="merit-evidence-dispatch">MERIT 自评标签下的证据读取</h3>
 <p>610 条论文—评审者自评按标题分组，231 条拟合、134 条校准、245 条测试。各组用同一冻结开源模型。固定前两篇、全量、置信度补读和学习补读的准确率分别为 70.61%、68.16%、67.35%、66.94%，P95 分别为 149.0、237.3、266.8、241.6 ms。两种补读的平均延迟较全量低，但串行重读抬高了 P95。全量的正类 F1 最高（67.77%）；固定前两篇的准确率差值区间包含零。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/89f30cba02b1f4579aa41d204c2443c0e18adb3b/benchmarks/merit-evidence-dispatch-v1">六组对照与复现</a></p>
 <h3 id="merit-prefix-dispatch">补读的上下文复用与单次选深</h3>
