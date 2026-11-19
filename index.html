@@ -198,6 +198,14 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 @media(max-width:520px){.study-table{min-width:0;overflow-wrap:anywhere}.study-table th[scope="row"]{min-width:0}.study-table th,.study-table td{padding:7px}.latency-bars li{grid-template-columns:minmax(108px,1.1fr) minmax(43px,2fr) 2.65em;gap:6px;font-size:12px}}
 
 
+.verifier-grid{display:grid;grid-template-columns:minmax(86px,.9fr) repeat(2,minmax(0,1.55fr));gap:8px 14px;align-items:center;font-size:13px}
+.verifier-grid .metric-title{font-weight:700}
+.verifier-grid .metric-value{display:grid;grid-template-columns:minmax(0,1fr) 4em;align-items:center;gap:6px}
+.verifier-grid .metric-value strong{text-align:right;font-variant-numeric:tabular-nums}
+.verifier-grid .metric-value i{background:var(--accent)}
+.verifier-grid .error i{background:#a76231}
+html[data-theme="dark"] .verifier-grid .error i{background:#e3a176}
+@media(max-width:580px){.verifier-grid{gap:8px;font-size:11px}.verifier-grid .metric-value{display:flex;flex-direction:column-reverse;align-items:stretch;gap:3px}}
 .agent-map {
   --graph-ink:#175c55; --graph-surface:#edf7f3; --graph-line:#a8c8c0;
   --graph-blue:#eaf2fa; --graph-gold:#fff0d7; --graph-stroke:#54857c;
@@ -303,7 +311,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T15:05:32+08:00">2026-11-19 15:05（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T15:11:22+08:00">2026-11-19 15:11（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -428,11 +436,11 @@ html[data-theme="dark"] .agent-map {
       </section>
       <section class="agent-graph agent-verify">
         <h5>证据核验与回写</h5>
-        <svg viewBox="0 0 260 115" role="img" aria-label="原文分别做约束蕴含与个人归属核验，回写证据、排名和预算。">
+        <svg viewBox="0 0 260 115" role="img" aria-label="原文分别做支持、反证与个人归属核验，回写证据、排名和预算。">
           <path class="edge" d="M129 29V39H69V46"/><path class="edge" d="M129 29V39H192V46"/>
           <path class="edge" d="M69 74V84H110V90"/><path class="edge" d="M192 74V84H151V90"/>
           <rect class="box" x="75" y="3" width="110" height="26" rx="6"/><text x="130" y="16">原文 / 声明</text>
-          <rect class="blue" x="15" y="47" width="108" height="27" rx="5"/><text x="69" y="60.5">约束蕴含</text>
+          <rect class="blue" x="15" y="47" width="108" height="27" rx="5"/><text x="69" y="60.5">支持 / 反证</text>
           <rect class="blue" x="137" y="47" width="110" height="27" rx="5"/><text x="192" y="60.5">个人归属</text>
           <rect class="accent" x="37" y="91" width="186" height="24" rx="5"/><text x="130" y="103">证据 · 排名 · 预算</text>
         </svg>
@@ -475,7 +483,7 @@ html[data-theme="dark"] .agent-map {
 <p id="expertise-transfer-protocol">直接经验不足时，核对源领域的方法机制、专家个人贡献和目标场景的适配条件，标明待验证的差异。数值硬约束需有同对象、同指标、同工况的实测依据。</p>
 
 <h3>4.4 搜索决策与停止（Search Decisions and Stopping，RQ3）</h3>
-<p id="expert-action-routing-prior-work">先对少量来源做批量核验，再按证据缺口选择补召回、定向取证或复核归属。轻量分数用于安排核验顺序。需求解析只在资格边界附近复算；排序和引用的不变条件限于候选与来源快照固定、证据假设明确的情形。预算耗尽时标明未决项。</p>
+<p id="expert-action-routing-prior-work">先对少量来源做批量核验，再按证据缺口选择补召回、定向取证或复核归属。围绕原文分别判断支持、反证与证据不足。对短窗仍不明确或存在冲突的证据，比较扩大原文范围与切换核验器的增量成本。语义证据不足或预算耗尽时标明相应未决项。</p>
 
 <h3>4.5 在线与离线迭代（Online and Offline Improvement，RQ4–RQ5）</h3>
 <p>冻结初始框架后，在线复用经核查的纠错；离线将回放轨迹中的问题归因到需求理解、证据判断、排序或调度，再更新策略。在同等反馈预算下检验新任务收益、旧任务退化及更新成本。</p>
@@ -488,6 +496,7 @@ html[data-theme="dark"] .agent-map {
 <tbody>
 <tr><th scope="row">决策器</th><td>规则、MLP、冻结 Qwen、Qwen LoRA</td><td>轻量模型能否以较低决策开销选对工具与停止时机？</td></tr>
 <tr><th scope="row">向量编码</th><td>Qwen3-Embedding 与 BGE-M3，分别对照冻结与微调</td><td>企业需求与专家证据的对齐能否提高等候选预算下的召回？</td></tr>
+<tr><th scope="row">证据核验</th><td>通用重排、轻量自然语言推断、三分类阅读器</td><td>在相同误放门槛下，能否保留更多真支持并控制回退开销？</td></tr>
 <tr><th scope="row">训练信号</th><td>监督微调与开源教师蒸馏对照；通过验证后再试离线强化学习</td><td>收益是否来自更好的证据定位与动作选择，能否抵消训练成本？</td></tr>
 </tbody>
 </table></div>
@@ -528,21 +537,34 @@ html[data-theme="dark"] .agent-map {
 </ol>
 <p>资格边界复算较通用复算降低 P95 <strong>37.2%</strong>，在 80 条需求上均复现独立整批的推荐顺序、引用及未决状态。 <a href="experiments.html#enterprise-qualification-guard">首查实测</a></p>
 </figure>
+<figure class="research-roadmap latency-figure" id="verifier-evidence">
+<figcaption>图 3. SciFact 核验的真支持与误放</figcaption>
+<p>226 条公开样本，默认判定阈值。误放包含反证与证据不足样本。</p>
+<div class="verifier-grid" role="table" aria-label="核验真支持与误放">
+<div role="row" style="display:contents"><span role="columnheader" class="metric-title">核验路径</span><span role="columnheader" class="metric-title">保留真支持</span><span role="columnheader" class="metric-title">误放</span></div>
+<div role="row" style="display:contents"><span role="rowheader">通用重排器</span><span role="cell" class="metric-value"><span class="latency-track" aria-hidden="true"><i style="--bar:93.8%"></i></span><strong>91/97</strong></span><span role="cell" class="metric-value error"><span class="latency-track" aria-hidden="true"><i style="--bar:60.5%"></i></span><strong>78/129</strong></span></div>
+<div role="row" style="display:contents"><span role="rowheader">4B 三分类</span><span role="cell" class="metric-value"><span class="latency-track" aria-hidden="true"><i style="--bar:50.5%"></i></span><strong>49/97</strong></span><span role="cell" class="metric-value error"><span class="latency-track" aria-hidden="true"><i style="--bar:4.7%"></i></span><strong>6/129</strong></span></div>
+<div role="row" style="display:contents"><span role="rowheader">三句轻量核验</span><span role="cell" class="metric-value"><span class="latency-track" aria-hidden="true"><i style="--bar:41.2%"></i></span><strong>40/97</strong></span><span role="cell" class="metric-value error"><span class="latency-track" aria-hidden="true"><i style="--bar:3.1%"></i></span><strong>4/129</strong></span></div>
+</div>
+<p>同一轻量模型用三句窗口时，批次 P95 从 41.2 降至 19.1 ms。严格校准后，误放为 0／129，保留真支持为 20／97。 <a href="experiments.html#scifact-verifier-scope">核验实验</a></p>
+</figure>
 <div class="plan-table" tabindex="0" role="region" aria-label="公开数据集关键对照结果">
 <table class="study-table">
-<caption>表 3. 公开数据集对首查设计的约束</caption>
+<caption>表 3. 首查架构的实验依据</caption>
 <thead><tr><th scope="col">任务</th><th scope="col">实测结果</th><th scope="col">研究决策</th></tr></thead>
 <tbody>
 <tr><th scope="row">CoF 全库召回</th><td>双路召回的已标注正例 Recall@10 为 16.94%，纯稠密为 13.64%。延迟计算候选来源融合后，双路端到端 P95 由 172.7 降至 157.9 ms，122 条输出一致。 <a href="experiments.html#cof-deferred-union">对照</a></td><td>保留快速纯稠密对照。以更完整的候选标注复核排序差异。</td></tr>
 <tr><th scope="row">MERIT 取证门控</th><td>129 条配对中，向量首筛省去 38 次完整履历核验，但只完整保留 22／27 个含正例的组。 <a href="experiments.html#merit-recall-screen">对照</a></td><td>先用轻量分数排取证顺序，另测筛除的漏召。</td></tr>
 <tr><th scope="row">QASPER 篇内取证</th><td>48 个问题中，固定重排 16 与 32 段均找齐 34 题，P95 分别为 76.3 与 122.0 ms。 <a href="experiments.html#qasper-section-relation-graph">对照</a></td><td>以固定浅深度为强基线，重点检验跨来源导航。</td></tr>
+<tr><th scope="row">PLOS 跨来源取证</th><td>四次读取预算下，按缺口取证在跨论文子集找回 308／764 个参考专家位置，固定顺序为 246／764；全库未见增益。 <a href="experiments.html#plos-budgeted-article">对照</a></td><td>按证据是否分散分层评估增益。</td></tr>
+<tr><th scope="row">企业多条件需求</th><td>25 条需求中，加深来源和窗口后，支持项由 46 增至 56，完全获支持的专家仍为 3 位。分条件召回增至 4 位，仍只覆盖 2 条需求。 <a href="experiments.html#enterprise-multi-criterion">对照</a></td><td>用盲审区分缺证、漏判与误放。</td></tr>
 </tbody>
 </table></div>
 <p>首查结果衡量与参考系统的输出一致性。专家适配与证据归属精度需通过公开标注和企业盲审评价。 <a href="experiments.html#plan-evidence">实验依据与复现</a></p>
 
 <h2>8. 研究实施与开源（Implementation and Release）</h2>
 <figure class="research-roadmap">
-<figcaption>图 3. 研究阶段与交付依赖</figcaption>
+<figcaption>图 4. 研究阶段与交付依赖</figcaption>
 <ol class="roadmap-main" aria-label="首查研究阶段">
 <li><span>P0</span><strong>冻结评测</strong><small>数据、标注与质量门槛</small></li>
 <li><span>P1</span><strong>建立强基线</strong><small>开源模型与可复现检索</small></li>
@@ -565,15 +587,15 @@ html[data-theme="dark"] .agent-map {
 </ul>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p id="expert-evidence-precedent">已有研究覆盖 Top-K 探测、自适应路由、联合选证和分层证据分配。本文拟验证的差异在于，把专家归属、硬约束和候选排序放入同一查询状态，据此决定还需查谁、读哪份证据和何时停止。已有结果支持局部提速，完整框架尚缺独立的质量与效率证据。 <a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a> · <a href="https://aclanthology.org/2025.acl-long.861/">SetR</a> · <a href="https://aclanthology.org/2026.emnlp-main.1348/">BEAR</a></p>
+<p id="expert-evidence-precedent">已有研究覆盖 Top-K 探测、自适应路由、联合选证和分层证据分配。本文拟验证的差异在于，把专家归属、硬约束和候选排序放入同一查询状态，据此决定还需查谁、读哪份证据和何时停止。等预算取证在跨来源子集已有增益，企业开发集尚未复现覆盖提升。顶会主张仍需在独立标注与同负载下验证两个方向：等预算能否获得更多有据推荐，等质量能否降低完整首查成本。 <a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a> · <a href="https://aclanthology.org/2025.acl-long.861/">SetR</a> · <a href="https://aclanthology.org/2026.emnlp-main.1348/">BEAR</a></p>
 <div class="plan-table" tabindex="0" role="region" aria-label="顶会投稿判据表">
 <table class="study-table">
 <caption>表 4. SIGIR／The Web Conference 的阶段判据</caption>
 <thead><tr><th scope="col">检验</th><th scope="col">证据与下一道判据</th></tr></thead>
 <tbody>
-<tr><th scope="row">质量门槛</th><td>预先冻结候选召回、约束误放与归属判据，在公开标注和企业盲审中复核专家与原文证据。</td></tr>
+<tr><th scope="row">质量门槛</th><td>先冻结支持、反证、证据不足的判据，在独立公开集和企业盲审上同时报告误放、真支持召回与归属。按语言和证据分散程度分层。</td></tr>
 <tr><th scope="row">完整首查效率</th><td>在达到质量门槛后，比较同负载下最快的固定与自适应基线，报告真实回退、P95、吞吐及成功查询成本。</td></tr>
-<tr><th scope="row">创新归因</th><td>固定候选池、模型与预算，逐项移除约束状态和归属信息，检验联合决策是否带来可复现增益。 <a href="experiments.html#plan-evidence">实验依据</a></td></tr>
+<tr><th scope="row">创新归因</th><td>使用同一核验器、候选池和预算，比较固定浅读、按缺口取证及逐项消融。分别检验核验器改善和调度改善。 <a href="experiments.html#plan-evidence">实验依据</a></td></tr>
 </tbody>
 </table></div>
 </section>
