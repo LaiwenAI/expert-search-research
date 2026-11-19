@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T17:18:48+08:00">2026-11-19 17:18（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T17:46:12+08:00">2026-11-19 17:46（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -129,6 +129,18 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>原先仅按论文标题分组时，有 116 份相同履历跨分区。本轮按相同标题或相同履历的连通组划分。129 条测试中，向量＋词面决策头的准确率为 73.64%、正类 F1 为 51.43%、P95 为 7.6 ms；固定读两篇分别为 62.02%、52.43%、148.8 ms。全量读取的正类 F1 为 61.39%。轻量头只找回 18／45 个正例，且门控校准未选中补读，因此仍需验证其作为高召回首筛的可靠性。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/96b142f97c550ea4d0fb0ac84d2f571ea6895bb5/benchmarks/merit-lightweight-decision-v1">六组对照与复现</a></p>
 <h3 id="merit-recall-screen">全量核验前的高召回筛选</h3>
 <p>在同一批 129 条待判配对上，按校准组中最低分正例设置阈值，以完整保留至少 90% 的含正例组为目标。最佳来源向量跳过 38 次全量读取，平均延迟为 111.3 对 145.7 ms，P95 为 212.9 对 218.2 ms，但仅完整保留 22／27 个正例组。较保守的词面与联合决策头各保留 26／27 组，只省下 9 次和 11 次全量读取。最终 F1 须连同首筛保留率阅读，避免把下游本已漏掉的正例排除在外。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/e9504585457871a75d6dcfa8314030efb62782be/benchmarks/merit-recall-screen-v1">五组对照与复现</a></p>
+<h3 id="cof-global-profile-pooling">全候选检索中的固定画像聚合</h3>
+<p>对全部评审候选使用同一个 Qwen3 向量编码器和同一个引用核验器。等权融合画像中心与最佳来源的相似度。KDD 使用 122 条原面板查询；SciRepEval 使用去除与 NIPS 同标题后的 59 条查询。表中排名指标仅统计发布的已标注正例，“附引用”采用模型选出的来源。</p>
+<div class="result-table-scroll" tabindex="0" role="region" aria-label="画像聚合的召回与引用对照"><table>
+<thead><tr><th scope="col">数据</th><th scope="col">方法</th><th scope="col">Recall@10</th><th scope="col">P@5</th><th scope="col">正例且附引用 P@5</th><th scope="col">检索／完整 P95</th></tr></thead>
+<tbody>
+<tr><th scope="row">KDD</th><td>最佳来源</td><td>13.64%</td><td>3.77%</td><td>2.13%</td><td>10.04／126.32 ms</td></tr>
+<tr><th scope="row">KDD</th><td>等权融合</td><td>18.60%</td><td>3.93%</td><td>1.97%</td><td>9.73／134.57 ms</td></tr>
+<tr><th scope="row">SciRepEval</th><td>最佳来源</td><td>50.98%</td><td>16.61%</td><td>8.47%</td><td>8.77／121.36 ms</td></tr>
+<tr><th scope="row">SciRepEval</th><td>等权融合</td><td>53.59%</td><td>17.63%</td><td>7.12%</td><td>8.51／120.86 ms</td></tr>
+</tbody></table></div>
+<p>等权融合相对最佳来源的已标注正例 P@5 差值分别为 +0.16 和 +1.02 个百分点，两组配对重采样区间均跨零。CoF 只标注了部分候选，引用也缺少独立人工标注。此前 CMU Gold 和 MERIT 的对照展示了固定画像聚合的竞争力。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/eafc6cfa437df10149c0c2ebde09533c2b37a2e5/benchmarks/cof-global-profile-pooling-v1">全候选代码与聚合结果</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/1bb54a862acf370e62fa1c42ca00e954e0f243bd/benchmarks/cmu-profile-ranking-v1">CMU 与 MERIT 对照</a></p>
+
 <h3 id="cof-shared-frontier">CoF 共享引用的按需核验</h3>
 <p>在 122 条与此前并发压测样本分离的 CoF KDD 查询上，复用同一查询下可共享的来源相关性判断，只核验有机会进入 Top-5 的引用。计入实时编码、召回、核验和排序。</p>
 <div class="result-table-scroll"><table aria-label="共享取证与既有调度的对照"><thead><tr><th scope="col">策略</th><th scope="col">P95</th><th scope="col">平均 GPU 调用</th><th scope="col">与全检同序同引用</th></tr></thead><tbody>
