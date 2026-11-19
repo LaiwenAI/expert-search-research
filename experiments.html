@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T13:10:24+08:00">2026-11-19 13:10（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T13:17:15+08:00">2026-11-19 13:17（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -119,6 +119,8 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>610 条论文—评审者自评按标题分组，231 条拟合、134 条校准、245 条测试。各组用同一冻结开源模型。固定前两篇、全量、置信度补读和学习补读的准确率分别为 70.61%、68.16%、67.35%、66.94%，P95 分别为 149.0、237.3、266.8、241.6 ms。两种补读的平均延迟较全量低，但串行重读抬高了 P95。全量的正类 F1 最高（67.77%）；固定前两篇的准确率差值区间包含零。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/89f30cba02b1f4579aa41d204c2443c0e18adb3b/benchmarks/merit-evidence-dispatch-v1">六组对照与复现</a></p>
 <h3 id="merit-prefix-dispatch">补读的上下文复用与单次选深</h3>
 <p>同一 MERIT 测试集上，缓存续算与整段重跑都补读 39 次。复用精确词元前缀使 P95 从 296.8 ms 降到 203.6 ms，但 245 个最终标签中有 2 个改变；0.5-logit 复核后仍差 1 个。提前选深只运行一次模型，准确率为 70.61%、正类 F1 为 67.57%，P95 为 237.8 ms。固定读两篇仍较快（148.7 ms，正类 F1 65.38%）。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/bf32782d02871396a19b1def763ce0c09dd8f8a4/benchmarks/merit-prefix-dispatch-v1">六组对照与复现</a></p>
+<h3 id="merit-lightweight-decision">按评审履历分组的轻量判断</h3>
+<p>原先仅按论文标题分组时，有 116 份相同履历跨分区。本轮按相同标题或相同履历的连通组划分。129 条测试中，向量＋词面决策头的准确率为 73.64%、正类 F1 为 51.43%、P95 为 7.6 ms；固定读两篇分别为 62.02%、52.43%、148.8 ms。全量读取的正类 F1 为 61.39%。轻量头只找回 18／45 个正例，且门控校准未选中补读，因此仍需验证其作为高召回首筛的可靠性。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/96b142f97c550ea4d0fb0ac84d2f571ea6895bb5/benchmarks/merit-lightweight-decision-v1">六组对照与复现</a></p>
 <h3 id="cof-shared-frontier">CoF 共享引用的按需核验</h3>
 <p>在 122 条与此前并发压测样本分离的 CoF KDD 查询上，复用同一查询下可共享的来源相关性判断，只核验有机会进入 Top-5 的引用。计入实时编码、召回、核验和排序。</p>
 <div class="result-table-scroll"><table aria-label="共享取证与既有调度的对照"><thead><tr><th scope="col">策略</th><th scope="col">P95</th><th scope="col">平均 GPU 调用</th><th scope="col">与全检同序同引用</th></tr></thead><tbody>
