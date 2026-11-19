@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T08:59:55+08:00">2026-11-19 08:59（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T09:13:14+08:00">2026-11-19 09:13（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
 <ul class="research-challenges">
@@ -276,7 +276,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 </div>
 </div>
 <h3>4.2 按证据缺口调度</h3>
-<p id="expert-action-routing-prior-work">未决证据的上下界给出同一排名和引用时停止。否则按预期增益与耗时选择动作。</p>
+<p id="expert-action-routing-prior-work">排名与引用可证不变时精确停止。其余查询按预期增益与耗时取证，并校准误放风险。</p>
 <h3 id="demand-taxonomy">4.3 企业需求理解</h3>
 <p>提取任务、工况和硬约束，并区分既往资质与未来交付要求。</p>
 <h3>4.4 专家证据索引与能力迁移</h3>
@@ -297,7 +297,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <p>从真实需求构造双语、单约束与跨来源对照，比较等量普通扩写。按企业和近重复组划分，测试集双人盲审并仲裁。</p>
 <p id="judgment-coverage">公开基准覆盖排名（CoF、TREC Enterprise）、适配（MERIT）、取证（QASPER、EvidenceBench、LitSearch）与归属（CRediT）。</p>
 <h3 id="experiment-results">7.2 主实验</h3>
-<p id="implemented-agent-architecture">同语料、硬件、缓存和流量，对照 BM25、稠密召回、混合重排、固定流程 GroundedPipeline 及分差调度。</p>
+<p id="implemented-agent-architecture">同语料、硬件、缓存和流量，比较 BM25、稠密召回、混合重排、GroundedPipeline、最优固定深度及自适应截断。深度与阈值仅用验证集选择。</p>
 <ul>
 <li><strong>等质量。</strong>预设非劣界与误放上限，比较端到端 P95、吞吐和成功查询成本。计入回退，单列训练与建索引。</li>
 <li><strong>等预算。</strong>比较专家 P@K、硬约束误放率和证据归属 P@K。后者只计原文支持且归属正确的推荐，直接与迁移适配分别计分。</li>
@@ -313,13 +313,14 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <li><a href="https://doi.org/10.1145/1148170.1148181">Balog et al. · Formal Models for Expert Finding</a></li>
 <li><a href="https://research.ibm.com/publications/optimal-aggregation-algorithms-for-middleware">Fagin et al. · Optimal Aggregation Algorithms for Middleware</a></li>
 <li><a href="https://aclanthology.org/2024.naacl-long.389/">Jeong et al. · Adaptive-RAG</a></li>
+<li><a href="https://doi.org/10.1145/3626772.3657864">Meng et al. · Ranked List Truncation</a></li>
 <li><a href="https://proceedings.iclr.cc/paper_files/paper/2024/hash/25f7be9694d7b32d5cc670927b8091e1-Abstract-Conference.html">Asai et al. · Self-RAG</a></li>
 <li><a href="https://github.com/VectifyAI/PageIndex">VectifyAI · PageIndex</a></li>
 </ul></details>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p id="expert-evidence-precedent"><strong>创新检验。</strong>在自适应检索与 Top-K 剪枝基础上，检验同时约束排名、硬约束和引用的停止判据能否减少取证。</p>
-<p><strong>SIGIR／The Web Conference。</strong>组件已有同输出提速。顶会主张仍取决于公开全文和独立企业盲审中，能否击败同缓存的最强固定策略，取得等质量的首查收益。 <a href="experiments.html#plan-evidence">研究依据</a></p>
+<p id="expert-evidence-precedent"><strong>创新检验。</strong>用证据缺口决定何时取证、查谁、何时停止，检验能否同时保住专家适配、硬约束和证据归属。</p>
+<p><strong>SIGIR／The Web Conference。</strong>同输出提速已有组件证据。投稿门槛是公开全文与独立企业盲审均达到质量和误放要求，并超过最强固定深度与自适应截断的首查效率。 <a href="experiments.html#plan-evidence">研究依据</a></p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>

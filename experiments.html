@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T08:59:55+08:00">2026-11-19 08:59（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T09:13:14+08:00">2026-11-19 09:13（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -17,11 +17,13 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <li><a href="#capability-transfer">能力迁移</a></li>
 <li><a href="#historical">早期组件与反馈回放</a></li></ul></nav></header>
 <section aria-labelledby="plan-evidence"><h2 id="plan-evidence">研究计划依据</h2>
-<ul>
-<li>篇内精确检索作为基线。<a href="https://github.com/LaiwenAI/expert-find-agent/tree/c4736cc55cfa9937c466e16ff8ce77e4a826008f/benchmarks/qasper-section-bounds-v1">QASPER 对照</a></li>
-<li>公开评审检索已有同输出提速，仍需在全文与企业需求上复现。<a href="#cof-bounded-adjustment">有界核验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/70deba449b8ce5c314cf05a4a897f2f15ec51f10/benchmarks/cof-verification-microbatch-v1">并发对照</a></li>
-<li>已冻结 123 个候选需求组，待复核公司归属与近重复。原 20 条用于可行性验证，正式样本量按误放上限确定。<a href="https://github.com/LaiwenAI/expert-find-agent/tree/b829a5152f25ef8b9f44c3a7f05f4c8a3af45469/benchmarks/enterprise-blind-panel-v1">样本审计</a></li>
-</ul></section>
+<div class="result-table-scroll"><table><thead><tr><th scope="col">对照</th><th scope="col">已观察到的结果</th><th scope="col">对主实验的影响</th></tr></thead><tbody>
+<tr><th scope="row">QASPER 全文</th><td>全量重排、有界停止、固定 32 段的 P95 为 292、234、132 ms，完整证据率同为 69.9%。</td><td>篇内保留精确召回。把固定深度纳入效率对照，另报顺序一致性。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7293064b0246180c231df42352f2f701fb472555/benchmarks/qasper-certified-reranking-v1">重排实验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c4736cc55cfa9937c466e16ff8ce77e4a826008f/benchmarks/qasper-section-bounds-v1">索引实验</a></td></tr>
+<tr><th scope="row">CoF 评审检索</th><td>同一并发配置下，延迟取证与最快固定批次策略同输出，P95 为 3.08 对 3.61 s（约 10 请求／秒）。</td><td>控制缓存和批策略，同时报告低负载与过载。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/70deba449b8ce5c314cf05a4a897f2f15ec51f10/benchmarks/cof-verification-microbatch-v1">并发实验</a></td></tr>
+<tr><th scope="row">TREC 专家与引用</th><td>在已判定来源池、理想核验条件下，最省检查的固定策略距理论下界约 1.0%–1.4%。</td><td>重点验证来源选择和真实核验成本。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7293064b0246180c231df42352f2f701fb472555/benchmarks/trec-check-lower-bound-v1">下界回放</a></td></tr>
+<tr><th scope="row">企业需求</th><td>冻结 123 个候选需求组，尚无人工判定。原 20 条用于可行性验证。</td><td>复核企业归属和近重复，再按误放上限确定正式样本量。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b829a5152f25ef8b9f44c3a7f05f4c8a3af45469/benchmarks/enterprise-blind-panel-v1">样本审计</a></td></tr>
+</tbody></table></div>
+</section>
 <section aria-labelledby="expert-ranking"><h2 id="expert-ranking">专家索引与排序</h2>
 <p><strong>分组索引的剪枝开销。</strong>在 73 条已探索的 CoF SIGIR 查询、189 位审稿人和 1,740 篇去重论文上，用冻结向量比较平面全量评分与每位专家最多 1、2、4 组的质心距离上界。三种布局在 Top-5、10、20 均复现全量最大来源分数的排序。以 Top-5 为例，分别评分约 100.0%、95.7%、76.6% 的原始来源，计入质心后，点积总量却达到平面的 110.9%、117.4%、119.9%。实验使用缓存向量，统计的是计算量，尚未测量延迟、企业匹配或来源支持。因此保留平面精确评分作为全库召回的强基线。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/cof_centroid_bound.py">复现实验</a></p>
 <p><strong>固定候选后的来源导航。</strong>同一批 73 条公开查询各固定 5 位稠密检索候选，每位取最多 3 篇来源。平面扫描平均评分 77.8 篇，用时 0.076 毫秒。四组上界剪枝平均评分 71.8 篇及 20.0 个质心，365 位候选的来源顺序全部一致，平均用时 0.133 毫秒。只读质心分数最高的一组平均用时 0.059 毫秒，保留了平面扫描 65.9% 的参考来源。这些数字来自缓存向量的单进程 CPU 评分，每条查询重复五次，未计入建树、查询编码、候选生成、原文读取和模型调用。参考来源按向量相似度定义，语义证据是否充分仍待人工验证。当前以平面扫描作为候选内证据选择基线。后续将检验原文读取昂贵或专家来源更多时，带回退的分组导航能否在完整成本上获益。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/cof_candidate_evidence_navigation.py">复现实验</a></p>
