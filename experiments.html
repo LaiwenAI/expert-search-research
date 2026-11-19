@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T22:02:34+08:00">2026-11-19 22:02（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T22:30:42+08:00">2026-11-19 22:30（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -179,6 +179,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </tbody></table></div>
 <p>各组配对区间均含零，三个迁移面板的缺失标注仍容许正负两向变化。保留固定轮询和优先补足已有支持两条基线。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/5b6bd16ad2664babe6ac08f83b7d025da3c765b3/benchmarks/cof-factorized-followup-v1">代码与配对结果</a></p>
 <p>在独立 PLOS 快照的两来源任务上，额外确认完整结果句的来源保留了 53 条有据推荐，错来源由 9 降至 5，P95 由约 9 升至 21 ms。同一阈值拒绝了关键词组全部 40 条有据推荐。两种职责模型取交集也过滤掉 12 条有据推荐，减少 3 条职责误荐。按线索完整度分别报覆盖和错误，强复核作为条件分支。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/2f91931cef1e91bb6e2fcb96f10e634ca4ae197f/benchmarks/plos-confirm-source-and-role-v1">来源和本人职责的交叉对照</a></p>
+<p>固定引用数量和已标注负例上限后，CoF 四组事后最优取证将带引用正例从 57 增至 83。穷尽候选池内现有来源仅再增加 2 条。其余主要缺口在候选召回与可核验证据，待独立区分缺证和模型漏判。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/bef2b1da1edad63bb09bf089987d5e53b6d025a0/benchmarks/cof-evidence-headroom-v1">取证与召回上限</a></p>
 <h3 id="rank-sensitive-cost">共享读取、停止与真实耗时</h3>
 <p>在 TREC 2006 Enterprise 的 49 个主题中，允许替换等量支持引用、保持专家顺序后，优先读共享来源减少约 5% 的读取，核验次数无明确变化。CoF KDD 实测中，共享取证相对延迟核验将平均模型调用由 6.70 降至 5.63，P95 由 218.39 降至 214.11 ms。按需分词少构造 21.1% 的提示词输入，与预分词共享取证的专家顺序、引用相同，P95 为 214.89 ms。前者是标注池回放，后者包含在线模型推理且采用顺序负载。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/ed857c1c19892a215e7b737575f51b9b517ee062/benchmarks/trec-reorder-witnesses-v1">TREC 回放</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7601acccf56743f963ce3394c3b12709163ce784/benchmarks/cof-lazy-frontier-v1">CoF 实测</a></p>
 <h3 id="cof-typed-cost">二次核验的覆盖、延迟与输出一致性</h3>
@@ -260,6 +261,16 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>FollowIR 的 52 主题、1,040 个扩展候选中，约束词选取的短窗将 20 候选的核验 P95 降低约 44%–47%，跨集合迁移时未稳定保留真支持。按分差扩读在 News21 的 P95 为 162 ms，介于短窗的 104 ms 和全文的 206 ms 之间，比短窗多保留两条正确候选并多接受一条不相关候选；反向迁移时少保留两条正确候选。固定池中，单独以约束词覆盖或扣除主题相似度筛选候选，也未显示跨集合优势。已有判断适用于整篇文档，段落充分性、提速后的完整推荐质量另测。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/d217986caefd65c80f8dd1b4735c7f33ee6fcac5/benchmarks/followir-expansion-constraint-gate-v1">候选分数对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0f759e6c1227b45ba1fa5aafe1961adc36e39253/benchmarks/followir-constraint-window-verification-v1">原文短窗</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0689ec95f60bd326989d9df5670c87531dbed7a4/benchmarks/followir-selective-window-escalation-v1">扩读复现</a></p>
 <h3 id="plos-jats-discovery">来源发现与出版字段核验回放</h3>
 <p>在 171 篇 PLOS 论文上，先用结果摘录或关键词寻找同人关联的来源，再用冻结的角色核验器检查出版字段。178 条角色请求复用 11 个论文对，分别回放双源可用、缺左源、缺右源三种情境。双源可用时，扩展召回相对前四候选将正确正例由 41／89 提至 51／89（结果摘录），由 21／89 提至 37／89（关键词）。缺一来源时，扩展召回分别误收 20／356 和 8／356 次，合计有一次进一步生成无支持的专家推荐。前四候选在两个缺源对照中均无误收。轻量学习门控未改善该权衡。计数包含重复来源，适用于受控误差分析。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/163c5d4cc894a402883ccde99df56c55327ca47b/benchmarks/plos-jats-discovery-v1">完整结果与复现</a></p>
+<h3 id="claim-attribution-stage">来源格式与本人约束核验</h3>
+<div class="plan-table" tabindex="0" role="region" aria-label="来源格式与核验结果">
+<table class="study-table">
+<thead><tr><th scope="col">输入</th><th scope="col">对照</th><th scope="col">观察</th></tr></thead>
+<tbody>
+<tr><th scope="row">已知答案与论文段落</th><td>同一 0.6B 模型，主题相关性与明确答案声明</td><td>128 组缺段配对中，完整证据得分更高的组数从 73 增至 94，成对 P95 从 15.49 增至 16.13 ms。严格阈值接受 29／128 份完整证据。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0045b438b3c1e85b310a7bcb98c24bed2a7b7af8/benchmarks/qasper-verify-evidence-sets-v1">QASPER 对照</a></td></tr>
+<tr><th scope="row">出版者结构化职责</th><td>同篇作者交换，按作者查字段</td><td>独立 46 篇论文中，难措辞下正确排序 41／46 组。冻结阈值接受 34 条正确归属和 3 条错归属，成对 P95 为 8.50 ms。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/6357c196af830c3960fe16aacd8ddf0dddeebaa8/benchmarks/plos-claim-bound-attribution-v1">字段对照</a></td></tr>
+<tr><th scope="row">原始贡献正文</th><td>同篇正文、同一组职责，切换目标作者</td><td>20 篇能源论文上，轻量核验裁到本人句子后正确排序 17／20 组，但冻结阈值未接受任何作者。4B 正确排序 19／20，接受 15 条正确归属和 3 条错归属。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/6e53085ae36f7d9ee14a8812c0896a9ac85b37f4/benchmarks/plos-legacy-contribution-text-v1">正文对照</a></td></tr>
+</tbody></table></div>
+<p>段落对照提供既有答案，归属对照提供已定位的出版者来源。旧版正文仍有较规则的句式和作者缩写。企业自由文本上的归属、覆盖和误荐需要独立标注。</p>
 <h3 id="plos-jats-linked-gate">原始出版字段与语义解释交集</h3>
 <p>从 17 篇原始 JATS 文件核对文件指纹、作者顺位、ORCID 和贡献角色，再离线编译逐来源、逐人的角色索引。178 条请求沿用已知来源和子句范围，其中 89 条为可支持正例，89 条为错源绑定或单角色替换负例。角色分类在 84 条独立措辞上拟合，14 条 NISO 例句定阈值，其余 35 条例句用于测试请求。</p>
 <div class="result-table-scroll" tabindex="0" role="region" aria-label="出版字段与语义核验对照"><table>
