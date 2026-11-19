@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T15:11:22+08:00">2026-11-19 15:11（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T15:57:06+08:00">2026-11-19 15:57（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -162,6 +162,15 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>80 条需求上，按缺口核验把核验阶段 P95 从 176.2 降至 147.4 ms，重现两轮完整核验输出。25 条多条件需求上，增加来源与窗口多核验 2,934 次，支持项从 46 增至 56，完整支持仍为 3 位专家；分条件融合增至 4 位，支持需求始终为 2 条。19 条私有盲审尚无人工判断。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/157a6e87a345c96045c049304eb8f29fa53ba626/benchmarks/enterprise-gap-verification-v1">缺口核验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/9ee8e58517509827babc31b19cea432ca5a741a7/benchmarks/enterprise-evidence-extent-v1">证据范围</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c170622e2291813fd6f768f089f780e307620730/benchmarks/enterprise-criterion-recall-v1">分条件召回</a></p>
 <h3 id="scifact-verifier-scope">公开核验、语种差异与领域微调</h3>
 <p>226 条 SciFact 样本上，通用重排器误收 41／47 条反证；4B 三分类误收 4／47、保留 49／97 条真支持。三句轻量核验的默认结果为真支持 40、误放 4，批次 P95 为 19.1 ms。中英 XNLI 对齐测试中，同一 mDeBERTa 将反证误判为支持的次数由英文的 17 增至中文的 87（各 1,670 条）。在同一较小校准组、零观测误放的设置下，训练分类头使真支持从 13 增至 15，训练末两层后为 9；两种训练均降低中文 XNLI 准确率。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/61db8bfa549d053e37703fbc052ccc56e2f56019/benchmarks/scifact-criterion-calibration-v1">反证对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/d29275459431ce5bf2145e99bac570d117e307f0/benchmarks/scifact-small-nli-v1">跨语言对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/5c72a02d25bae968eb50b635bf2761b7b6745e05/benchmarks/scifact-nli-windows-v1">三句取证</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0d0e5dfa602c08575318724e75be8dcad88d1ce7/benchmarks/scifact-nli-finetune-v1">GPU 微调</a></p>
+<h3 id="nli4ct-adaptive-verification">自适应补读的证据覆盖与核验质量</h3>
+<p>按试验报告隔离训练、校准和测试。冻结轻量决策器后，在 500 条 NLI4CT 给定来源的测试上，以同一 Qwen3-4B 逐条核验。P95 从给定来源开始计时，包含选证、分词和 GPU 推理。</p>
+<div class="result-table-scroll"><table><thead><tr><th scope="col">路线</th><th scope="col">完整证据</th><th scope="col">正确判定</th><th scope="col">平均读取句数</th><th scope="col">P95</th></tr></thead><tbody>
+<tr><th scope="row">初始窗口</th><td>80／500</td><td>301／500</td><td>6.76</td><td>35.26 ms</td></tr>
+<tr><th scope="row">固定补读两轮</th><td>264／500</td><td>322／500</td><td>11.44</td><td>41.09 ms</td></tr>
+<tr><th scope="row">自适应补读</th><td>268／500</td><td>311／500</td><td>9.93</td><td>37.57 ms</td></tr>
+<tr><th scope="row">读取给定章节全文</th><td>500／500</td><td>333／500</td><td>21.67</td><td>77.57 ms</td></tr>
+</tbody></table></div>
+<p>相对固定两轮，自适应少读 13.2%，正确率差值为 −2.2 个百分点，按关联试验分组的配对 95% 区间为 −4.7 至 −0.2。该段的延迟范围止于单次核验，完整首查仍需纳入检索与专家归属。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/6d7a7a2b7f1490bd6f8916325f9450f1e3c5a70d/benchmarks/nli4ct-adaptive-depth-v1">补读策略</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/db833987ffa4bdfece7e0d8fe2e3a553ef294fca/benchmarks/nli4ct-adaptive-reader-v1">核验实验</a></p>
 <h3 id="plos-budgeted-article">固定文章预算的增量取证</h3>
 <p>跨论文角色声明子集上，按缺口调度在四次读取下找回 308／764 个参考专家位置，固定顺序为 246／764。增量更新与逐轮重算读同一批文章，引用一致，P95 为 50.5 对 79.2 微秒；固定顺序为 43.2 微秒。全库面板未见召回增益。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7a3d380fbce1b016397dab388414b3e7fb7ddc87/benchmarks/plos-budgeted-article-v1">实验代码与结果</a></p>
 <p id="credited-clause-search"><strong>来源确认与任务片段。</strong>165 篇论文的受控检索，24 篇为测试目标。下表为删节摘要线索，160 个查询版本。计时含本地检索、推理和结果组装。</p>
