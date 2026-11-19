@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T12:32:25+08:00">2026-11-19 12:32（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T12:42:48+08:00">2026-11-19 12:42（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -29,6 +29,10 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </tbody></table></div>
 </section>
 <section aria-labelledby="expert-ranking"><h2 id="expert-ranking">专家索引与排序</h2>
+<h3 id="cof-global-candidate-audit">CoF 全库召回与证据晋位</h3>
+<p>在 122 条 CoF KDD 查询上，从 737 位专家、99,594 条来源全库召回。稠密 Top-10 仅召回 13.64% 的已标注相关专家，即使在候选池内完美排序，已标注正例 P@5 上限也只有 5.41%。证据晋位各换入、换出 3 位已标注相关专家，P@5 仍为 3.77%。</p>
+<div class="result-table-scroll"><table aria-label="召回与排序对照"><thead><tr><th scope="col">排序信号</th><th scope="col">已标注正例 Recall@10</th><th scope="col">已标注正例 P@5</th></tr></thead><tbody><tr><th scope="row">最相似来源</th><td>13.64%</td><td>3.77%</td></tr><tr><th scope="row">前三来源均值</th><td>16.53%</td><td>2.95%</td></tr><tr><th scope="row">画像规模校正</th><td>14.46%</td><td>2.30%</td></tr></tbody></table></div>
+<p>仅为前五名附证据的 P95 为 125.3 ms，低于证据晋位的 215.5 ms，双引用覆盖率也由 56.23% 降至 43.28%。各组前五名中仅 12.62%–15.90% 的位置有原始标签，需扩充盲审才能比较全库匹配质量。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/6dedcb9b5289b6e136af2b661edd4ef63d3177a8/benchmarks/cof-global-candidate-audit-v1">实验代码与结果</a></p>
 <p><strong>分组索引的剪枝开销。</strong>在 73 条已探索的 CoF SIGIR 查询、189 位审稿人和 1,740 篇去重论文上，用冻结向量比较平面全量评分与每位专家最多 1、2、4 组的质心距离上界。三种布局在 Top-5、10、20 均复现全量最大来源分数的排序。以 Top-5 为例，分别评分约 100.0%、95.7%、76.6% 的原始来源，计入质心后，点积总量却达到平面的 110.9%、117.4%、119.9%。实验使用缓存向量，统计的是计算量，尚未测量延迟、企业匹配或来源支持。因此保留平面精确评分作为全库召回的强基线。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/cof_centroid_bound.py">复现实验</a></p>
 <p><strong>固定候选后的来源导航。</strong>同一批 73 条公开查询各固定 5 位稠密检索候选，每位取最多 3 篇来源。平面扫描平均评分 77.8 篇，用时 0.076 毫秒。四组上界剪枝平均评分 71.8 篇及 20.0 个质心，365 位候选的来源顺序全部一致，平均用时 0.133 毫秒。只读质心分数最高的一组平均用时 0.059 毫秒，保留了平面扫描 65.9% 的参考来源。这些数字来自缓存向量的单进程 CPU 评分，每条查询重复五次，未计入建树、查询编码、候选生成、原文读取和模型调用。参考来源按向量相似度定义，语义证据是否充分仍待人工验证。当前以平面扫描作为候选内证据选择基线。后续将检验原文读取昂贵或专家来源更多时，带回退的分组导航能否在完整成本上获益。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/cof_candidate_evidence_navigation.py">复现实验</a></p>
 
