@@ -161,10 +161,6 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 
 .demand-taxonomy-table{font-size:12.5px}.demand-taxonomy-table caption{caption-side:top;text-align:left;font-size:13px;font-weight:650;padding-bottom:9px;color:var(--ink)}.demand-taxonomy-table td:first-child{min-width:145px}.demand-taxonomy-table td{line-height:1.6}
 
-.agent-diagram-scroll{overflow-x:auto;overscroll-behavior-inline:contain}
-.agent-diagram-scroll:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
-.agent-diagram-scroll .agent-diagram{min-width:690px}
-@media print{.agent-diagram-scroll .agent-diagram{min-width:0}}
 
 .foundation-overview{margin:16px 0 23px}
 .foundation-overview p{margin:8px 0}
@@ -201,20 +197,58 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 .latency-guarded strong{color:var(--accent)}
 @media(max-width:520px){.study-table{min-width:0;overflow-wrap:anywhere}.study-table th[scope="row"]{min-width:0}.study-table th,.study-table td{padding:7px}.latency-bars li{grid-template-columns:minmax(108px,1.1fr) minmax(43px,2fr) 2.65em;gap:6px;font-size:12px}}
 
-.agent-detail{margin:14px 3px 0;padding:14px 0 0;border-top:1px solid var(--line);font-size:13px}
-.agent-detail h4{margin:0 0 9px;font-size:14px;color:var(--ink)}
-.agent-detail-grid{display:grid;grid-template-columns:1fr 1.12fr;gap:16px;align-items:start}
-.agent-detail table,.agent-detail ol{margin:0}
-.agent-detail table{font-size:12px}
-.agent-detail th,.agent-detail td{padding:6px 7px;text-align:left}
-.agent-detail th[scope="row"]{color:var(--ink)}
-.state-ok,.state-check{white-space:nowrap}
-.state-ok{color:var(--accent);font-weight:650}
-.state-check{padding:1px 4px;background:var(--surface);border:1px solid var(--line);border-radius:3px}
-.agent-detail-actions{padding-left:1.45em}
-.agent-detail-actions li+li{margin-top:5px}
-.agent-detail p{color:var(--muted);font-size:12px;margin:10px 0 0}
-@media(max-width:700px){.agent-detail{margin:12px 8px 0}.agent-detail-grid{grid-template-columns:1fr;gap:9px}}
+
+.agent-map{--map-accent:#16645d;--map-highlight:#edf6f3;--map-border:#b4d3cd;margin:22px 0 28px;padding:21px;border:1px solid var(--line);border-radius:8px;background:var(--page);font-size:13px;line-height:1.55;scroll-margin-top:70px}
+html[data-theme="dark"] .agent-map{--map-accent:#a4d5ca;--map-highlight:#1b3838;--map-border:#527b76}
+.agent-map figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 17px;color:var(--ink);font-size:16px;font-weight:700}
+.agent-map figcaption span{color:var(--muted);font-size:12px;white-space:nowrap;font-weight:500}
+.agent-lane{margin:0}
+.agent-lane h4{margin:0 0 8px;color:var(--ink);font-size:14px;font-weight:700}
+.agent-sequence,.agent-cycle,.agent-output-grid{display:grid;gap:20px}
+.agent-offline{grid-template-columns:repeat(3,minmax(0,1fr))}
+.agent-init,.agent-cycle,.agent-output-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.agent-node{position:relative;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--soft)}
+.agent-node strong,.agent-output-grid strong{display:block;font-size:13px;color:var(--ink)}
+.agent-node p,.agent-output-grid p{color:var(--muted);margin:4px 0 0;font-size:12.5px}
+.agent-sequence .agent-node:not(:last-child)::after{content:"→";position:absolute;right:-18px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--accent);font-weight:700}
+.agent-edge{display:flex;justify-content:center;align-items:center;gap:6px;margin:6px 0;color:var(--muted);font-size:12px;line-height:1.35}
+.agent-edge span,.agent-return span{font-size:17px;font-weight:700;color:var(--map-accent)}
+.agent-feed{justify-content:flex-end;padding-right:9px}
+.agent-loop{padding:12px;border:1px solid var(--map-border);border-radius:7px;background:var(--map-highlight)}
+.agent-cycle{gap:24px 29px;grid-template-areas:"state decision" "verify tools"}
+.agent-cycle .agent-node{background:var(--page)}
+.agent-state{grid-area:state}.agent-controller{grid-area:decision}.agent-tools{grid-area:tools}.agent-verify{grid-area:verify}
+.agent-cycle .agent-controller{border-color:var(--map-accent)}
+.agent-cycle .agent-node::after{position:absolute;color:var(--map-accent);font-weight:700;font-size:18px;line-height:1}
+.agent-state::after{content:"→";right:-24px;top:50%;transform:translateY(-50%)}
+.agent-controller::after{content:"↓";left:50%;bottom:-22px;transform:translateX(-50%)}
+.agent-tools::after{content:"←";left:-25px;top:50%;transform:translateY(-50%)}
+.agent-verify::after{content:"↑";left:50%;top:-22px;transform:translateX(-50%)}
+.agent-step{display:inline-grid;place-items:center;width:18px;height:18px;margin-right:4px;background:var(--map-highlight);border:1px solid var(--map-border);border-radius:50%;color:var(--map-accent);font-size:11px}
+.agent-map table{margin:7px 0 0;font-size:11.5px}
+.agent-map table th,.agent-map table td{padding:3px 6px;text-align:left}
+.agent-gap,.agent-map .agent-example{color:var(--map-accent);font-weight:650}
+.agent-node .agent-node-note{font-size:11.5px;margin-top:7px}
+.agent-tools dl{display:grid;gap:4px;margin:6px 0 0}
+.agent-tools dl div{display:grid;grid-template-columns:max-content 1fr;gap:9px}
+.agent-tools dt{color:var(--ink);font-size:12px;font-weight:650}
+.agent-tools dd{margin:0;color:var(--muted);font-size:12px}
+.agent-return{display:flex;align-items:center;gap:6px;color:var(--map-accent);font-size:12px;margin-top:7px;font-weight:650}
+.agent-results{padding:11px 13px;border:1px solid var(--line);border-radius:6px;background:var(--soft)}
+.agent-output-grid{gap:12px}
+.agent-output-grid > div+div{border-left:1px solid var(--line);padding-left:12px}
+@media(max-width:700px){
+.agent-map{padding:12px}
+.agent-map figcaption{font-size:14px}
+.agent-offline,.agent-init,.agent-output-grid,.agent-cycle{grid-template-columns:1fr}
+.agent-cycle{grid-template-areas:"state" "decision" "tools" "verify";gap:20px}
+.agent-sequence{gap:19px}
+.agent-sequence .agent-node:not(:last-child)::after,.agent-cycle .agent-node:not(.agent-verify)::after{content:"↓";left:50%;right:auto;top:auto;bottom:-17px;transform:translateX(-50%)}
+.agent-verify::after{content:none}
+.agent-edge,.agent-feed{justify-content:center;padding-right:0}
+.agent-output-grid > div+div{border-left:0;border-top:1px solid var(--line);padding:8px 0 0}
+}
+@media print{.agent-map{break-inside:avoid}}
 </style><style id="reader-layout-fix">
 .reader-toolbar{position:fixed!important;inset:0 0 auto 0!important;width:100%!important;max-width:none!important;margin:0!important;min-height:44px!important;padding:4px max(18px,calc((100vw - 1220px)/2))!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;flex-wrap:nowrap!important;box-sizing:border-box!important;z-index:1000!important}
 .reader-brand{flex:0 1 auto!important;min-width:0!important;white-space:nowrap!important}
@@ -236,7 +270,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T12:28:55+08:00">2026-11-19 12:28（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T12:35:50+08:00">2026-11-19 12:35（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -276,89 +310,75 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <h2>4. 研究内容与技术路线（Methodology）</h2>
 <h3 id="foundation-title">4.1 初始搜索框架（Initial Search Framework，RQ1–RQ3）</h3>
 <p>在无用户历史反馈的条件下，先召回候选专家，再为每位候选维护约束证据状态。检索智能体根据候选排名、证据缺口和剩余预算，决定是否补召回、定位原文、复核归属或停止。</p>
-<div class="figure architecture-figure" id="base-agent-architecture" style="scroll-margin-top:70px">
-<div class="fig-title">图 1. 专家搜索智能体的首查架构与证据决策闭环（拟议）</div>
-<div class="agent-diagram-scroll" tabindex="0" role="region" aria-label="专家检索智能体架构图，可横向滚动">
-<svg class="basearch paper-svg agent-diagram" viewBox="0 0 820 554" role="img" aria-labelledby="agent-diagram-title agent-diagram-desc">
-<title id="agent-diagram-title">专家搜索智能体的首查证据决策闭环</title>
-<desc id="agent-diagram-desc">需求与候选初始化专家乘约束状态。离线索引支持召回与原文读取。决策器根据排序、证据风险与预算选择动作，工具返回的证据经归属和原文核验后更新状态，再决定下一动作。达到停止条件时提交推荐，预算耗尽时保留未决项。</desc>
-<defs>
-<marker id="agent-step-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#607b85"/></marker>
-<marker id="agent-state-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#087973"/></marker>
-</defs>
-<g fill="none" stroke="#607b85" stroke-width="1.5" marker-end="url(#agent-step-arrow)">
-<path d="M148 70 V119"/><path d="M568 200 H608"/><path d="M707 309 V397 H588"/>
-<path d="M707 70 V111" stroke-dasharray="4 3"/>
-</g>
-<path d="M446 264 V327 H240 V390 M240 404 V506 H284" fill="none" stroke="#607b85" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#agent-step-arrow)"/>
-<g fill="none" stroke="#087973" stroke-width="2.5" marker-end="url(#agent-state-arrow)">
-<path d="M278 200 H322"/><path d="M288 397 H148 V291"/>
-</g>
-<g fill="#f4f7f8" stroke="#bccbd0">
-<rect x="18" y="15" width="526" height="55" rx="8"/>
-<rect x="564" y="15" width="238" height="55" rx="8"/>
-<rect x="610" y="113" width="192" height="196" rx="9"/>
-</g>
-<rect x="18" y="122" width="260" height="166" rx="9" fill="#fff" stroke="#8fb7b4" stroke-width="1.5"/>
-<rect x="324" y="122" width="244" height="142" rx="9" fill="#e6f3f0" stroke="#087973" stroke-width="1.8"/>
-<rect x="288" y="350" width="296" height="91" rx="9" fill="#f4f7f8" stroke="#bccbd0"/>
-<rect x="288" y="477" width="514" height="61" rx="8" fill="#263d46"/>
-<g fill="#20343d" font-size="16" font-weight="700">
-<text x="34" y="47">企业需求</text>
-<text x="140" y="47" font-size="13" font-weight="500">解析约束及歧义 · 一次轻量召回建立候选</text>
-<text x="579" y="37" font-size="14">离线证据索引</text>
-<text x="579" y="56" font-size="12" font-weight="500">专家 → 能力 → 来源 → 原文</text>
-<text x="34" y="151">当前状态 · 专家 × 约束</text>
-<text x="342" y="151">轻量 Decision Model</text>
-<text x="625" y="140">可选工具动作</text>
-<text x="304" y="376">工具观测与原文核验</text>
-</g>
-<g fill="#425963" font-size="13">
-<text x="34" y="181">未查 · 证据不足 · 已支持 · 有冲突</text>
-<text x="34" y="208">附原文定位、专家归属、结果置信度</text>
-<text x="34" y="235">记录候选分差和剩余预算</text>
-<text x="342" y="180">估计排名与证据风险</text>
-<text x="342" y="205">比较风险降低量与动作成本</text>
-<text x="342" y="230">选择动作和目标专家／约束</text>
-<text x="625" y="171">补召回候选</text>
-<text x="625" y="209">按需定位并读原文</text>
-<text x="625" y="247">复查冲突与归属</text>
-<text x="625" y="285">澄清需求或精确回退</text>
-<text x="304" y="402">核对专家归属与约束是否得到支持</text>
-<text x="304" y="423">写回状态，重新排候选并扣除成本</text>
-</g>
-<g fill="#087973" font-size="12" font-weight="700">
-<text x="159" y="337">证据写回</text>
-<text x="159" y="357">下一轮重决策</text>
-</g>
-<g fill="#425963" font-size="12">
-<text x="282" y="292">关键约束已满足且风险达标</text>
-<text x="282" y="310">或预算耗尽，直接退出</text>
-</g>
-<g fill="#fff">
-<text x="306" y="502" font-weight="700" font-size="15">输出 Top-K、约束证据及未决项</text>
-<text x="306" y="523" font-size="12">预算耗尽时，仅输出已获支持的结论</text>
-</g>
-</svg>
+<figure class="agent-map" id="base-agent-architecture" aria-labelledby="agent-map-title">
+<figcaption id="agent-map-title">图 1. 专家搜索智能体首查架构 <span>拟议方案</span></figcaption>
+
+<section class="agent-lane" aria-labelledby="agent-offline-title">
+<h4 id="agent-offline-title">离线证据准备</h4>
+<div class="agent-sequence agent-offline">
+<div class="agent-node"><strong>来源接入</strong><p>教师画像、论文、专利、项目</p></div>
+<div class="agent-node"><strong>归属与定位</strong><p>统一专家标识，记录来源、贡献角色、时间及原文坐标。</p></div>
+<div class="agent-node"><strong>建立索引</strong><p>关键词与向量供召回；专家 → 能力 → 来源 → 原文供按需取证。</p></div>
 </div>
-<div class="agent-detail" aria-labelledby="agent-detail-title">
-<h4 id="agent-detail-title">一轮决策示例：Top-2 推荐</h4>
-<div class="agent-detail-grid">
-<table aria-label="示例中的专家约束证据状态">
-<thead><tr><th scope="col">候选</th><th scope="col">既往工艺经验</th><th scope="col">实测指标</th></tr></thead>
-<tbody>
-<tr><th scope="row">专家 A</th><td><span class="state-ok">已支持</span></td><td><span class="state-ok">已支持</span></td></tr>
-<tr><th scope="row">专家 B</th><td><span class="state-ok">已支持</span></td><td><span class="state-check">证据不足</span></td></tr>
-<tr><th scope="row">专家 C</th><td><span class="state-check">归属冲突</span></td><td><span class="state-ok">已支持</span></td></tr>
-</tbody></table>
-<ol class="agent-detail-actions">
-<li><strong>选动作。</strong>先读取 B 的试验记录，判断能否补齐第二个推荐名额。</li>
-<li><strong>验原文。</strong>核对测量对象、指标、工况，以及记录是否属于该专家。</li>
-<li><strong>改状态。</strong>若 B 得到支持且名次与引用稳定，则停止；否则再比较复核 C 与扩大召回的成本。</li>
-</ol></div>
-<p>示例用于说明决策路径。查询与来源的相关性判断可在同一查询内复用，个人贡献按专家分别核对。</p>
+</section>
+
+<div class="agent-edge agent-feed"><span aria-hidden="true">↓</span> 索引提供候选与原文定位</div>
+
+<section class="agent-lane" aria-labelledby="agent-init-title">
+<h4 id="agent-init-title">首查初始化</h4>
+<div class="agent-sequence agent-init">
+<div class="agent-node"><strong>解析企业需求</strong><p>提取目标、硬约束和偏好，保留约束的原文与可能解释。</p></div>
+<div class="agent-node"><strong>生成候选与证据线索</strong><p>轻量召回并排序，为每位候选填入已知证据与待查来源。</p></div>
+</div>
+</section>
+
+<div class="agent-edge"><span aria-hidden="true">↓</span> 初始化候选证据状态与查询预算</div>
+
+<section class="agent-lane agent-loop" aria-labelledby="agent-loop-title">
+<h4 id="agent-loop-title">按证据缺口决策</h4>
+<div class="agent-cycle">
+<div class="agent-node agent-state">
+<strong><span class="agent-step">1</span> 读取状态</strong>
+<p>候选名次、Top-K 边界、剩余时延与读取预算。</p>
+<table aria-label="专家与硬约束状态示例">
+<thead><tr><th scope="col">候选</th><th scope="col">既往经验</th><th scope="col">指标实测</th></tr></thead>
+<tbody><tr><th scope="row">专家 A</th><td>已支持</td><td>已支持</td></tr>
+<tr><th scope="row">专家 B</th><td>已支持</td><td class="agent-gap">待查</td></tr></tbody>
+</table>
+<p class="agent-node-note">每格记录证据状态、引用及冲突；上表为示例。</p>
+</div>
+<div class="agent-node agent-controller">
+<strong><span class="agent-step">2</span> 选择动作 · Decision Model</strong>
+<p>比较每项动作降低误放、漏召或错引风险的潜力，以及耗时、读取和推理开销。</p>
+<p class="agent-example">示例：先读 B 的试验记录，因为它可能改变第 2 名及其引用。</p>
+<p class="agent-node-note"><b>继续</b>则调用工具；风险达标或预算耗尽则转入输出。</p>
+</div>
+<div class="agent-node agent-tools">
+<strong><span class="agent-step">3</span> 调用工具</strong>
+<dl><div><dt>候选不足</dt><dd>扩展召回或请求澄清</dd></div>
+<div><dt>约束待证</dt><dd>按索引定位原文，读取最相关的段落</dd></div>
+<div><dt>证据冲突</dt><dd>追查原始出处，必要时走精确回退</dd></div></dl>
+</div>
+<div class="agent-node agent-verify">
+<strong><span class="agent-step">4</span> 核验后回写</strong>
+<p>分别核对原文是否支持约束、是否属于该专家。数值证据核对对象、指标和工况。</p>
+<p>写回支持、冲突或待查状态，保留引文坐标，更新排名和预算。</p>
+<p class="agent-node-note">相关性判断可在同一查询内复用；个人贡献逐人核对。</p>
 </div>
 </div>
+<div class="agent-return"><span aria-hidden="true">↶</span> 证据写回后返回步骤 1，重新评估下一步</div>
+</section>
+
+<div class="agent-edge"><span aria-hidden="true">↓</span> 步骤 2 选择退出</div>
+
+<section class="agent-lane agent-results" aria-labelledby="agent-output-title">
+<h4 id="agent-output-title">退出与结果</h4>
+<div class="agent-output-grid">
+<div><strong>质量达标</strong><p>在硬约束已有支持、排序和引用稳定时，返回 Top-K 与证据。</p></div>
+<div><strong>预算耗尽</strong><p>返回已支持的候选，标明未决约束及缺少的证据，可返回少于 K 人。</p></div>
+</div>
+</section>
+</figure>
 <h3 id="demand-taxonomy">4.2 需求理解（Demand Understanding，RQ1）</h3>
 <p>将需求转为技术方向、硬约束、软偏好及可追溯的原文片段。区分现有工况、既往资质和未来交付。如果不同解释会改变推荐，则保留解释并核对其共同依据，必要时请求澄清。</p>
 
