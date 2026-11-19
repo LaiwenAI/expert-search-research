@@ -152,6 +152,22 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </tbody></table></div>
 <p>等权融合相对最佳来源的已标注正例 P@5 差值分别为 +0.16 和 +1.02 个百分点，两组配对重采样区间均跨零。CoF 只标注了部分候选，引用也缺少独立人工标注。此前 CMU Gold 和 MERIT 的对照展示了固定画像聚合的竞争力。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/eafc6cfa437df10149c0c2ebde09533c2b37a2e5/benchmarks/cof-global-profile-pooling-v1">全候选代码与聚合结果</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/1bb54a862acf370e62fa1c42ca00e954e0f243bd/benchmarks/cmu-profile-ranking-v1">CMU 与 MERIT 对照</a></p>
 
+<h3 id="cof-candidate-to-citation">候选召回与引用交付</h3>
+<p>CoF KDD 的 122 条查询和 SciRepEval 的 59 条查询使用同一批来源快照。表中引用由冻结核验器选择，CoF 的已发布标签评判专家适配，未独立评价这些引用。</p>
+<div class="plan-table" tabindex="0" role="region" aria-label="CoF 候选到引用对照">
+<table class="study-table">
+<caption>表. 策略变化能否带来更多前五名带引用正例</caption>
+<thead><tr><th scope="col">检索策略</th><th scope="col">已标注正例 Recall@10，KDD／SciRepEval</th><th scope="col">附引用的正例 P@5，KDD／SciRepEval</th></tr></thead>
+<tbody>
+<tr><th scope="row">最佳单来源</th><td>13.64%／50.98%</td><td>2.13%／8.47%</td></tr>
+<tr><th scope="row">原始画像融合</th><td>18.60%／53.59%</td><td>1.97%／7.12%</td></tr>
+<tr><th scope="row">按需居中融合</th><td>19.01%／50.98%</td><td>1.80%／6.78%</td></tr>
+<tr><th scope="row">方法指令，保留全文</th><td>18.60%／54.25%</td><td>1.48%／6.44%</td></tr>
+<tr><th scope="row">方法指令，按词摘三句</th><td>14.46%／45.75%</td><td>1.15%／6.78%</td></tr>
+</tbody></table></div>
+<p>固定引用预算的补救实验也观察到，KDD 新增的 17 位已标注正例中，有 12 位排在第 6 至 10 位；这 12 位各核验最多六条来源时，均未达到两条支持的要求。这个诊断仍需独立证据标注区分源文本缺证和模型漏判。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/18e6d1272ce1aa476702e4953a874d73f999fe66/benchmarks/cof-evidence-rescue-v1">补证诊断</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/42dfbdba240e0632c4a961920832ee47a134bea2/benchmarks/cof-contrastive-shortlist-v1">居中融合</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/18e6d1272ce1aa476702e4953a874d73f999fe66/benchmarks/cof-method-query-view-v1">完整查询与摘句</a></p>
+<h3 id="rank-sensitive-cost">共享读取、停止与真实耗时</h3>
+<p>在 TREC 2006 Enterprise 的 49 个主题中，允许替换等量支持引用、保持专家顺序后，优先读共享来源减少约 5% 的读取，核验次数无明确变化。CoF KDD 实测中，共享取证相对延迟核验将平均模型调用由 6.70 降至 5.63，P95 由 218.39 降至 214.11 ms。按需分词少构造 21.1% 的提示词输入，与预分词共享取证的专家顺序、引用相同，P95 为 214.89 ms。前者是标注池回放，后者包含在线模型推理且采用顺序负载。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/ed857c1c19892a215e7b737575f51b9b517ee062/benchmarks/trec-reorder-witnesses-v1">TREC 回放</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7601acccf56743f963ce3394c3b12709163ce784/benchmarks/cof-lazy-frontier-v1">CoF 实测</a></p>
 <h3 id="cof-shared-frontier">CoF 共享引用的按需核验</h3>
 <p>在 122 条与此前并发压测样本分离的 CoF KDD 查询上，复用同一查询下可共享的来源相关性判断，只核验有机会进入 Top-5 的引用。计入实时编码、召回、核验和排序。</p>
 <div class="result-table-scroll"><table aria-label="共享取证与既有调度的对照"><thead><tr><th scope="col">策略</th><th scope="col">P95</th><th scope="col">平均 GPU 调用</th><th scope="col">与全检同序同引用</th></tr></thead><tbody>
