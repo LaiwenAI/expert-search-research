@@ -275,7 +275,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-20T04:16:19+08:00">2026-11-20 04:16（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-20T04:43:49+08:00">2026-11-20 04:43（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -396,7 +396,7 @@ html[data-theme="dark"] .agent-map {
           <path class="diagram-branch" d="M90 80H104V45M104 80V114"/>
           <path class="diagram-wire" d="M104 45H117M104 80H117M104 114H117"/>
           <path class="diagram-branch" d="M212 45H224V114M212 80H224M212 114H224"/>
-          <path class="diagram-wire" d="M224 80H237"/>
+          <path class="diagram-wire" d="M224 80H237"/><path class="diagram-branch" d="M308 80H320"/>
           <rect class="diagram-node" x="12" y="58" width="78" height="44" rx="6"/>
           <text class="diagram-text" x="51" y="71">来源状态</text><text class="diagram-text diagram-label" x="51" y="89">约束缺口</text>
           <rect class="diagram-key" x="117" y="31" width="95" height="28" rx="5"/>
@@ -411,31 +411,35 @@ html[data-theme="dark"] .agent-map {
       </g>
       <g id="agent-map-verify">
         <rect class="diagram-card" width="320" height="184" rx="9"/>
-        <text class="diagram-text diagram-title" x="13" y="18">独立核验 · 来源、约束与本人</text>
+        <text class="diagram-text diagram-title" x="13" y="18">分阶段核验 · 来源、本人、职责</text>
         <g class="diagram-center">
-          <path class="diagram-wire" d="M98 58H116M204 58H222"/>
-          <path class="diagram-wire diagram-dashed" d="M54 81V101M160 81V101M266 81V101"/>
-          <path class="diagram-branch diagram-dashed" d="M54 128V135H266V128M160 128V135"/>
+          <path class="diagram-wire" d="M0 63H10M89 63H104"/>
+          <path class="diagram-branch" d="M193 63H205V45M205 63V79"/>
+          <path class="diagram-wire" d="M205 45H216M205 79H216"/>
+          <path class="diagram-branch" d="M308 45H314V79H308"/>
+          <path class="diagram-wire diagram-return" d="M314 79V158H305"/>
+          <path class="diagram-wire diagram-dashed" d="M49.5 82V101M148.5 82V101M262 92V101"/>
+          <path class="diagram-branch diagram-dashed" d="M49.5 128V135H262V128M148.5 128V135"/>
           <path class="diagram-wire diagram-dashed" d="M107 135V145"/>
-          <path class="diagram-wire diagram-return" d="M310 58H314V158H305"/>
           <path class="diagram-branch" d="M257 171V177H0M107 171V177"/>
-          <rect class="diagram-node" x="10" y="35" width="88" height="46" rx="5"/>
-          <text class="diagram-text" x="54" y="50">确认来源</text>
-          <text class="diagram-text diagram-label" x="54" y="66">向量 · 正文</text>
-          <rect class="diagram-key" x="116" y="35" width="88" height="46" rx="5"/>
-          <text class="diagram-text" x="160" y="50">核验约束</text>
-          <text class="diagram-text diagram-label" x="160" y="66">共享向量 · 复核</text>
-          <rect class="diagram-pass" x="222" y="35" width="88" height="46" rx="5"/>
-          <text class="diagram-text" x="266" y="50">确认本人归属</text>
-          <text class="diagram-text diagram-label" x="266" y="66">身份 · 职责</text>
-          <rect class="diagram-warn" x="10" y="101" width="88" height="27" rx="5"/>
-          <text class="diagram-text diagram-label" x="54" y="114.5">缺源或来源歧义</text>
-          <rect class="diagram-warn" x="116" y="101" width="88" height="27" rx="5"/>
-          <text class="diagram-text diagram-label" x="160" y="114.5">缺证或有反证</text>
-          <rect class="diagram-warn" x="222" y="101" width="88" height="27" rx="5"/>
-          <text class="diagram-text diagram-label" x="266" y="114.5">待查或归属冲突</text>
+          <rect class="diagram-node" x="10" y="43" width="79" height="39" rx="5"/>
+          <text class="diagram-text" x="49.5" y="56">确认来源</text>
+          <text class="diagram-text diagram-label" x="49.5" y="70">标题 · 正文</text>
+          <rect class="diagram-key" x="104" y="43" width="89" height="39" rx="5"/>
+          <text class="diagram-text" x="148.5" y="56">确认本人</text>
+          <text class="diagram-text diagram-label" x="148.5" y="70">字段 · 身份</text>
+          <rect class="diagram-pass" x="216" y="32" width="92" height="26" rx="5"/>
+          <text class="diagram-text" x="262" y="45">职责短语</text>
+          <rect class="diagram-node" x="216" y="66" width="92" height="26" rx="5"/>
+          <text class="diagram-text" x="262" y="79">原文核约束</text>
+          <rect class="diagram-warn" x="10" y="101" width="79" height="27" rx="5"/>
+          <text class="diagram-text diagram-label" x="49.5" y="114.5">缺源 · 歧义</text>
+          <rect class="diagram-warn" x="104" y="101" width="89" height="27" rx="5"/>
+          <text class="diagram-text diagram-label" x="148.5" y="114.5">归属待查</text>
+          <rect class="diagram-warn" x="216" y="101" width="92" height="27" rx="5"/>
+          <text class="diagram-text diagram-label" x="262" y="114.5">缺证 · 职责歧义</text>
           <rect class="diagram-warn" x="17" y="145" width="180" height="26" rx="5"/>
-          <text class="diagram-text" x="107" y="158">记录缺口或反证 · 回到决策</text>
+          <text class="diagram-text" x="107" y="158">按缺口更新 · 回到决策</text>
           <rect class="diagram-pass" x="209" y="145" width="96" height="26" rx="5"/>
           <text class="diagram-text" x="257" y="158">写入本人证据</text>
         </g>
@@ -466,10 +470,10 @@ html[data-theme="dark"] .agent-map {
     </defs>
   </svg>
 
-  <svg class="diagram diagram-wide" viewBox="0 0 740 881" role="img" aria-label="拟议的首次查询框架。离线专家证据树提供检索来源；在线双路召回初始化约束状态，来源线索与任务片段合批编码，任务向量用于字段核验。继续取证时分别确认来源、约束语义和本人贡献。有结构化声明时可直接核对归属，有原文时逐项确认支持。缺源、反证和归属冲突分别写回状态。当前候选池内的排名与引用稳定，或预算到上限时，进入对应输出分支。在线纠错和离线回放供后续版本迭代。">
+  <svg class="diagram diagram-wide" viewBox="0 0 740 881" role="img" aria-label="拟议的首次查询框架。离线专家证据树提供检索来源；在线双路召回初始化约束状态，来源线索与任务片段合批编码，任务向量用于字段核验。继续取证时依次确认来源、本人归属和职责支持。有明确职责字段时判断短语，语义不清时回到带上下文的原文核对约束。来源歧义、归属未明、缺证或职责歧义各自写回状态。当前候选池内的排名与引用稳定，或预算到上限时，进入对应输出分支。在线纠错和离线回放供后续版本迭代。">
     <rect class="diagram-zone" x="8" y="182" width="724" height="548" rx="13"/>
     <text class="diagram-text diagram-zone-title" x="30" y="204">首查 Agent · 在线决策回路</text>
-    <path class="diagram-wire diagram-main" d="M350 75H390"/><path class="diagram-wire diagram-main" d="M550 142V163H293V224"/><path class="diagram-wire diagram-main" d="M350 292H390"/><path class="diagram-wire diagram-main" d="M477 358V392"/><path class="diagram-wire diagram-main" d="M390 465H350"/>
+    <path class="diagram-wire diagram-main" d="M350 75H390"/><path class="diagram-wire diagram-main" d="M550 142V163H293V224"/><path class="diagram-wire diagram-main" d="M350 292H390"/><path class="diagram-wire diagram-main" d="M477 358V392"/><path class="diagram-wire diagram-main" d="M710 472H715V537H372V382H22V455H30"/>
     <path class="diagram-wire diagram-main diagram-return" d="M30 569H18V292H30"/>
     <path class="diagram-wire diagram-main" d="M627 358V373H720V580H370V588"/>
     <path class="diagram-wire diagram-main diagram-dashed" d="M370 722V767"/>
@@ -484,10 +488,10 @@ html[data-theme="dark"] .agent-map {
     <text class="diagram-text diagram-label" x="384" y="748">交互与运行轨迹</text>
   </svg>
 
-  <svg class="diagram diagram-narrow" viewBox="0 0 374 1382" role="img" aria-label="拟议的首次查询框架。离线专家证据树提供检索来源；在线双路召回初始化约束状态，来源线索与任务片段合批编码，任务向量用于字段核验。继续取证时分别确认来源、约束语义和本人贡献。有结构化声明时可直接核对归属，有原文时逐项确认支持。缺源、反证和归属冲突分别写回状态。当前候选池内的排名与引用稳定，或预算到上限时，进入对应输出分支。在线纠错和离线回放供后续版本迭代。">
+  <svg class="diagram diagram-narrow" viewBox="0 0 374 1382" role="img" aria-label="拟议的首次查询框架。离线专家证据树提供检索来源；在线双路召回初始化约束状态，来源线索与任务片段合批编码，任务向量用于字段核验。继续取证时依次确认来源、本人归属和职责支持。有明确职责字段时判断短语，语义不清时回到带上下文的原文核对约束。来源歧义、归属未明、缺证或职责歧义各自写回状态。当前候选池内的排名与引用稳定，或预算到上限时，进入对应输出分支。在线纠错和离线回放供后续版本迭代。">
     <rect class="diagram-zone" x="4" y="333" width="366" height="897" rx="11"/>
     <text class="diagram-text diagram-zone-title" x="27" y="354">首查 Agent · 在线决策回路</text>
-    <path class="diagram-wire diagram-main" d="M187 140V167"/><path class="diagram-wire diagram-main" d="M187 301V316H323V374"/><path class="diagram-wire diagram-main" d="M187 508V540"/><path class="diagram-wire diagram-main" d="M114 674V711"/><path class="diagram-wire diagram-main" d="M187 845V876"/>
+    <path class="diagram-wire diagram-main" d="M187 140V167"/><path class="diagram-wire diagram-main" d="M187 301V316H323V374"/><path class="diagram-wire diagram-main" d="M187 508V540"/><path class="diagram-wire diagram-main" d="M114 674V711"/><path class="diagram-wire diagram-main" d="M347 791H352V858H21V939H27"/>
     <path class="diagram-wire diagram-main diagram-return" d="M27 1053H15V441H27"/>
     <path class="diagram-wire diagram-main" d="M264 674V692H359V1074H187V1088"/>
     <path class="diagram-wire diagram-main diagram-dashed" d="M187 1222V1267"/>
@@ -502,7 +506,7 @@ html[data-theme="dark"] .agent-map {
     <text class="diagram-text diagram-label" x="200" y="1246">交互与运行轨迹</text>
   </svg>
 </figure>
-<p>只有来源可信、证据支持该约束且能归属本人时，才写入已证状态。低置信时由决策器选择补召回、核对正文或复核本人职责。有据排名与引用均稳定时停止。快速解析、编码和核验实现应用于各组对照，分别测量决策本身的增益。</p>
+<p>来源可信、个人归属明确且证据支持约束时，写入已证状态。来源有歧义时扩召回，归属不明时补本人证据，职责相近或原文信息不足时定向复核。固定预算内优先处理可能改变入选结果的缺口。各组对照共享快速执行实现，单独测量调度的增益。</p>
 <h3 id="demand-taxonomy">4.2 需求理解（Demand Understanding，RQ1）</h3>
 <p>将需求转为技术方向、硬约束、软偏好及可追溯的原文片段。区分现有工况、既往资质和未来交付。如果不同解释会改变推荐，则保留解释并核对其共同依据，必要时请求澄清。</p>
 
@@ -512,7 +516,7 @@ html[data-theme="dark"] .agent-map {
 
 <h3>4.4 搜索决策与停止（Search Decisions and Stopping，RQ3）</h3>
 <p id="expert-action-routing-prior-work">首轮保留完整需求，以小候选池做批量核验。同一来源的读取可共享。优先为同一专家组合跨来源证据，按每位专家的约束缺口分配读取预算。维护仅凭已验证证据得到的 Top-K，以及考虑未决证据后仍可能得到的结果。两者一致时结束当前池的核验。候选覆盖不足时仍可补召回，预算耗尽时返回已有证据和未决条件。</p>
-<p>当结果仍可能变化时，先判断一次读取能否补足特定专家缺失的证据，再估计该证据会如何改变排序及错荐风险。用固定轮询和优先补足已有支持的规则对照开源决策器。先确认来源，低置信时才查候选来源的局部正文。随后核对本人归属，有结构化字段时优先查字段。只有原文可用时，把硬约束拆成可查声明，保留目标专家和上下文，以轻量门控处理明确项，仅复核未决项。来源定位与本人归属分别校准。归属门槛按证据格式验证，记录错误发生在补证、身份匹配还是职责判定。记录支持状态及原文位置。缺源、归属待查或文本证据不足时保留未决，发现明确反证时更新状态。补读优先处理会改变入选结果且仍有可定位证据的约束。将固定深度、按分差扩读和按约束缺口取证置于同一预算对照。多个合理解释并存时，仅返回各解释均支持的专家。</p>
+<p>当结果仍可能变化时，先判断一次读取能否补足特定专家缺失的证据，再估计该证据会如何改变排序及错荐风险。用固定轮询和优先补足已有支持的规则对照开源决策器。先确认来源，再用可核验的字段或原文确认个人归属。结构化声明可直接核对本人，随后判断职责短语。只在目标证据格式的独立验证中满足错荐要求时启用这条快速路径。职责相近或字段覆盖不足时，定向核对带上下文的原文。将漏源、错人和同一人的错职责分别记入状态。记录支持状态及原文位置。缺源、归属待查或文本证据不足时保留未决，发现明确反证时更新状态。补读优先处理会改变入选结果且仍有可定位证据的约束。将固定深度、按分差扩读和按约束缺口取证置于同一预算对照。多个合理解释并存时，仅返回各解释均支持的专家。</p>
 
 <h3>4.5 在线与离线迭代（Online and Offline Improvement，RQ4–RQ5）</h3>
 <p>冻结初始框架后，在线复用经核查的纠错；离线将回放轨迹中的问题归因到需求理解、证据判断、排序或调度，再更新策略。在同等反馈预算下检验新任务收益、旧任务退化及更新成本。</p>
@@ -525,7 +529,7 @@ html[data-theme="dark"] .agent-map {
 <tbody>
 <tr><th scope="row">决策器</th><td>规则、MLP、冻结 Qwen、Qwen LoRA</td><td>轻量模型能否以较低决策开销选对工具与停止时机？</td></tr>
 <tr><th scope="row">向量编码</th><td>Qwen3-Embedding 与 BGE-M3，分别对照冻结与微调</td><td>企业需求与专家证据的对齐能否提高等候选预算下的召回？</td></tr>
-<tr><th scope="row">证据核验</th><td>结构化角色匹配、冻结轻量三分类、短窗微调与按需复核</td><td>在有资格进入推荐的候选上分别测反证、缺证与错归属误放，并报告真支持及未决比例。</td></tr>
+<tr><th scope="row">证据核验</th><td>结构化归属加职责核验、冻结联合核验器、近邻职责对照训练</td><td>固定候选与原文窗口，对比跨格式的正确接受、错人、错职责、未决与核验成本。</td></tr>
 <tr><th scope="row">训练信号</th><td>监督微调与开源教师蒸馏对照；通过验证后再试离线强化学习</td><td>收益是否来自更好的证据定位与动作选择，能否抵消训练成本？</td></tr>
 </tbody>
 </table></div>
@@ -603,7 +607,7 @@ html[data-theme="dark"] .agent-map {
 <tr id="attribution-load-result"><th scope="row">归属核验的排队成本</th><td>已定位的 45 篇 PLOS 说明，冻结字符门控少送 17／45 次 4B 调用。每秒实际到达约 53 次时，模块 P95 从 353.60 降至 71.35 ms。门控在两批说明上的错归属变化方向不同。</td><td>在固定格式下保留快速门控作候选。分开验证少调用、合批输出一致性及端到端延迟。 <a href="experiments.html#attribution-queue-stage">独立复测与负载对照</a></td></tr>
 <tr><th scope="row">公开全候选召回</th><td>CoF KDD／SciRepEval 中，画像中心与最佳来源等权融合将已标注正例 Recall@10 从 13.64%／50.98% 提至 18.60%／53.59%，检索 P95 均低于 10 ms。 <a href="experiments.html#cof-global-profile-pooling">完整对照</a></td><td>保留完整需求及原始画像融合作强基线。居中融合与按方法词摘句均未在两组提高前五名带引用正例。 <a href="experiments.html#cof-candidate-to-citation">候选到引用对照</a></td></tr>
 <tr id="packed-verifier-load"><th scope="row">无填充证据核验</th><td>CoF 两组各以 12 条／秒回放 36 秒。共享权重的无填充批次将到达至响应的 P95 从 1,559／1,355 降至 167／124 ms；864 条响应的专家及引用顺序一致。</td><td>四线程闭环完成速率由 11.28／11.56 增至 14.94／15.00 条／秒。纳入核验实现的强基线，再比较节省的预算能否提高有据匹配质量。 <a href="experiments.html#cof-packed-verifier-load">负载对照</a></td></tr>
-<tr id="open-role-gate-result"><th scope="row">来源与职责是不同失效点</th><td>新旧两个 PLOS 语料库中，正文核验增加正确来源，也会误收相似论文。旧语料关键词组中，比较候选的正文证据分差把缺源误收从 11 降至 0／72，正确确认从 56 降至 48／72。</td><td>保留普通四候选作基线。分别测缺源、职责语义、本人归属；尾部排除句的主职责提取须用独立措辞验证。 <a href="experiments.html#open-source-competition">来源对照</a> · <a href="experiments.html#open-duty-routing-transfer">职责迁移</a></td></tr>
+<tr id="open-role-gate-result"><th scope="row">先确认本人，再核验职责</th><td>45 篇 PLOS 长文档的贡献声明窗口上，分开核验使无误引的结果由 20 增至 24，出现误引的文章由 10 降至 0，模型比较由 90 次减至 44 次，核验 P95 由 8.72 降至 7.35 ms。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/4c6b30e050b0ad3b6699bae75979116c04f638fc/benchmarks/plos-factored-article-role-v1">固定窗口对照</a></td><td>迁移至现代 CRediT 字段和相似职责措辞时，旧阈值仅接受 29／127 个正例。独立校准后，近邻对照加交叉熵的无误收结果为 96／127，单句训练为 87／127，误收由 5 增至 7。快速路径须按目标格式重新验证覆盖与错荐。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/892d4dd7f5f246a07efccf547f815ebfe4c78336/benchmarks/plos-frozen-scope-role-transfer-v1">跨格式对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/5a532769c92559bddf032a704148b2f2643c5ccf/benchmarks/plos-calibrated-role-contrasts-v1">独立校准</a></td></tr>
 <tr id="complement-stage-result"><th scope="row">来源定位与补证</th><td>QASPER 已知论文、系统选首段时，轻量选证完成 21／137，冻结重排为 20／137，组件 P95 为 9.13／56.38 ms。全库有标题线索时，标题匹配使可补齐的候选窗口由 7 增至 19／137。 <a href="experiments.html#qasper-source-first">分阶段对照</a></td><td>已知来源的补证速度可复现。无线索时仍需验证来源回退；固定分配更多来源会挤压补齐同一证据组的预算。</td></tr>
 <tr id="automatic-source-routing-result"><th scope="row">公开全库来源路由</th><td>Re-DocRED 的 161 条精确名称查询中，共用自动人名抽取和核验器时，定向路由将读入文档从 644 减至 392 篇次，保留的已标注正例从 87 增至 98。</td><td>标题对照已保留 97 个正例。正文实体减少了额外读取，整体 P95 仅缩短约 1.2 ms。来源找对后仍可能漏认人，须分别评测。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/15dd39270aad3986a9061344a7addfd842a32d22/benchmarks/redocred-automatic-entity-index-v1">自动索引对照</a></td></tr>
 <tr id="enterprise-cross-precision-result"><th scope="row">企业完整首查</th><td>80 条开发请求、52,667 条来源。双精度按需复核将首查 P95 从 2.15 降至 1.18 秒，共享前缀后降至 1.14 秒。资格、排序、引用和未决状态一致。</td><td>在约 3 请求／秒的两组单工作进程回放中，共享前缀将客户端 P95 降低 2.0%–3.3%；短请求优先的 P95 基本持平。保留同实现的 FIFO 强基线，并继续独立盲审。 <a href="experiments.html#enterprise-prefix-load">首查与负载对照</a></td></tr>
@@ -637,7 +641,7 @@ html[data-theme="dark"] .agent-map {
 </ul>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p><strong>投稿判断。</strong>主贡献是一个首次使用即可运行的高效、低成本专家搜索框架。SIGIR 长文的关键证据是：共享同一套快速执行实现后，搜索决策仍能在等成本下提高有据匹配质量，并在等质量下降低端到端延迟和计算成本。当前企业开发集已验证同输出提速，等预算的质量增益仍待全库盲审。 <a href="https://sigir2027.org/pages/submit-full.html">SIGIR 2027 长文征稿</a></p>
+<p><strong>投稿判断。</strong>主贡献是一个首次使用即可运行的高效、低成本专家搜索框架。SIGIR 长文的关键证据是：共享同一套快速执行实现后，搜索决策仍能在等成本下提高有据匹配质量，并在等质量下降低端到端延迟和计算成本。当前企业开发集已验证同输出提速。公开数据已验证结构化本人核验可以少做模型比较，但职责判断的精度随格式与措辞变化。长文的核心检验是全库下能否依据不同缺口选对下一步动作，在同等成本下提高经盲审确认的匹配质量。 <a href="https://sigir2027.org/pages/submit-full.html">SIGIR 2027 长文征稿</a></p>
 
 <h3 id="expert-evidence-precedent">10.1 主方法的新意在哪里（Method Novelty）</h3>
 <p><strong>用可归属到本人的约束证据决定下一步搜索。</strong>框架先对小候选池批量核验，记录每位专家的每项硬约束是已证、有反证还是待查。每次动作比较其预计带来的有据 Top-K 变化与计算开销。候选覆盖不足时扩召回。候选已足、本人证据待查时，定向读取可定位的来源。当前池的推荐已稳定且覆盖判断通过时停止。比如同一篇论文的两位作者都与主题相关，但原文明示只有一位负责目标工况下的测试。下一笔预算应根据候选覆盖，用于核对另一人的任务分工，或从全库找有同工况实绩的人。</p>
@@ -666,7 +670,7 @@ html[data-theme="dark"] .agent-map {
 <thead><tr><th scope="col">已验证的范围</th><th scope="col">对下一步的影响</th></tr></thead>
 <tbody>
 <tr><th scope="row">企业首查的执行提速</th><td>80 条开发需求上，P95 由 2.15 秒降至 1.14 秒，推荐、引用和未决状态一致。在主实验中让所有策略共享快速执行，再测搜索决策本身的质量与成本增益。 <a href="#enterprise-cross-precision-result">企业首查实测</a></td></tr>
-<tr><th scope="row">已知来源的取证增益</th><td>相同两次读取预算下，按作者取证保留 34／59 个正例，来源轮询保留 28／59 个，各误荐 1／59。全库实验先用高覆盖候选池作诊断上界，再固定候选池替换取证策略，分清收益来自找对人还是选对证据。 <a href="#owner-budget-result">同预算对照</a></td></tr>
+<tr><th scope="row">已知来源的取证增益</th><td>相同两次读取预算下，按作者取证保留 34／59 个正例，来源轮询保留 28／59 个，各误荐 1／59。贡献声明中分开判断归属和职责可减少核验，但跨格式的质量增益尚未稳定。主实验固定候选池与核验器，对比按缺口调度和直接增加读取深度，按漏源、错归属和错职责报告差异。 <a href="#owner-budget-result">同预算取证</a> · <a href="#open-role-gate-result">职责核验与迁移</a></td></tr>
 <tr><th scope="row">企业全库的主要瓶颈</th><td>等核验次数的三条路径均只对 34／80 条需求发出暂定推荐。引文样本中可获取含本人职责证据的原文有限。独立留出集优先审计候选是否入池、来源是否可达、本人职责是否得到支持，测清每一步的损失，再比较补召回和定向取证。 <a href="#enterprise-routed-review-result">全库与来源审计</a></td></tr>
 <tr><th scope="row">公开数据上的强对照</th><td>Re-DocRED 精确名称组中，标题路由已保留 97 个已标注正例，正文实体路由保留 98 个。固定核验量的轻量末位替换尚未得到稳定增益。索引保留标题直达，决策保留规则基线；用独立测试衡量两种扩展的增益。 <a href="#automatic-source-routing-result">索引对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/f1cdb1b3f42c80a5acfb588ed771746f536e653d/benchmarks/redocred-learned-role-candidate-rescue-v1">候选决策对照</a></td></tr>
 </tbody></table></div>
@@ -675,7 +679,7 @@ html[data-theme="dark"] .agent-map {
 <ol>
 <li><strong>锁定评测。</strong>CoF 测全库排序，TREC 测专家与支持文档，企业隔离留出集检验多约束有据匹配。对各方法返回的去重候选与引文做双人独立盲审、分歧仲裁。123 组企业面板目前只完成样本审计。根据独立开发数据预先确定有意义的最小收益、非劣界、覆盖下限、错荐上限与样本量。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b829a5152f25ef8b9f44c3a7f05f4c8a3af45469/benchmarks/enterprise-blind-panel-v1">企业面板审计</a></li>
 <li><strong>验证质量与效率。</strong>在同语料、硬件、缓存和系统负载下，分别做等成本与等质量的配对检验。等成本时，有据 P@5 增益的 95% 置信区间下界应超过预设门槛。等质量时，先满足质量非劣、覆盖和错荐门槛，再要求端到端 P95 与单位成功查询成本的差值区间均低于零。失败和回退计入成本。</li>
-<li><strong>验证收益来自主方法。</strong>共享快速实现，依次移除本人归属状态、按缺口补召回和自适应停止。两项主比较通过且消融能定位收益时，才支持高质量、低成本首查的长文主张。效果只在预先定义的多约束需求组复现时，论文限定适用范围。若只复现同输出提速，论文结论限定为系统执行效率。</li>
+<li><strong>验证收益来自主方法。</strong>共享快速实现，先以固定候选和窗口单独比较归属检查与职责判断，再在全链路消融中分别移除归属与职责状态、按缺口补召回和自适应停止。两项主比较通过且消融能定位收益时，才支持高质量、低成本首查的长文主张。效果只在预先定义的多约束需求组复现时，论文限定适用范围。若只复现同输出提速，论文结论限定为系统执行效率。</li>
 </ol>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
