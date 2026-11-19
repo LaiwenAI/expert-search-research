@@ -195,7 +195,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T11:02:04+08:00">2026-11-19 11:02（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T12:03:10+08:00">2026-11-19 12:03（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>企业专家检索需要从论文、专利和项目中判断谁能解决具体技术问题，并给出可查证的依据。</p>
 <ul class="research-challenges">
@@ -285,31 +285,30 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 <h3>4.5 在线／离线迭代</h3>
 <p>在线复用已核查的纠错，离线回放反馈更新策略。</p>
 <h2>5. 模型对照</h2>
-<p><strong>决策器</strong>　规则、MLP、冻结 Qwen、LoRA。<br>
-<strong>编码器</strong>　Qwen3-Embedding、BGE-M3，各比冻结与微调。<br>
-<strong>学习策略</strong>　比较有无开源教师蒸馏。监督学习通过验证后再试离线强化学习。</p>
+<p>决策器对照规则、MLP、冻结 Qwen 与 LoRA；编码器对照冻结及微调的 Qwen3-Embedding 与 BGE-M3。</p>
+<details><summary>训练路线</summary><p>比较有无开源教师蒸馏；监督学习通过验证后再试离线强化学习。</p></details>
 <h2>6. 预期贡献</h2>
-<p><strong>主</strong>　首查高精度、低延迟、低成本的搜索框架。<br>
-<strong>次</strong>　在线与离线迭代。配套贡献包括需求合成与证据归属指标。</p>
+<p><strong>主贡献</strong>　首查高效、低成本的证据搜索框架。<br>
+<strong>次贡献</strong>　在线与离线迭代。基准配套约束驱动的需求合成与证据归属评测。</p>
 <h2>7. 实验与评价</h2>
-<p>公开基准＋企业双人盲审。企业样本按企业与近重复组拆分。</p>
 <table aria-label="实验设置与判据">
 <thead><tr><th scope="col">实验</th><th scope="col">判据</th></tr></thead>
 <tbody>
-<tr id="experiment-results"><th scope="row">首查 · 等质量</th><td>设定质量非劣界、覆盖下限和误放上限，比较端到端 P95、吞吐和成功查询成本，计入回退。</td></tr>
-<tr><th scope="row">首查 · 等预算</th><td>比较专家 P@K、硬约束误放率和证据归属 P@K。直接适配与迁移适配分报。</td></tr>
-<tr id="experiment-comparison-chart"><th scope="row">消融</th><td id="experiment-ablation-results"><span id="experiment-grounding">逐项移除索引、编码器、决策、回退</span>，检验质量与成本变化。</td></tr>
-<tr id="experiment-continual-results"><th scope="row">持续迭代</th><td>等反馈预算比较冻结、在线、离线、联合更新，报告新任务收益、旧任务退化和更新成本。</td></tr>
+<tr id="experiment-results"><th scope="row">首查 · 等质量</th><td>预设质量非劣界、覆盖下限与误放上限；比较含回退的端到端 P95、吞吐及成功查询成本。</td></tr>
+<tr><th scope="row">首查 · 等预算</th><td>比较专家 P@K、硬约束误放率、证据归属 P@K；直接与迁移适配分报。</td></tr>
+<tr id="experiment-comparison-chart"><th scope="row">机制贡献</th><td id="experiment-ablation-results"><span id="experiment-grounding">分别消融索引、编码、决策和回退。</span></td></tr>
+<tr id="experiment-continual-results"><th scope="row">持续迭代</th><td>等反馈预算比较冻结、在线、离线与联合更新；衡量新任务收益、旧任务退化及更新成本。</td></tr>
 </tbody>
 </table>
-<details><summary>评测设置</summary>
-<p id="judgment-coverage">公开评测：CoF、TREC Enterprise（排名），MERIT（适配），QASPER、EvidenceBench、LitSearch（取证），CRediT（归属）。</p>
-<p>双语、单约束、跨来源样本对照等量普通扩写。盲审分歧经仲裁。证据须由原文支持且归属正确。</p>
-<p id="implemented-agent-architecture">基线：领域先验、BM25、稠密及混合检索、GroundedPipeline、固定批量、最短约束优先和自适应截断。统一语料与负载；取证固定候选，超参数在验证集确定。</p>
-<p>以人工约束定位解析误差，改变证据可见性和负载，盲审新专家及替代来源。单列训练和建索引成本。</p>
+<details><summary>数据、基线与评测控制</summary>
+<ul>
+<li id="judgment-coverage"><strong>数据</strong>　CoF、TREC Enterprise（排名），MERIT（适配），QASPER、EvidenceBench、LitSearch（取证），CRediT（归属）。企业样本按企业与近重复组拆分，双人盲审、分歧仲裁。</li>
+<li id="implemented-agent-architecture"><strong>对照</strong>　领域先验、BM25、稠密与混合检索、GroundedPipeline、固定批量、最短约束优先、自适应截断。统一语料及负载，取证实验固定候选。</li>
+<li><strong>质量控制</strong>　合成样本与等量常规改写对照；用人工约束定位解析误差；复查候选替换及证据可见性变化。超参数在验证集确定，训练和建索引成本单列。</li>
+</ul>
 </details>
-<h2>8. 实施与开源</h2>
-<p>先冻结评测，再验证首查和迭代。开源检索、数据合成、评测代码及可公开数据。</p>
+<h2>8. 开源产物</h2>
+<p>检索方法、数据合成、基准代码及可公开的数据。</p>
 <h2>9. 参考文献（References）</h2>
 <details><summary>展开核心参考</summary><ul class="refs">
 <li><a href="https://doi.org/10.1145/1148170.1148181">Balog et al. · Formal Models for Expert Finding</a></li>
@@ -323,8 +322,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 </ul></details>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p id="expert-evidence-precedent"><strong>创新检验</strong>　把跨来源取证、个人归属与引用顺序纳入同一决策，检验能否在质量达标时降低首查成本。</p>
-<p><strong>SIGIR／The Web Conference 投稿判据</strong>　公开基准与企业盲审均达到第 7 节质量门槛，且首查效率超过最强固定策略和自适应对照。 <a href="experiments.html#plan-evidence">研究依据</a></p>
+<p id="expert-evidence-precedent"><strong>SIGIR／The Web Conference 投稿判据</strong>　跨来源取证与归属联合决策须通过公开基准与企业盲审，并在等质量下超过最强固定与自适应基线。 <a href="experiments.html#plan-evidence">研究依据</a></p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>
