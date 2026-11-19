@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-19T12:18:43+08:00">2026-11-19 12:18（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-19T12:32:25+08:00">2026-11-19 12:32（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -109,6 +109,14 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>实际到达 276.57 请求／秒的回放中，默认 BF16 微批的实测吞吐为 274.17 和 272.52 请求／秒，FP32 为 119.85 和 123.90 请求／秒；同两组 P95 分别从 43.25 和 55.29 毫秒升至 1,764.72 和 1,634.38 毫秒。全量 FP32 提供了数值稳定性对照，固定 BF16 词元位置也暂未显示跨集合稳定收益。后续以已标注相关性、来源支持及吞吐联合评估局部高精度或批次实现；同序同引用和字符串逐字节一致作为两种独立的复现指标。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/7b0ec45d818b258bc20fdab23eecb01b9a052940/experiments/retrieval/cof_batch_encoder_precision.py">数值精度消融代码</a> · <a href="https://docs.pytorch.org/docs/2.15/notes/numerical_accuracy.html#batched-computations-or-slice-computations">PyTorch 数值精度说明</a></p>
 </section>
 <section aria-labelledby="action-selection"><h2 id="action-selection">证据选择与决策模型</h2>
+<h3 id="cof-shared-frontier">CoF 共享引用的按需核验</h3>
+<p>在 122 条与此前并发压测样本分离的 CoF KDD 查询上，复用同一查询下可共享的来源相关性判断，只核验有机会进入 Top-5 的引用。计入实时编码、召回、核验和排序。</p>
+<div class="result-table-scroll"><table aria-label="共享取证与既有调度的对照"><thead><tr><th scope="col">策略</th><th scope="col">P95</th><th scope="col">平均 GPU 调用</th><th scope="col">与全检同序同引用</th></tr></thead><tbody>
+<tr><th scope="row">既有延迟取证</th><td>219.3 ms</td><td>6.70</td><td>122／122</td></tr>
+<tr><th scope="row">共享引用</th><td>217.3 ms</td><td>5.63</td><td>122／122</td></tr>
+<tr><th scope="row">共享引用＋长度排序</th><td>215.0 ms</td><td>5.69</td><td>122／122</td></tr>
+</tbody></table></div>
+<p>长度排序按来源的词元数和预期覆盖名次安排核验；相比既有延迟取证，最低 P95 降低 1.9%。各路线的人工标签 P@5 均为 3.77%。该样本支持小幅调度收益，引用语义支持度尚未独立标注。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/efd6e43258b2fd29f6b9cf0fe9c5ffa78d535a79/benchmarks/cof-shared-frontier-v1">实验代码与结果</a></p>
 <p><strong>相同原文预算下的证据覆盖。</strong>在 EvidenceBench 已评估的 293 条查询（284 篇论文）上，截取平面向量排序和来源角色排序各自前十句的可容纳前缀。500、1000、2000 字符上限下，平面与角色排序的标注要点覆盖率分别为 19.2%／21.6%、30.2%／33.5%、41.8%／47.1%。1000 字符档平均实际使用 894／890 字符，配对差值为 +3.2 个百分点，按论文聚类的描述性 95% 区间为 +1.0 至 +5.5 个百分点。这是对已有结果的事后回放，按完整句截取，未计入分词、读取时延、预编译或模型核验。覆盖率对应公开标注的论文要点，企业专家适配仍需独立验证。优先把角色排序作为固定候选内的证据打包对照，按相同 token 预算复测，并报告来源编译和核验开销。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/evidencebench_character_budget.py">回放代码</a></p>
 <p><strong>用未覆盖词判断下一步的局限。</strong>在同一批 293 条 EvidenceBench 查询上固定角色排序产生的前十句。1000 字符预算下，顺序截取、按词重合与长度选择、再加入未覆盖词状态，平均标注要点覆盖率分别为 33.5%、35.0%、35.6%。后两组分别使用约 944 和 948 字符，配对差值为 +0.6 个百分点，按论文聚类的描述性 95% 区间为 −0.9 至 +2.1 个百分点。用答案标注在同一候选池和预算内选句，精确上界为 49.2%，用于估计选择空间。该回放提示，词面状态的增益尚不明确。后续应在同一候选池内用语义约束及证据支持状态替代词面覆盖，并保留静态长度归一化策略对照。字符预算未计入在线时延和模型开销。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/evidencebench_gap_selection.py">实验代码</a></p>
 <p><strong>冻结向量能否改进缺口调度。</strong>在相同 293 条 EvidenceBench 查询和原有十句候选上，以标点和连词拆解假设。将静态片段相似度除以字符成本，与追踪每个片段已获得的最高相似度、按新增相似度分配预算的策略比较。500、1000、2000 字符档的配对覆盖率差分别为 +2.12、+0.35、−0.40 个百分点，按论文聚类的描述性 95% 区间均跨零。1000 字符档静态和动态策略分别达到 34.36% 和 34.71%，平均使用 905 和 944 字符。仅 64 条能拆出多个合格片段，这批查询在该档事后描述性差值为 −1.48 个百分点。ws5 作业 39768 使用冻结 Qwen3-Embedding-0.6B，候选句及查询片段合批编码平均 12.8 毫秒，未计入加载、候选生成、读取和核验。结果支持把该规则保留为消融对照。下一轮应独立核验约束拆分和原文支持判定，再测量调度是否值得其开销。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/research/prototype-20261117/experiments/retrieval/evidencebench_semantic_gaps.py">实验代码</a></p>
