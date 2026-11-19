@@ -275,7 +275,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T15:57:06+08:00">2026-11-19 15:57（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-19T16:27:17+08:00">2026-11-19 16:27（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -585,17 +585,37 @@ html[data-theme="dark"] .agent-map {
 </ul>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p id="expert-evidence-precedent">已有研究覆盖 Top-K 探测、自适应路由、联合选证和分层证据分配。本文拟验证的差异在于，把专家归属、硬约束和候选排序放入同一查询状态，据此决定还需查谁、读哪份证据和何时停止。跨来源子集已有取证增益，企业开发集尚未复现覆盖提升。公开核验表明，覆盖提升后仍可能多判错。投稿前应验证等预算下有据推荐能否增加，以及在同等判定和归属质量下首查成本能否下降。 <a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG</a> · <a href="https://aclanthology.org/2025.acl-long.861/">SetR</a> · <a href="https://aclanthology.org/2026.emnlp-main.1348/">BEAR</a></p>
-<div class="plan-table" tabindex="0" role="region" aria-label="顶会投稿判据表">
+<p><strong>核心论点。</strong>构建首次查询即可高效、低成本运行的专家搜索框架，在等预算下找到更多有据专家，并在同等质量下降低完整首查成本。拟由智能体结合候选排序、硬约束、个人归属与未决证据，选择补召回、定向取证、复核冲突或停止。初始策略在无用户历史反馈的条件下独立验收，在线与离线迭代作为次要贡献。</p>
+
+<h3 id="expert-evidence-precedent">10.1 与最接近工作的区别</h3>
+<div class="plan-table" tabindex="0" role="region" aria-label="相关方法与对照">
 <table class="study-table">
-<caption>表 4. SIGIR／The Web Conference 的阶段判据</caption>
-<thead><tr><th scope="col">检验</th><th scope="col">证据与下一道判据</th></tr></thead>
+<caption>表 4. 技术边界与对应强基线</caption>
+<thead><tr><th scope="col">已有方法</th><th scope="col">已解决的问题</th><th scope="col">本研究的区分实验</th></tr></thead>
 <tbody>
-<tr><th scope="row">质量门槛</th><td>先冻结支持、反证、证据不足的判据，在独立公开集和企业盲审上同时报告误放、真支持召回与归属。按语言和证据分散程度分层。</td></tr>
-<tr><th scope="row">完整首查效率</th><td>在达到质量门槛后，比较同负载下最快的固定与自适应基线，报告真实回退、P95、吞吐及成功查询成本。</td></tr>
-<tr><th scope="row">创新归因</th><td>使用同一核验器、候选池和预算，比较固定浅读、按缺口取证及逐项消融。在相同核验器下，消融证据缺口、归属风险和排序影响，检验各信号对调度的增量作用。 <a href="experiments.html#plan-evidence">实验依据</a></td></tr>
-</tbody>
-</table></div>
+<tr><th scope="row">专家检索</th><td>由专家画像或相关文档归并得到候选排序。 <a href="https://doi.org/10.1145/1148170.1148181">Balog 等，SIGIR 2006</a></td><td>固定候选池与核验器，检验按个人归属和硬约束组织的证据能否改善有据专家排序。</td></tr>
+<tr><th scope="row">查询复杂度路由</th><td>按问题复杂度选取无检索、单步或多步策略。 <a href="https://aclanthology.org/2024.naacl-long.389/">Adaptive-RAG，NAACL 2024</a></td><td>用只读初始查询的路由作对照，检验逐轮观察证据后再分配预算的增量。</td></tr>
+<tr><th scope="row">联合选证与层次索引</th><td>联合选择覆盖多个信息需求的段落，或在固定预算内进行粗到细取证。 <a href="https://aclanthology.org/2025.acl-long.861/">SetR，ACL 2025</a> · <a href="https://aclanthology.org/2026.emnlp-main.1348/">BEAR，EMNLP 2026</a></td><td>适配为同候选池、同预算的强对照，检验加入专家归属、逐项约束和前 K 入选影响后，是否得到更多有据推荐。</td></tr>
+</tbody></table></div>
+
+<h3 id="submission-contributions">10.2 可检验的论文贡献</h3>
+<ol>
+<li><strong>方法。</strong>对每位候选逐项记录已支持、被反证和未决的硬约束。用同一批查询的配对动作轨迹，估计一次补证能改变入选或纠正误判的概率及代价。依次移除归属、约束状态和入选影响，检验各部分的作用。开放权重决策模型和层次索引是实现选项。</li>
+<li><strong>数据。</strong>从真实企业需求和专家来源构造配对样本，只改变约束、归属或迁移条件中的一项，保留可核验的原文。按企业及证据来源隔离训练与测试，独立盲审企业样本；用公开专家检索与证据核验数据作外部对照。</li>
+<li><strong>指标。</strong>有据命中率以 K 为分母。只有专家匹配、个人归属及全部硬约束均经核验才计入分子，空位和未决项计零。另报误荐风险与覆盖率，并在同一质量门槛下比较完整首查的 P95、吞吐和单次成功查询成本。</li>
+</ol>
+
+<h3 id="submission-gates">10.3 当前证据与投稿门槛</h3>
+<div class="plan-table" tabindex="0" role="region" aria-label="当前实验证据与投稿门槛">
+<table class="study-table">
+<caption>表 5. 哪些证据已具备，哪些仍决定投稿</caption>
+<thead><tr><th scope="col">检验</th><th scope="col">当前证据</th><th scope="col">主会长文所需证据</th></tr></thead>
+<tbody>
+<tr><th scope="row">取证与核验</th><td>NLI4CT 上，相对固定补读两轮，自适应多找齐 4 套证据，少判对 11 条。 <a href="experiments.html#nli4ct-adaptive-verification">配对实验</a></td><td>等预算提高有据专家命中，并在独立人工标注上控制误荐。按证据分散程度与直接／迁移适配分别报告。</td></tr>
+<tr><th scope="row">企业首查效率</th><td>80 条开发请求上，双精度复核保留全部参考资格条件，解析 P95 从 1.85 降至 1.00 秒。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b97c40c50fa8ca6f1704fddb9cc0eb42e16cc37c/benchmarks/enterprise-cross-precision-v1">组件实验</a></td><td>同等有据推荐和误荐风险下，完整首查 P95 与成本下降。保留索引、核验、回退和服务开销，公开并发负载与比较口径。</td></tr>
+<tr><th scope="row">创新归因</th><td>按缺口取证在 PLOS 跨论文子集有增益，企业开发集尚未复现覆盖提升。 <a href="experiments.html#plos-budgeted-article">跨来源实验</a></td><td>同索引、同模型、同负载比较最快固定策略及相关自适应强基线，消融后仍能解释收益；在独立企业集和公开专家检索集按查询报告区间。</td></tr>
+</tbody></table></div>
+<p><strong>投稿判断。</strong>首选 SIGIR 长文，前提是对强基线同时证明等预算下的质量收益和同等质量下的首查成本收益。若结果主要来自公开 Web 专家检索及跨语种证据，也可考虑 The Web Conference。现阶段的组件提速与模型一致性可支撑方法选择，专家推荐质量仍需盲审。 <a href="https://sigir.hosting.acm.org/general-information/fact-sheet/">SIGIR 研究范围</a> · <a href="https://www.sigweb.hosting.acm.org/toc/www26a.html">The Web Conference 检索方向</a></p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>
