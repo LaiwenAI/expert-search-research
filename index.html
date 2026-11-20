@@ -278,7 +278,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-20T07:50:26+08:00">2026-11-20 07:50（北京时间）</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-20T08:14:02+08:00">2026-11-20 08:14（北京时间）</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -380,7 +380,7 @@ html[data-theme="dark"] .agent-map {
         <g class="diagram-center">
           <path class="diagram-wire" d="M90 76H99V52H108"/><path class="diagram-wire" d="M99 76V96H108"/>
           <path class="diagram-wire" d="M192 52H206V76H224"/><path class="diagram-branch" d="M192 96H206V76"/>
-          <path class="diagram-wire diagram-dashed" d="M150 112V121H213"/>
+          <path class="diagram-wire diagram-dashed" d="M51 103V121H213"/>
           <rect class="diagram-node" x="12" y="49" width="78" height="54" rx="6"/>
           <text class="diagram-text" x="51" y="66">企业需求</text><text class="diagram-text diagram-label" x="51" y="85">线索 · 任务</text>
           <rect class="diagram-node" x="108" y="39" width="84" height="26" rx="5"/><text class="diagram-text" x="150" y="52">关键词召回</text>
@@ -389,7 +389,7 @@ html[data-theme="dark"] .agent-map {
           <rect class="diagram-pass" x="224" y="50" width="83" height="52" rx="6"/>
           <text class="diagram-text" x="265.5" y="65">候选融合</text><text class="diagram-text diagram-label" x="265.5" y="85">专家 · 来源</text>
           <rect class="diagram-key" x="213" y="113" width="94" height="16" rx="4"/>
-          <text class="diagram-text diagram-label" x="260" y="121">任务向量供核验</text>
+          <text class="diagram-text diagram-label" x="260" y="121">必备资格供核验</text>
         </g>
       </g>
       <g id="agent-map-state">
@@ -569,7 +569,7 @@ html[data-theme="dark"] .agent-map {
 </figure>
 <p>职责索引记录证据出处，用于找人和定位原文。只有核验确认来源、本人和约束均对应时，才写入已证状态。首查实验共用核验器与固定名额。结构化职责字段完整时，直接核对同一专家的各项记录。缺源、身份歧义或字段不足时保留未决，按需定向补查。</p>
 <h3 id="demand-taxonomy">4.2 需求理解（Demand Understanding，RQ1）</h3>
-<p>将需求转为技术方向、硬约束、软偏好及可追溯的原文片段。区分现有工况、既往资质和未来交付。如果不同解释会改变推荐，则保留解释并核对其共同依据，必要时请求澄清。</p>
+<p>将需求转为技术方向、硬约束、软偏好及可追溯的原文片段。解析与召回各自读取完整需求，核验时汇合资格和候选。资格边界仍用整块独立复核。区分现有工况、既往资质和未来交付。如果不同解释会改变推荐，则保留解释并核对其共同依据，必要时请求澄清。</p>
 
 <h3 id="expertise-transfer">4.3 多源证据索引与能力迁移（Evidence Indexing and Expertise Transfer，RQ2）</h3>
 <p>按「专家 → 能力 → 来源 → 原文」组织论文、专利和项目证据。关键词与向量召回先确定候选，再计算来源融合排名。来源线索与任务片段可在同一批中编码，任务向量供字段核验；按来源能否定位分层评估合批及按需编码。将来源定位和篇内选证分别评测。存在可唯一定位的标题或别名时先直达来源，再比较同源浅检索与 PageIndex 式导航。名称不完整或有冲突时保留普通召回入口。分别测自动实体抽取下的来源命中、候选覆盖和完整证据。索引分别记录论文与画像的关联、共同署名和可核验的个人职责。项目分工、专利发明人字段和明确指向本人的原文另建职责索引。索引区分来源登记的身份与在原文中可定位的具体职责，支持首轮候选排序、同源证据定位及按需全库补召回。画像声明接受单独核验。出版标识符只用于定位原文。来源不可达、身份未对齐或职责证据不足时保留未决。</p>
@@ -717,7 +717,7 @@ html[data-theme="dark"] .agent-map {
 </ul>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p><strong>当前判断。</strong>首查方法符合 SIGIR 长文的选题范围，目前已有组件级依据。投稿能否成立，取决于一个可验证的主张：<strong>没有用户历史反馈时，把本人职责和约束范围提前用于找人、选证和分配核验预算，能否比同样快的强基线找对更多专家，并在相同质量下进一步降低延迟和成本？</strong>阶段证据把技术重点收敛到本人职责提名与逐项约束核验。短窗的证据核验收益已在公开样例复测，企业短窗仍会改变推荐，成为独立质量验证的一部分。当前最缺的是独立企业盲审和冻结框架后的端到端对比。 <a href="https://sigir2027.org/pages/submit-full.html">SIGIR 2027 长文征稿</a></p>
+<p><strong>当前判断。</strong>首查方法符合 SIGIR 长文的选题范围，目前已有组件级依据。投稿能否成立，取决于一个可验证的主张：<strong>没有用户历史反馈时，把本人职责和约束范围提前用于找人、选证和分配核验预算，能否比同样快的强基线找对更多专家，并在相同质量下进一步降低延迟和成本？</strong>阶段证据把技术重点收敛到本人职责提名与逐项约束核验。短窗的证据核验收益已在公开样例复测，企业短窗仍会改变推荐，成为独立质量验证的一部分。解析复核是企业首查的尾延迟重点，提速必须同时核查资格、推荐和引文。当前最缺的是独立企业盲审和冻结框架后的端到端对比。 <a href="https://sigir2027.org/pages/submit-full.html">SIGIR 2027 长文征稿</a></p>
 
 <h3 id="expert-evidence-precedent">10.1 主方法的创新与边界（Method Novelty）</h3>
 <p>同一篇论文里，甲完成了目标工况测试，乙只参与方案设计。如果需求要求专家<strong>在同一项目中亲自完成两项工作</strong>，系统须核对同一人、同一项目和两项职责。首轮据此组织候选和证据窗口，在固定名额内单批核验。同一来源的任务相关性只确认一次，个人职责仍逐人核对。若证据不足，智能体根据缺口选择原文补读、全库补召回或保留未决。</p>
@@ -749,7 +749,7 @@ html[data-theme="dark"] .agent-map {
 <tr><th scope="row">来源与职责拆分 · PLOS</th><td>给定固定贡献声明窗口，拆分核验使模型比较由 90 次减至 44 次，出现误引的文章由 10 降至 0。在指定论文的独立复测中，模型分差加检索一致性确认了 11／44 个正确来源，隐藏目标后仍误收 1／44。 <a href="#open-role-gate-result">职责对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/e379d4e16657a4a674647044e937e86519da1208/benchmarks/plos-heldout-source-windows-v1#frozen-transfer-to-separate-articles">来源复测</a></td><td>先在独立来源按相同错源上限对齐覆盖，再验证加入本人职责后是否保持净收益。</td></tr>
 <tr id="facet-slot-transfer"><th scope="row">固定名额选证 · 公开评测</th><td>CSFCube 每次核验两篇。合批的任务维度提名在 5% 校准档将强相关返回从 4 提至 9，P95 为 27.0 毫秒；10% 档从 13 降至 11。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7dda2f95b47a900da4d942c05f87cc08b6ddb413/benchmarks/csfcube-facet-challenger-v1">人工相关性对照</a>。LR-Bench 按论文选评审时，方法摘录替补与向量前两名均判对 136／212，公开 RATE 预测判对 163／212。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/27776db44c6ab8f934ad4faf0ac658f1847d204c/benchmarks/lrbench-method-challenger-v1">评审匹配对照</a></td><td>保留向量候选作低成本基线。追加验证优先用本人职责索引提议替补，在相同核验名额下测有据推荐收益。</td></tr>
 <tr id="claim-window-transfer"><th scope="row">逐关系短窗 · 公开与企业</th><td>Re-DocRED 新样例上，两句定向选证的批次 P95 为 53.9 毫秒，共享四句为 68.7 毫秒；严格校准档的已标注关系从 59 增至 65，配对区间跨零。企业开发集定向短窗节省 24.4% 主核验 token，仍改变 7／80 条请求的专家名单或顺序。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/5d6c214c8e96cf0d4be8da5ef2ef104cbdd98fff/benchmarks/redocred-claim-bound-windows-v1">公开复测</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/a5ca7a13bff9af8fea79c3f04fb4db8b0929649f/benchmarks/enterprise-criterion-windows-v1">企业对照</a></td><td>独立盲审换入、换出专家与缩短后的引用。效率对照同时测主核验与端到端，按任务和共享职责分组。</td></tr>
-<tr><th scope="row">端到端执行 · 企业开发集</th><td>480 次成对回放的已发专家及引用一致，核验 token 减少 9.7%，客户端 P95 下降 2.4%–5.6%。该结果支持执行提速，负载下的稳定容量和推荐正确率仍待验证。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b3303f39214b942dfd55418b77b77a29ce125c5d/benchmarks/enterprise-shared-qualification-load-v1">负载对照</a></td><td>让所有方法共享快速核验；在真实留出集测同预算质量，再比较满足相同质量门槛的完整服务路径。</td></tr>
+<tr><th scope="row">端到端执行 · 企业开发集</th><td>480 次成对回放的已发专家及引用一致，核验 token 减少 9.7%，客户端 P95 下降 2.4%–5.6%。同 GPU 上，独立运行的解析、召回 P95 约为 938 和 10 毫秒；两阶段并行的完整 P95 仅降低约 1 毫秒。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b3303f39214b942dfd55418b77b77a29ce125c5d/benchmarks/enterprise-shared-qualification-load-v1">负载对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/19fa6e27aab7e0b8b76a89dca663d35c3f71c728/benchmarks/enterprise-first-query-overlap-v1">耗时拆分</a></td><td>统一快速核验基线。保留整块资格复核，逐条复核与无保护合批都改变了部分资格判定。真实留出集同时检验质量、端到端和负载。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/a60a178fc976b218b6d3521b5f81e5f374e2fcde/benchmarks/enterprise-packed-clause-recheck-v1">复核对照</a></td></tr>
 </tbody></table></div>
 
 <h3 id="submission-decision">10.4 投稿判定（Submission Criteria）</h3>
