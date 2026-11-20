@@ -309,7 +309,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T07:27:51+08:00">2026-11-21 07:27:51</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T07:56:24+08:00">2026-11-21 07:56:24</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -348,7 +348,7 @@ html[data-theme="dark"] .agent-map {
 <p><strong>阶段依赖：</strong>P0 评测 → P1 开源强基线 → P2 轻量决策、索引与表示 → P3 初始框架端到端比较；P4 单独验证反馈驱动的后续迭代。</p>
 <h2>4. 研究内容与技术路线（Methodology）</h2>
 <h3 id="foundation-title">4.1 初始搜索框架（Initial Search Framework，RQ1–RQ3）</h3>
-<p>首次查询以关键词与 0.6B 向量召回确定候选。对明确要求同一人有多份证据、且身份与职责已对齐的查询，先标明哪些条件必须由不同来源证明，再用紧凑职责索引组成首批证据。本人归属、来源互斥和原文主题支持分别核验。单源即可满足、职责缺失或身份未定时，先按来源检索，再按可核验的作者归并并批量核验。单源请求优先比较扩大作者与补读本人来源，核验深度用固定三、四、五读作对照。按人保留条件的已证、缺证与反证状态，决定是否补召回、补证、复核或停止。</p>
+<p>首次查询以关键词与 0.6B 向量召回确定候选。对明确要求同一人有多份证据、且身份与职责已对齐的查询，先标明哪些条件必须由不同来源证明，再用紧凑职责索引组成首批证据。本人归属、来源互斥和原文主题支持分别核验。单源即可满足、职责缺失或身份未定时，先按来源检索，再按可核验的作者归并并批量核验。单源请求优先比较扩大作者与补读本人来源，核验深度用固定三、四、五读作对照。身份能唯一对齐时，优先选本人声明，再逐项核验职责和额外资格。身份歧义、标签与原文冲突时保留未决。按人保留条件的已证、缺证与反证状态，决定是否补召回、补证、复核或停止。</p>
 <figure class="agent-map" id="base-agent-architecture" aria-labelledby="agent-map-title">
   <figcaption id="agent-map-title">图 1. 首次查询的专家搜索 Agent <span>拟议架构 · 按人组证、逐项核验、按缺口行动</span></figcaption>
   <svg class="diagram-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -568,12 +568,12 @@ html[data-theme="dark"] .agent-map {
           <path class="diagram-branch" d="M160 76V80H85M160 80H235"/>
           <path class="diagram-wire" d="M85 80V86"/><path class="diagram-wire" d="M235 80V86"/>
           <rect class="diagram-key" x="13" y="86" width="144" height="41" rx="6"/>
-          <text class="diagram-text diagram-label" x="85" y="96">本人明确 · 声明完整</text>
+          <text class="diagram-text diagram-label" x="85" y="96">身份唯一 · 归属明确</text>
           <rect class="diagram-pass" x="20" y="104" width="60" height="17" rx="4"/>
-          <text class="diagram-text diagram-label" x="50" y="112.5">本人归属</text>
+          <text class="diagram-text diagram-label" x="50" y="112.5">选本人声明</text>
           <path class="diagram-wire" d="M80 112.5H89"/>
           <rect class="diagram-node" x="89" y="104" width="61" height="17" rx="4"/>
-          <text class="diagram-text diagram-label" x="119.5" y="112.5">职责交集</text>
+          <text class="diagram-text diagram-label" x="119.5" y="112.5">逐项核验</text>
           <rect class="diagram-key" x="163" y="86" width="144" height="41" rx="6"/>
           <text class="diagram-text diagram-label" x="235" y="96">仅有线索 · 本人未证</text>
           <rect class="diagram-node" x="170" y="104" width="60" height="17" rx="4"/>
@@ -760,7 +760,7 @@ html[data-theme="dark"] .agent-map {
 <p>公开对照使用 CoF 和 TREC Enterprise 评价排名，MERIT 评价适配，QASPER、EvidenceBench 和 LitSearch 检验取证，CRediT 角色声明评估贡献归属。CoF 全库结果同步报告标注覆盖。MERIT 按目标论文和精确重复履历分组。Re-DocRED 的关系标签与证据句分开计分，区分提名命中、核验通过与标注证据覆盖。</p>
 
 <h3 id="implemented-agent-architecture">7.2 强基线与消融（Baselines and Ablations）</h3>
-<p>全链路比较领域先验、BM25、稠密与混合检索及 GroundedPipeline；固定候选与核验器时，对照固定深度、固定批量、最短约束优先和自适应截断。单源公开对照保留按来源检索再归并作者、固定三／四／五读及等预算扩人，同时报告漏人、选错来源和核验拒绝。多条件对照分别统计候选命中、证据页覆盖、逐项核验通过和本人证据完整。保留零核验的整句向量和分条件 BM25 为排序强基线。接受阈值在来源隔离的验证集冻结，在留出集分别报告完整出榜、错荐、覆盖和 P95。统一语料、硬件、缓存条件与负载，超参数在验证集确定。 <a href="experiments.html#community-first-query-evidence">单证据对照</a> · <a href="experiments.html#multi-condition-proof-evidence">多条件对照</a></p>
+<p>全链路比较领域先验、BM25、稠密与混合检索及 GroundedPipeline；固定候选与核验器时，对照固定深度、固定批量、最短约束优先和自适应截断。单源公开对照保留按来源检索再归并作者、固定三／四／五读及等预算扩人，同时报告漏人、选错来源和核验拒绝。多条件对照分别统计候选命中、证据页覆盖、逐项核验通过和本人证据完整。保留零核验的整句向量和分条件 BM25 为排序强基线。接受阈值在来源隔离的验证集冻结，在留出集按来源格式与请求措辞报告完整出榜、错荐、覆盖和 P95。贡献声明中的结构化标签与可见文本可分别作为对照。把不能消歧的身份与标签冲突计入覆盖损失。统一语料、硬件、缓存条件与负载，超参数在验证集确定。 <a href="experiments.html#community-first-query-evidence">单证据对照</a> · <a href="experiments.html#multi-condition-proof-evidence">多条件对照</a></p>
 <div class="plan-table" tabindex="0" role="region" aria-label="实验与评价判据表">
 <table class="study-table">
 <caption>表 2. 实验与判据</caption>
@@ -1013,6 +1013,7 @@ html[data-theme="dark"] .agent-map {
 <tr><th scope="row">首查同输出提速已复现</th><td id="role-index-transport-result">80 条企业开发请求、52,667 条来源。本地首查 P95 从 2.15 降至 1.14 秒，资格、排序、引文和未决状态一致。 <a id="role-index-budget-result" href="#enterprise-cross-precision-result">首查与负载对照</a></td><td><span id="verification-boundary-result">所有对照共用快速实现。</span> <span id="selective-verification-tradeoff">用独立盲审测质量，另用持续负载测排队与回退成本。</span></td></tr>
 <tr><th scope="row">结构剪枝可行，证据页命中需单独验收</th><td>三份来源须互异时，职责载荷从 6,114 B 降至 68 B，读源计划与穷举一致，完整本地 P95 约省 0.2 ms。19 项评审认可的长文档条件中，混合提名只核验两页，与向量四页各出示 9 个已知证据页，局部 P95 约 27 和 38 ms。 <a href="experiments.html#multi-condition-proof-evidence">结构与证据页对照</a></td><td>同人跨源索引测资格和归属。篇内证据页另测可达与给定原文后的判定，遇到缺字段时计入完整回退成本。</td></tr>
 <tr><th scope="row">通用核验尚无稳定净收益</th><td>CrossPage 的 110 条多条件请求中，最多放出 10 个部分匹配时，整句向量保留 18 个完整标注文档，最好的核验路径保留 10 个。RELISH 来源隔离留出集上，两候选保序核验比纯向量多 2 个强相关结果，配对 95% 区间为 −8 至 +12 个百分点。 <a href="experiments.html#verification-order-ablation">排序与出榜对照</a></td><td>保留低成本排序作为强基线。冻结候选与原文，验证针对条件训练的核验器能否在相同错荐风险下多保留有据结果。</td></tr>
+<tr><th scope="row">按人选证改善排序，出榜门槛仍受来源影响</th><td>54 篇工程论文的角色标签与可见声明一致。改写请求中，本人选证使 Frontiers 的正确配对排序从 185／294 增至 255／294，Sensors 从 95／137 增至 105／137。冻结门槛迁移到 Frontiers 时，接受未获该项署名的合作者从 15 增至 41。 <a href="experiments.html#author-scoped-verification-transfer">跨出版商对照</a></td><td>本人选证作为首查候选机制，按格式冻结和复验出榜门槛。只有开放候选下的有据 P@5 和错荐满足验收门槛，才能支撑论文的质量主张。</td></tr>
 <tr id="enterprise-first-round-boundary"><th scope="row">企业质量优先定位资格和归属错误</th><td><span id="fixed-slot-transfer">80 条开发请求的等预算换证未改变人选与引文。</span> <span id="enterprise-qualification-depth">另 25 条中，替换资格解释使模型暂准从 2 增至 16。</span> <span id="publication-evidence-figures">55 条首轮未推荐请求回读得到 10 条题名匹配全文，仅 1 条贡献声明出现候选姓名。</span> <a href="#enterprise-fulltext-stage-result">全文覆盖</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/119a65bd955fdbf0f8231673a821c8cbc1a8734e/benchmarks/enterprise-qualification-scope-depth-v1">资格深读</a></td><td id="owner-bound-publication-test">盲审依次区分资格错解、候选漏召、原文缺失、归属错误和核验误判。姓名出现与模型暂准只作诊断。 <a href="#clarification-order-result">澄清对照</a></td></tr>
 <tr id="facet-slot-transfer"><th scope="row">动态决策暂未超过低成本强基线</th><td>Unix &amp; Linux 等五读对照中，固定扩人找回 99 条已知证据，同人补读 91 条。RELISH 将部分相关也计作不合格后，在相同不合格数下，学习后按需核验与纯向量均找回 30／100 条强相关结果，局部 P95 分别约 28 和 9 ms。 <a href="experiments.html#community-first-query-evidence">归属与预算对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/af197e7930c8edcff78ee8ec2b64f8c303523730/benchmarks/relish-strict-risk-v1">严格风险对照</a></td><td>默认采用便宜的静态路径。只有识别出原文可达、且追加动作可能补齐本人硬条件时，才继续验证动态回退。</td></tr>
 </tbody></table></div>

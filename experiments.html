@@ -327,6 +327,14 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">四候选竞争</th><td>110 条请求中，整句向量、分条件 BM25、混合核验两份与四份分别将 54、46、41、31 个完整文档排第一。核验两份的 P95 约 44 ms，整句向量约 8 ms。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/b6039e403364f82e09a036ab4d9c3636c1ae3d13/benchmarks/crosspage-competing-pools-v1">竞争池对照</a></td><td>最常见的来源家族移除后，两份核验与整句向量的排序优劣反转。该组用于诊断来源构成的影响。</td></tr>
 <tr><th scope="row">同证据比较重排与保序出榜</th><td>CrossPage 回看门槛下，最多误放 10 个部分匹配，整句向量保留 18 个完整标注文档，最佳核验路径保留 10 个。RELISH 阈值在 55 条校准查询冻结，100 条留出查询上，纯向量为 39 个强相关、8 个部分或无关。两候选保序为 41／7，四候选重排为 50／12，局部 P95 约 9、21、31 ms。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/4313d3606b92ec10964b3d9828df44cdb692c487/benchmarks/certificate-order-ablation-v1">核验顺序与风险对照</a></td><td>保序与重排共用证据和模型分数。两套标签均衡量文档相关性，专家资格和本人归属另由原文评审。</td></tr>
 </tbody></table></div>
+<h3 id="author-scoped-verification-transfer">本人证据、核验与跨来源校准</h3>
+<div class="result-table-scroll"><table>
+<thead><tr><th scope="col">对照</th><th scope="col">关键结果</th><th scope="col">适用边界</th></tr></thead>
+<tbody>
+<tr><th scope="row">标注覆盖与核验</th><td>Re-DocRED 的 166 个标注关系中，63 个有可用证据句标注，四句窗口覆盖 60 个。通用核验器在冻结阈值下接受其中 17 个。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/515b107ddcb5095c6bff67201bc105a1eea54c4b/benchmarks/redocred-reference-window-v1">证据分母审计</a></td><td>缺证据句标签的 103 个关系无法用该标注判断是否漏读。</td></tr>
+<tr><th scope="row">去掉竞争人物上下文</th><td>只读参考原文时，正确人物排在未标注竞争者之前的次数从 13／28 增至 26／28。沿用原阈值，支持关系由 17 降至 11。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/daec66893acfa49ce6a0f976fe19e66ae5486b05/benchmarks/redocred-reference-distractors-v1">同源上下文对照</a></td><td>把排序与接受分别测量。未标注竞争者仍可能有相关职责。</td></tr>
+<tr><th scope="row">贡献声明跨出版商</th><td>120 篇中有 54 篇角色和身份可完全对齐，另有 14 篇可解析但两个来源表述不同。改写请求上，按人选取声明使配对排序在 Frontiers 多正确 70 个，在 Sensors 多正确 10 个。两组局部 P95 仍约 10 ms。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/8639902cf3e608e2dacfe3552c213dc01128f961/benchmarks/engineering-contribution-transfer-v1">两种声明格式的复现</a></td><td>校准与复验须覆盖格式及措辞变化。出版商声明可核对谁获署名，技术能力和硬条件另查本人证据。</td></tr>
+</tbody></table></div>
 </section>
 <section aria-labelledby="verification"><h2 id="verification">来源核验、冲突与停止</h2>
 <h3 id="enterprise-cross-precision-search">按需双精度复核的完整首查</h3>
