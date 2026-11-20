@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-21T02:52:32+08:00">2026-11-21 02:52（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-21T03:16:28+08:00">2026-11-21 03:16（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -191,6 +191,10 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">SciRepEval（59 条）</th><td>稠密／纯证据组／混合</td><td>25／6／22</td><td>130／141／168 ms</td></tr>
 </tbody></table></div>
 <p>两条证据组路径在全库的固定候选对照中均增加延迟。纯证据组在两个面板都损失带引文的已知正例，说明来源选择本身就会影响结果。CoF 的专家标注不完整，引文由冻结模型判选，仍需独立评审本人贡献。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/79ea006a6fae6731b4135ca9b6186afc3a2ff910/benchmarks/cof-merit-fixed-nominees-v1">固定候选消融与置信区间</a></p>
+
+<h3 id="cof-publication-family-boundary">出版版本与独立证据的边界</h3>
+<p>全履历诊断的 72 个前五名已知正例中，以不同记录 ID 计数，读前 3 条时有 38 个达到两条模型认可证据，读完整履历时有 48 个。按规范化题名去重后，两项分别为 33 和 45。抽查定位了两组同一研究的会议版与期刊版。两组有独立 DOI，版本关系来自作者资料。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/47510d35a54e871888a18f57fb7bc513307d48b9/benchmarks/cof-profile-depth-review-v1">去重口径与盲审材料</a></p>
+<p>同一候选排序、每人最多核验 3 条的回放中，KDD 按已确认版本合并，去掉 5 组重复引文，符合该版本区分口径的已知正例净增 3 个，完整 P95 约 127 ms。SciRepEval 未包含这两组版本。按题名去重后，扩大搜索窗口补齐阅读名额增加了引文返回数量，两组的已知正例数均持平。题名和版本关系用于界定支持来源，具体段落及本人贡献仍需独立核验。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/4c274a03b2eee6a04c0372a0133f7d18e46a2111/benchmarks/cof-publication-family-refill-v1">等预算对照</a></p>
 
 <h3 id="cof-candidate-to-citation">候选召回与引用交付</h3>
 <p>CoF KDD 的 122 条查询和 SciRepEval 的 59 条查询使用同一批来源快照。表中引用由冻结核验器选择，CoF 的已发布标签评判专家适配，未独立评价这些引用。</p>
