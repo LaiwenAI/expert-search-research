@@ -27,6 +27,15 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">核验批处理</th><td>无填充 P95 为 35–37 ms，每种覆盖均改变 1 条有序结果。整批复核恢复全部一致性，P95 为 81–86 ms。固定宽度在同一回放中保持全部有序结果，P95 为 48–57 ms。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c5f999665b2bfd724edc80f8d764518c22d8fd6f/benchmarks/plos-packed-topic-guard-v1">批处理对照</a></td><td>结构化声明任务采用固定宽度作同输出强对照。企业负载继续单独比较无填充和固定宽度。</td></tr>
 <tr><th scope="row">企业首查覆盖</th><td>80 条请求、800 段首轮核验原文中，70 段检出职责线索，仅 1 段明确列出候选人为发明人。73 条暂定推荐中，65 条的引文均未检出职责线索。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/d1bc433522c5a07b11d3ef4b30448e71f199be05/benchmarks/enterprise-declaration-reach-v1">字段覆盖审计</a></td><td>这些线索可用于提名和找原文。企业字段完整性与暂定推荐质量仍需盲审。</td></tr>
 </tbody></table></div>
+<h3 id="rescue-scope-stage">首查补查：候选范围与核验收益</h3>
+<div class="result-table-scroll"><table>
+<thead><tr><th scope="col">对照</th><th scope="col">阶段发现</th><th scope="col">适用范围</th></tr></thead>
+<tbody>
+<tr><th scope="row">企业开发集</th><td>80 条开发请求中，纯稠密、混合、混合加原池补读、混合加全库补查分别在 34、25、27、30 条请求上发出暂定推荐。全库补查增加 206 次核验，串行 P95 由 1.153 秒升至 1.191 秒。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0e58ab7446c671ec325c7714c30d00d19555dd9d/benchmarks/enterprise-hybrid-rescue-v1">四路对照与精确引文</a></td><td>暂定推荐尚待人工核验。全库补查相对原池补读的有据 P@5 差值，在待审标签下界于 −0.25 到 +1.00 个百分点。</td></tr>
+<tr><th scope="row">TREC 评审池</th><td>49 个主题按每次最多四次核验回放。历史文档排序下，补查范围由前五人扩至前十人，使用相同实际核验次数时，有据 P@5 提升 1.70–2.42 个百分点，视模拟核验条件而定。随机文档排序的提升更小。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/da9b35f4c9bc46454d0885ce0905a74fa04c75c0/benchmarks/trec-abstention-rescue-scope-v1">等预算回放</a></td><td>以其他主题的历史标签排序，当前主题的标签仅作模拟核验与评价。回放不估计实际核验误差和系统延迟。</td></tr>
+<tr><th scope="row">FollowIR 真实核验</th><td>同两篇补查预算下，扩大范围在两组相比分别多提出 1 和 5 个标注正例，均未通过核验。本地 P95 多约 7–8 ms。固定候选后，0.6B 读完整正文仍接受 0／24 个正例。4B 完整阅读在 News21 与 Core17 分别接受 3 和 1 个正例，另接受 7 和 0 个已知负例。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/ce06aa9be498b9600e827400c8fe84f41a2d96ee/benchmarks/followir-constraint-rescue-scope-v1">在线核验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/aa613a7f59db45591fb2e594e2123d0fb2f1fa7e/benchmarks/followir-rescue-reader-diagnosis-v1">窗口与模型消融</a></td><td>标注单位为文档。段落是否足以支持判断仍需独立标注，无法从汇总数字归因到单条漏判。</td></tr>
+<tr><th scope="row">企业留出评测</th><td>冻结 123 个代表需求组，六种首查方法已跑完，生成 111 个去重后的专家与精确引文视图。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0585b7b54babc28b1a2ce4dc756e7729d75fcbad/benchmarks/enterprise-sealed-first-query-v1">预先冻结的评测协议</a></td><td>各方法结果封存。两人独立盲审及分歧仲裁后，再汇总有据 P@5、误荐和串行延迟。</td></tr>
+</tbody></table></div>
 <h3 id="first-query-stage-consolidation">首查对照：本人职责、证据覆盖与解析成本</h3>
 <div class="result-table-scroll"><table>
 <thead><tr><th scope="col">对照</th><th scope="col">实测结果</th><th scope="col">纳入主实验的口径</th></tr></thead>
