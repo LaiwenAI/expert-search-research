@@ -283,7 +283,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-20T21:00:03+08:00">2026-11-20 21:00:03</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-20T21:21:48+08:00">2026-11-20 21:21:48</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -349,18 +349,21 @@ html[data-theme="dark"] .agent-map {
       </g>
       <g id="agent-map-role-index">
         <rect class="diagram-card" width="320" height="134" rx="9"/>
-        <text class="diagram-text diagram-title" x="13" y="18">本人职责索引 · 按声明完整性分流</text>
+        <text class="diagram-text diagram-title" x="13" y="18">本人职责索引 · 标明证据状态</text>
         <g class="diagram-center">
-          <path class="diagram-branch" d="M160 60V70H83M160 70H237"/>
-          <path class="diagram-wire" d="M83 70V79"/><path class="diagram-wire" d="M237 70V79"/>
-          <rect class="diagram-key" x="68" y="32" width="184" height="28" rx="5"/>
-          <text class="diagram-text" x="160" y="46">本人 × 职责 × 来源</text>
-          <rect class="diagram-warn" x="12" y="79" width="142" height="43" rx="6"/>
-          <text class="diagram-text" x="83" y="92">完整声明确认不满足</text>
-          <text class="diagram-text diagram-label" x="83" y="109">跳过该来源</text>
-          <rect class="diagram-pass" x="166" y="79" width="142" height="43" rx="6"/>
-          <text class="diagram-text" x="237" y="92">已支持、缺失或有歧义</text>
-          <text class="diagram-text diagram-label" x="237" y="109">进入核验</text>
+          <rect class="diagram-key" x="69" y="32" width="182" height="23" rx="5"/>
+          <text class="diagram-text" x="160" y="43.5">本人 × 职责 × 来源</text>
+          <path class="diagram-branch" d="M160 55V65H59M160 65H261"/>
+          <path class="diagram-wire" d="M59 65V75"/><path class="diagram-wire" d="M160 65V75"/><path class="diagram-wire" d="M261 65V75"/>
+          <rect class="diagram-pass" x="12" y="75" width="94" height="45" rx="6"/>
+          <text class="diagram-text diagram-label" x="59" y="88">职责匹配</text>
+          <text class="diagram-text diagram-label" x="59" y="106">优先选证</text>
+          <rect class="diagram-key diagram-dashed" x="113" y="75" width="94" height="45" rx="6"/>
+          <text class="diagram-text diagram-label" x="160" y="88">职责未知</text>
+          <text class="diagram-text diagram-label" x="160" y="106">保留候选</text>
+          <rect class="diagram-warn" x="214" y="75" width="94" height="45" rx="6"/>
+          <text class="diagram-text diagram-label" x="261" y="88">声明明确排除</text>
+          <text class="diagram-text diagram-label" x="261" y="106">该人来源不配对</text>
         </g>
       </g>
       <g id="agent-map-shortlist">
@@ -375,7 +378,7 @@ html[data-theme="dark"] .agent-map {
           <text class="diagram-text" x="77" y="70">主题宽泛或职责缺失</text>
           <text class="diagram-text diagram-label" x="77" y="85">保留主题候选</text>
           <rect class="diagram-key diagram-dashed" x="178" y="60" width="130" height="34" rx="6"/>
-          <text class="diagram-text" x="243" y="70">按作者倒排联合提名</text>
+          <text class="diagram-text" x="243" y="70">按本人职责联合选证</text>
           <rect class="diagram-node" x="184" y="76" width="42" height="15" rx="3"/>
           <text class="diagram-text diagram-label" x="205" y="83.5">来源 A</text>
           <path class="diagram-branch" d="M226 83.5H260"/>
@@ -568,7 +571,7 @@ html[data-theme="dark"] .agent-map {
     </defs>
   </svg>
 
-  <svg class="diagram diagram-wide" viewBox="0 0 740 1088" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。关键词与稠密召回保留原候选。一次查询编码用于标题摘要。职责归一供候选提名。原文条件单独保留，来源确认后逐项核验。已知结构化职责在声明完整时复用归一结果。只有完整职责声明排除原候选造成缺位时，试验路径才扫描标题索引并补位。其他原候选保留，合并后单批核验。主题宽泛或缺职责时保留主题提名，主题与职责都明确时按作者倒排联合提名互补来源。是否读入新来源取决于能否补齐候选的证据与剩余预算。来源有完整声明且明确不满足时补位。并发请求先入队，按等待期限合批编码。编码结果拆回独立请求，再各自排序和核验。同一来源只确认一次。标题、作者和年份用于提名来源。核对稳定标识或原文出处之后，才进行本人归属核验。指定来源且声明完整时，求各职责解释下的作者交集；开放搜索或缺声明时，逐项读取原文。数值约束先绑定本人、职责和项目，再核对实测工况与阈值。分别输出有据候选、限定范围内无匹配或未决。优先同批核验。二轮状态绑定候选人身份、缺证条件、项目和出处，选同源取证、原池补候选或扩库。核对受影响条件后更新排名。补空位与等人数换位分别评估。等人数换位试验在相同证据下交换两位候选的展示顺序，两次同意才考虑替换。返回时将专家与本人原文绑定，并保留未决约束。后续版本独立评估在线和离线反馈。">
+  <svg class="diagram diagram-wide" viewBox="0 0 740 1088" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。关键词与稠密召回保留原候选。一次查询编码用于标题摘要。职责归一供候选提名。原文条件单独保留，来源确认后逐项核验。已知结构化职责在声明完整时复用归一结果。只有完整职责声明排除原候选造成缺位时，试验路径才扫描标题索引并补位。其他原候选保留，合并后单批核验。主题宽泛或缺职责时保留主题提名，主题与职责都明确时按同一人联合选择互补来源。已知职责匹配优先，缺失字段继续保留，明确排除时不配对。是否读入新来源取决于能否补齐候选的证据与剩余预算。来源有完整声明且明确不满足时补位。并发请求先入队，按等待期限合批编码。编码结果拆回独立请求，再各自排序和核验。同一来源只确认一次。标题、作者和年份用于提名来源。核对稳定标识或原文出处之后，才进行本人归属核验。指定来源且声明完整时，求各职责解释下的作者交集；开放搜索或缺声明时，逐项读取原文。数值约束先绑定本人、职责和项目，再核对实测工况与阈值。分别输出有据候选、限定范围内无匹配或未决。优先同批核验。二轮状态绑定候选人身份、缺证条件、项目和出处，选同源取证、原池补候选或扩库。核对受影响条件后更新排名。补空位与等人数换位分别评估。等人数换位试验在相同证据下交换两位候选的展示顺序，两次同意才考虑替换。返回时将专家与本人原文绑定，并保留未决约束。后续版本独立评估在线和离线反馈。">
     <rect class="diagram-zone" x="8" y="5" width="724" height="175" rx="13"/>
     <text class="diagram-text diagram-zone-title" x="30" y="23">离线准备 · 教师画像、论文、专利与项目</text>
     <rect class="diagram-zone" x="8" y="202" width="724" height="748" rx="13"/>
@@ -600,7 +603,7 @@ html[data-theme="dark"] .agent-map {
     <text class="diagram-text diagram-label" x="384" y="965">交互与运行轨迹</text>
   </svg>
 
-  <svg class="diagram diagram-narrow" viewBox="0 0 374 1785" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。关键词与稠密召回保留原候选。一次查询编码用于标题摘要。职责归一供候选提名。原文条件单独保留，来源确认后逐项核验。已知结构化职责在声明完整时复用归一结果。只有完整职责声明排除原候选造成缺位时，试验路径才扫描标题索引并补位。其他原候选保留，合并后单批核验。主题宽泛或缺职责时保留主题提名，主题与职责都明确时按作者倒排联合提名互补来源。是否读入新来源取决于能否补齐候选的证据与剩余预算。来源有完整声明且明确不满足时补位。并发请求先入队，按等待期限合批编码。编码结果拆回独立请求，再各自排序和核验。同一来源只确认一次。标题、作者和年份用于提名来源。核对稳定标识或原文出处之后，才进行本人归属核验。指定来源且声明完整时，求各职责解释下的作者交集；开放搜索或缺声明时，逐项读取原文。数值约束先绑定本人、职责和项目，再核对实测工况与阈值。分别输出有据候选、限定范围内无匹配或未决。优先同批核验。二轮状态绑定候选人身份、缺证条件、项目和出处，选同源取证、原池补候选或扩库。核对受影响条件后更新排名。补空位与等人数换位分别评估。等人数换位试验在相同证据下交换两位候选的展示顺序，两次同意才考虑替换。返回时将专家与本人原文绑定，并保留未决约束。后续版本独立评估在线和离线反馈。">
+  <svg class="diagram diagram-narrow" viewBox="0 0 374 1785" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。关键词与稠密召回保留原候选。一次查询编码用于标题摘要。职责归一供候选提名。原文条件单独保留，来源确认后逐项核验。已知结构化职责在声明完整时复用归一结果。只有完整职责声明排除原候选造成缺位时，试验路径才扫描标题索引并补位。其他原候选保留，合并后单批核验。主题宽泛或缺职责时保留主题提名，主题与职责都明确时按同一人联合选择互补来源。已知职责匹配优先，缺失字段继续保留，明确排除时不配对。是否读入新来源取决于能否补齐候选的证据与剩余预算。来源有完整声明且明确不满足时补位。并发请求先入队，按等待期限合批编码。编码结果拆回独立请求，再各自排序和核验。同一来源只确认一次。标题、作者和年份用于提名来源。核对稳定标识或原文出处之后，才进行本人归属核验。指定来源且声明完整时，求各职责解释下的作者交集；开放搜索或缺声明时，逐项读取原文。数值约束先绑定本人、职责和项目，再核对实测工况与阈值。分别输出有据候选、限定范围内无匹配或未决。优先同批核验。二轮状态绑定候选人身份、缺证条件、项目和出处，选同源取证、原池补候选或扩库。核对受影响条件后更新排名。补空位与等人数换位分别评估。等人数换位试验在相同证据下交换两位候选的展示顺序，两次同意才考虑替换。返回时将专家与本人原文绑定，并保留未决约束。后续版本独立评估在线和离线反馈。">
     <rect class="diagram-zone" x="4" y="4" width="366" height="342" rx="11"/>
     <text class="diagram-text diagram-zone-title" x="27" y="23">离线准备 · 教师画像与多源证据</text>
     <rect class="diagram-zone" x="4" y="370" width="366" height="1250" rx="11"/>
@@ -641,7 +644,7 @@ html[data-theme="dark"] .agent-map {
 <p id="expertise-transfer-protocol">直接经验不足时，核对源领域的方法机制、专家个人贡献和目标场景的适配条件，标明待验证的差异。数值硬约束需把实测结果绑定到本人及其职责，并核对同对象、同指标、同工况。指定项目时须绑定该项目。归属不清时保留未决。 <a href="#owner-scope-evidence-result">归属对照</a></p>
 
 <h3>4.4 搜索决策与停止（Search Decisions and Stopping，RQ3）</h3>
-<p id="expert-action-routing-prior-work">明确需要跨来源证据时，分条件召回，再用作者倒排在首轮联合提名能覆盖多个条件的来源。共同署名只用于提名，推荐前逐条核验本人职责和主题。固定读取预算，合并后单批核验。智能体记录本人、项目、来源和条件的支持状态，维护现有的有据 Top-K，以及未决证据可能改变的名次。排序已稳定时结束。预算耗尽时，返回有据结果及未决条件。</p>
+<p id="expert-action-routing-prior-work">明确需要跨来源证据时，分条件召回，再用作者倒排在首轮联合提名能覆盖多个条件的来源。索引优先使用指向本人的职责，遇到缺失字段仍保留候选。推荐前按原文核验主题和本人贡献。固定读取预算，合并后单批核验。智能体记录本人、项目、来源和条件的支持状态，维护现有的有据 Top-K，以及未决证据可能改变的名次。排序已稳定时结束。预算耗尽时，返回有据结果及未决条件。</p>
 <p>只有缺口仍可定位、取证结果可能改变推荐时，才进入二轮。先在同源补证，再尝试原池补候选或按需扩库。复用已核验条件，只重查受影响项。单批核验、通用缺证补读和候选人定向补读共享核验器及文本预算。分别评价原文覆盖、等人数推荐、错荐风险与时延。公开实验发现，一句补读的可达证据有限，二轮路由的收益仍需在来源分散的场景验证。 <a href="#owner-bound-action-result">同预算补证对照</a></p>
 <p>指定来源时分别校准错源和缺源弃答。归属待查、多个解释会改变推荐或硬条件欠缺时，只返回可核实的共同结论。线上核验保留较完整的原文，短窗与前缀复用单独验收。</p>
 <p>同一组策略共享核验与执行方式。离线与在线评测锁定查询编码的批次形状和精度，避免缓存分数掩盖在线变化。并发时按等待期限合批编码，拆回各请求后分别排序和核验。评测逐条对照响应，并区分排队、计算和 HTTP 往返。无填充、前缀复用和重算作为执行消融。</p>
@@ -898,8 +901,8 @@ html[data-theme="dark"] .agent-map {
 <caption>表 4. 首查框架的证据、局限和研究决策</caption>
 <thead><tr><th scope="col">要判断的问题</th><th scope="col">最有判别力的结果</th><th scope="col">研究取舍</th></tr></thead>
 <tbody>
-<tr id="facet-slot-transfer"><th scope="row">联合选证能扩大有据覆盖吗？</th><td>每请求实际读取三篇声明，联合选证相对先读后补，PLOS 的已知完整匹配由 28/160 增至 49/160，eLife 由 0/51 增至 14/51。本地 P95 接近。PLOS 主题未决推荐由 5 增至 29。eLife 离线缓存命中 26，逐请求编码命中 14。 <a href="#live-joint-request-result">本地首查对照</a></td><td>保留首轮联合选证作为主方法。现有结果支持等读取量下的覆盖收益，排序质量交给等人数盲审。主结果使用逐请求编码。</td></tr>
-<tr id="fixed-slot-transfer"><th scope="row">同样推荐人数时，谁更合适？</th><td>PLOS 在同发 32 条的回算中，轻量排名命中 29 条，全量主题核验命中 25 条。配对差值的区间为 −6.54 至 +14.12 个百分点，本地 P95 约为 10 和 41 ms。另一次 eLife 职责前置回放按请求配平人数后，标签命中增量为零。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b8e5e374e88b1c9cde507e7cdf34488b98b5aa27/benchmarks/selective-joint-topic-check-v1">等量对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b028840d1665b5a247b706e9e094d810a358896a/benchmarks/elife-normalized-nomination-v1">eLife 出榜对照</a></td><td>保留轻量排名作为效率强基线。盲审两方法不同的候选及原文，分别计入正确换入、错误换入和未决结果。无主题标签的结果按未决统计。</td></tr>
+<tr id="facet-slot-transfer"><th scope="row">本人职责索引能增加覆盖吗？</th><td>同读三篇时，从只用作者身份改为使用全部可用的本人职责字段，PLOS 命中从 49/160 增至 82/160，未决推荐从 29 增至 49。eLife 命中从 14/51 增至 28/51，两者均有 2 条未决。职责字段只覆盖部分来源时，收益不稳定。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/2532b516789b1b813bfc896732b821d6bdf8fbf8/benchmarks/live-joint-role-postings-v1">职责索引消融</a></td><td>完整字段支持扩展覆盖。部分可见时保留缺字段候选，后续用未参与构造的原文测职责提取、归属错误和建库成本。</td></tr>
+<tr id="fixed-slot-transfer"><th scope="row">同样推荐人数时，谁更合适？</th><td>PLOS 中，先读后补与身份联合选证都推荐的 24 个请求，命中分别为 21 和 19，20 个输出相同，其余 4 个换人。相对身份联合选证，完整本人职责索引在等 78 条的回算中将命中从 49 提至 57，配对区间跨零。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/35e3fd434235396171735cc4f2673f0ef442de39/benchmarks/joint-nomination-blind-review-v1">同请求对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/2532b516789b1b813bfc896732b821d6bdf8fbf8/benchmarks/live-joint-role-postings-v1">等量对照</a></td><td>分别发表覆盖和排序结果。优先盲审四个换人请求的八张原文证据卡，再用独立面板检验职责索引是否能稳定换入更合适的人。</td></tr>
 <tr id="free-text-role-scope"><th scope="row">自然语言会损失多少首查质量？</th><td>PLOS 两种受控句式中，开源 0.6B 编码和轻量职责头合为一次前向后，P95 约从 19–20 降至 10 ms，均命中 41/160。给定正确职责时命中 49/160，轻量路径另有 5 条推荐缺少所请求的职责。用 4B 模型解释全部职责耗时约 58 ms，命中 31/160。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/516e71231c9033be19465f302bde8fe89a25e252/benchmarks/prose-joint-source-request-v1">受控自然语言首查</a></td><td>统一保留原始硬条件做证据核验。先用已知职责对照定位解析损失，再单独检验开放模型微调能否降低误荐。当前数据覆盖两种句式，自由文本切分和企业资格条件另测。</td></tr>
 <tr id="owner-bound-publication-test"><th scope="row">首轮之后值得再补吗？</th><td>Re-DocRED 混合职责留出集上，同源候选补读命中 6/56，通用二轮与单批均为 7/56。LR-Bench 双向复核改善了本地画像排序，迁移到 CoF SIGIR 分组时，等人数标签命中由 63 降至 62，P95 约翻倍。 <a href="#owner-bound-action-result">补读对照</a> · <a href="#lrbench-order-agreement-result">LR-Bench</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/776b7f8d805eca262d75bcad8501539df847209e/benchmarks/cof-contrastive-swap-v1">CoF</a></td><td>默认单批。二轮只进入独立消融，先量化能补到多少首轮缺失且可归属的证据，再判断值不值得追加延迟。</td></tr>
 <tr id="claim-window-transfer"><th scope="row">效率收益能计入论文吗？</th><td>本地 HTTP 在约 58.5 请求/秒时，动态合批将 P95 约从 38 降至 20 ms，每轮有 1/844 条响应与串行参考不同。固定形状复现同形状参考，仍有 4/844 条与串行参考不同。更高负载下串行进入积压。 <a href="#joint-http-batching-result">并发与一致性</a></td><td>合批和共享编码供所有可兼容对照使用。预先定义响应参考、允许的差异和目标负载，报告客户端 P95、失败和回退。过载实验单列，论文主表用稳态成本。</td></tr>
@@ -908,7 +911,7 @@ html[data-theme="dark"] .agent-map {
 
 <h3 id="submission-decision">10.3 三项实验决定投稿主张</h3>
 <ol class="pub-gates">
-<li><strong>先确认首轮选证的独立价值。</strong>冻结 PLOS 开发设置，锁定未参与选型的 eLife 测试样本或新增同类来源，按主题、专家和来源隔离。固定混合召回池、模型、核验器和读源上限，比较主题优先、先读后按人补证、首轮按人联合选证。自然出榜比较有据覆盖，逐请求等人数比较有据排序，成对盲审主题、本人贡献和原文。分开报告多找到证据的请求和在既有推荐中换对人的请求。公开专家排序另用 LR-Bench 与 CoF 验证。</li>
+<li><strong>先确认首轮选证的独立价值。</strong>冻结 PLOS 开发设置，锁定未参与选型的 eLife 测试样本或新增同类来源，按主题、专家和来源隔离。固定混合召回池、模型、核验器和读源上限，比较主题优先、先读后按人补证、按身份联合选证和按本人职责联合选证。固定索引前先审计职责覆盖和提取成本。自然出榜比较有据覆盖，逐请求等人数比较有据排序，成对盲审主题、本人贡献和原文。分开报告多找到证据的请求和在既有推荐中换对人的请求。公开专家排序另用 LR-Bench 与 CoF 验证。</li>
 <li><strong>再验证真实企业首查。</strong>123 组冻结盲审会回答「首次弃答后全库补证是否优于池内补证」，按原协议完成，保留 +2 个百分点的有据 P@5 配对区间下界、60% 的覆盖下界和 5% 的已推荐组不利风险上界。联合选证需另外预注册，在独立企业组以现有 GroundedPipeline、混合检索加重排及单批核验作对照。按直接经验、证据稀疏和能力迁移分层，迁移须同时核实本人贡献和方法适配。独立样本量按预期覆盖、未决率和方法间分歧估算。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0585b7b54babc28b1a2ce4dc756e7729d75fcbad/benchmarks/enterprise-sealed-first-query-v1">冻结协议</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/a4db4de0451b150ef23be5cd4a9182c120b1f10d/benchmarks/enterprise-gate-design-audit-v1">样本量分析</a></li>
 <li><strong>最后检验整条请求的质量—成本曲线。</strong>在同一批自由文本、同一硬件和同一负载下，按预算报告有据 P@5、覆盖和错荐。等质量点使用预先固定的 −1 个百分点非劣界，并同时满足覆盖和风险门槛。比较客户端 P95、运行资源、每次有据成功的成本，纳入失败与回退，另报建库与训练的摊销。通过职责前置、身份连接和单批执行消融解释增益来自哪里。</li>
 </ol>
