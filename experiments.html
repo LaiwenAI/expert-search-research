@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-21T03:33:15+08:00">2026-11-21 03:33（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-21T04:13:52+08:00">2026-11-21 04:13（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -208,6 +208,10 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">题名与作者集合匹配</th><td>188</td><td>0</td><td>31</td></tr>
 </tbody></table></div>
 <p>最后一条策略使用已知作者集合，集合匹配由规则保证，仍可能返回其他版本。另取 43 篇存在更新版本的论文，以第二版为目标，题名与摘要回查只命中 10 个确切版本，作者集合误配由 2 增至 3。优先在入库时记录确切版本。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/667e1b8983878bc1dd08d4d6da1373eb1ced2743/benchmarks/arxiv-source-version-v1">采样、回查成本与复现</a></p>
+
+<h3 id="patent-role-index-and-registry">等空间专利取证与企业登记迁移</h3>
+<p>在公开 HUPD／PatentsView 的 103 条留出查询上，约 45 KB 的部分精确索引与同尺寸 12 位指纹均最多补读 12 份。前者找回 54／54 个名额、补读 26 次，后者找回 46／54、补读 354 次。用早期查询分布收录时，名额仍为 54，补读为 151。部分精确索引与无索引全读的排名和引文逐条一致，单客户端本地 HTTP 的 P95 分别约 0.66 和 1.25 ms。名单可用性由固定规则模拟。 <a href="https://github.com/LaiwenAI/expert-find-agent/blob/002e8e4c20d7130adce243bff5fda12453d45217/benchmarks/patent-inventor-replay-v1/SERVING.md">公开数据与服务复跑</a></p>
+<p>企业开发集中，55 条未出榜请求有 45 条可在前五候选的档案按分句提取编号，整栏只覆盖 8 条。中国现行官方公开号目录覆盖 17 条。申请号或确切出版版本联到 2012 年以前的历史名单后，11 条出现同拼音线索。全库 69 个名字转写相符的名单记录中，15 个两侧机构均可对齐 ROR，机构一致为 0。申请方可能与候选人现任机构不同。未在首查发出新增推荐，近年原文名单、身份与资格仍需核验。 <a href="https://github.com/LaiwenAI/expert-find-agent/blob/b447cbe6e02ea7ed437dda6a468cb0fca4c5a281/benchmarks/enterprise-registry-reach-v1/CN-OFFLINE.md">离线联表与证据边界</a></p>
 
 <h3 id="cof-candidate-to-citation">候选召回与引用交付</h3>
 <p>CoF KDD 的 122 条查询和 SciRepEval 的 59 条查询使用同一批来源快照。表中引用由冻结核验器选择，CoF 的已发布标签评判专家适配，未独立评价这些引用。</p>
