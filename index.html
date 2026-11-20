@@ -204,8 +204,11 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 .verifier-grid .metric-value strong{text-align:right;font-variant-numeric:tabular-nums}
 .verifier-grid .metric-value i{background:var(--accent)}
 #shared-source-confirmation-result,#role-field-stage-result{scroll-margin-top:72px}
+#role-field-stage-result .verifier-grid{grid-template-columns:minmax(66px,.9fr) repeat(3,minmax(0,1fr))}
 #role-field-stage-result .metric-value{grid-template-columns:minmax(0,1fr) 2ch}
 #role-field-stage-result .metric-value:not(.latency-guarded) i{background:var(--muted)}
+#role-field-stage-result .metric-value.fixed-mix i{background:#327c81}
+html[data-theme="dark"] #role-field-stage-result .metric-value.fixed-mix i{background:#70b8bb}
 #shared-source-confirmation-result .metric-value{grid-template-columns:minmax(0,1fr) auto}
 #shared-source-confirmation-result .metric-value strong{white-space:nowrap}
 .verifier-grid .error i{background:#a76231}
@@ -280,7 +283,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-20T14:31:10+08:00">2026-11-20 14:31:10</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-20T15:01:49+08:00">2026-11-20 15:01:49</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -362,23 +365,23 @@ html[data-theme="dark"] .agent-map {
       </g>
       <g id="agent-map-shortlist">
         <rect class="diagram-card" width="320" height="134" rx="9"/>
-        <text class="diagram-text diagram-title" x="13" y="18">首轮提名 · 比较候选覆盖</text>
+        <text class="diagram-text diagram-title" x="13" y="18">首轮提名 · 按职责缺位补查</text>
         <g class="diagram-center">
           <rect class="diagram-node" x="12" y="38" width="104" height="41" rx="6"/>
-          <text class="diagram-text" x="64" y="51">原候选池</text>
+          <text class="diagram-text" x="64" y="51">保留原候选</text>
           <path class="diagram-branch" d="M24 65H104"/>
           <circle class="diagram-node" cx="32" cy="65" r="5"/><circle class="diagram-node" cx="48" cy="65" r="5"/>
           <circle class="diagram-node" cx="64" cy="65" r="5"/><circle class="diagram-node" cx="80" cy="65" r="5"/>
           <circle class="diagram-warn" cx="96" cy="65" r="6"/>
           <rect class="diagram-key" x="204" y="38" width="104" height="41" rx="6"/>
-          <text class="diagram-text" x="256" y="50">按职责找新人</text>
+          <text class="diagram-text" x="256" y="50">填补排除位</text>
           <path class="diagram-wire" d="M239 66H247M265 66H273"/>
           <rect class="diagram-pass" x="221" y="60" width="18" height="12" rx="2"/>
           <rect class="diagram-node" x="247" y="60" width="18" height="12" rx="2"/>
           <rect class="diagram-warn diagram-dashed" x="273" y="60" width="18" height="12" rx="2"/>
           <path class="diagram-wire" d="M116 59H133V94"/><path class="diagram-wire" d="M204 59H187V94"/>
           <rect class="diagram-pass" x="80" y="94" width="160" height="29" rx="5"/>
-          <text class="diagram-text" x="160" y="108.5">固定核验预算</text>
+          <text class="diagram-text" x="160" y="108.5">合并后单批核验</text>
         </g>
       </g>
       <g id="agent-map-recall">
@@ -397,7 +400,7 @@ html[data-theme="dark"] .agent-map {
           <rect class="diagram-node" x="99" y="34" width="90" height="26" rx="5"/><text class="diagram-text" x="144" y="47">关键词召回</text>
           <rect class="diagram-key" x="99" y="75" width="61" height="30" rx="5"/><text class="diagram-text diagram-label" x="129.5" y="90">一次编码</text>
           <rect class="diagram-key" x="177" y="70" width="57" height="21" rx="4"/><text class="diagram-text diagram-label" x="205.5" y="80.5">标题摘要</text>
-          <rect class="diagram-key diagram-dashed" x="177" y="99" width="57" height="21" rx="4"/><text class="diagram-text diagram-label" x="205.5" y="109.5">仅标题</text>
+          <rect class="diagram-key diagram-dashed" x="177" y="99" width="57" height="21" rx="4"/><text class="diagram-text diagram-label" x="205.5" y="109.5">按需标题</text>
           <rect class="diagram-pass" x="252" y="51" width="55" height="54" rx="6"/>
           <text class="diagram-text diagram-label" x="279.5" y="67">候选融合</text><text class="diagram-text diagram-label" x="279.5" y="88">人 · 来源</text>
           <rect class="diagram-node" x="211" y="117" width="96" height="14" rx="3"/><text class="diagram-text diagram-label" x="259" y="124">必备资格供核验</text>
@@ -543,7 +546,7 @@ html[data-theme="dark"] .agent-map {
     </defs>
   </svg>
 
-  <svg class="diagram diagram-wide" viewBox="0 0 740 1088" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。关键词与稠密召回保留原候选。一次查询编码可同时匹配常规的标题摘要索引和待验证的仅标题索引。职责索引用于发现新增候选和按缺口补查。是否读入新来源取决于能否补齐候选的证据与剩余预算。来源有完整声明且明确不满足时移除，保留原批次宽度核验。同一来源只确认一次。指定来源且声明完整时，求各职责解释下的作者交集；开放搜索或缺声明时，逐项读取原文。分别输出有据候选、限定范围内无匹配或未决。需要时按缺口选择同源补证、原池补读或全库职责补查，再逐人核验短窗。强模型核验作为实验对照。返回时将专家与本人原文绑定，并保留未决约束。后续版本独立评估在线和离线反馈。">
+  <svg class="diagram diagram-wide" viewBox="0 0 740 1088" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。关键词与稠密召回保留原候选。一次查询编码用于标题摘要。只有完整职责声明排除原候选造成缺位时，试验路径才扫描标题索引并补位。其他原候选保留，合并后单批核验。是否读入新来源取决于能否补齐候选的证据与剩余预算。来源有完整声明且明确不满足时移除，保留原批次宽度核验。同一来源只确认一次。指定来源且声明完整时，求各职责解释下的作者交集；开放搜索或缺声明时，逐项读取原文。分别输出有据候选、限定范围内无匹配或未决。需要时按缺口选择同源补证、原池补读或全库职责补查，再逐人核验短窗。强模型核验作为实验对照。返回时将专家与本人原文绑定，并保留未决约束。后续版本独立评估在线和离线反馈。">
     <rect class="diagram-zone" x="8" y="5" width="724" height="175" rx="13"/>
     <text class="diagram-text diagram-zone-title" x="30" y="23">离线准备 · 教师画像、论文、专利与项目</text>
     <rect class="diagram-zone" x="8" y="202" width="724" height="748" rx="13"/>
@@ -575,7 +578,7 @@ html[data-theme="dark"] .agent-map {
     <text class="diagram-text diagram-label" x="384" y="965">交互与运行轨迹</text>
   </svg>
 
-  <svg class="diagram diagram-narrow" viewBox="0 0 374 1785" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。关键词与稠密召回保留原候选。一次查询编码可同时匹配常规的标题摘要索引和待验证的仅标题索引。职责索引用于发现新增候选和按缺口补查。是否读入新来源取决于能否补齐候选的证据与剩余预算。来源有完整声明且明确不满足时移除，保留原批次宽度核验。同一来源只确认一次。指定来源且声明完整时，求各职责解释下的作者交集；开放搜索或缺声明时，逐项读取原文。分别输出有据候选、限定范围内无匹配或未决。需要时按缺口选择同源补证、原池补读或全库职责补查，再逐人核验短窗。强模型核验作为实验对照。返回时将专家与本人原文绑定，并保留未决约束。后续版本独立评估在线和离线反馈。">
+  <svg class="diagram diagram-narrow" viewBox="0 0 374 1785" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。关键词与稠密召回保留原候选。一次查询编码用于标题摘要。只有完整职责声明排除原候选造成缺位时，试验路径才扫描标题索引并补位。其他原候选保留，合并后单批核验。是否读入新来源取决于能否补齐候选的证据与剩余预算。来源有完整声明且明确不满足时移除，保留原批次宽度核验。同一来源只确认一次。指定来源且声明完整时，求各职责解释下的作者交集；开放搜索或缺声明时，逐项读取原文。分别输出有据候选、限定范围内无匹配或未决。需要时按缺口选择同源补证、原池补读或全库职责补查，再逐人核验短窗。强模型核验作为实验对照。返回时将专家与本人原文绑定，并保留未决约束。后续版本独立评估在线和离线反馈。">
     <rect class="diagram-zone" x="4" y="4" width="366" height="342" rx="11"/>
     <text class="diagram-text diagram-zone-title" x="27" y="23">离线准备 · 教师画像与多源证据</text>
     <rect class="diagram-zone" x="4" y="370" width="366" height="1250" rx="11"/>
@@ -607,7 +610,7 @@ html[data-theme="dark"] .agent-map {
     <text class="diagram-text diagram-label" x="201" y="1641">交互与运行轨迹</text>
   </svg>
 </figure>
-<p>职责索引记录本人、职责和原文位置。指定来源且声明完整时，对每种合理解释分别求同一人的职责交集。各解释共有的人可直接推荐，各解释都无匹配时才确认该来源无匹配。开放搜索在同一核验预算内比较主题候选和职责新增候选。可选的仅标题索引与常规的标题摘要索引共用一次查询编码，分别测试候选覆盖、额外存储和完整请求成本。声明缺失或有歧义的来源仍可核验。发现新候选后，分别核对主题相关性、本人职责和硬约束，再决定是否推荐。仅排除前排来源的规则保留作对照。 <a href="#declared-role-pruning-result">职责索引的实验边界</a></p>
+<p>职责索引记录本人、职责和原文位置。指定来源且声明完整时，对每种合理解释分别求同一人的职责交集。各解释共有的人可直接推荐，各解释都无匹配时才确认该来源无匹配。开放搜索在同一核验预算内比较主题候选和职责新增候选。首轮以标题摘要为默认。实验路径在完整职责声明排除来源时，才复用同一查询向量扫描标题索引，补齐空出的位置。保留仍可核验的原候选，合并后只核验一批。声明缺失或有歧义的来源仍可核验。发现新候选后，分别核对主题相关性、本人职责和硬约束，再决定是否推荐。仅排除前排来源的规则保留作对照。 <a href="#role-field-stage-result">职责缺位补查对照</a></p>
 <h3 id="demand-taxonomy">4.2 需求理解（Demand Understanding，RQ1）</h3>
 <p>将需求转为技术方向、硬约束、软偏好及可追溯的原文片段。解析与召回各自读取完整需求，核验时汇合资格和候选。资格边界仍用整块独立复核。区分现有工况、既往资质和未来交付。如果不同解释会改变推荐，则保留解释并核对其共同依据，必要时请求澄清。</p>
 
@@ -704,14 +707,14 @@ html[data-theme="dark"] .agent-map {
 </figure>
 <figure class="research-roadmap latency-figure" id="role-field-stage-result">
 <figcaption>图 6. 四篇预算下主要主题证据的逐阶段覆盖</figcaption>
-<p>eLife 共 110 条查询，322 篇文章中有 280 篇具备完整职责声明。31 条查询在库内有同时满足 MEDLINE 主要主题和本人职责的已知来源。条形以 31 条为满格。</p>
-<div class="verifier-grid" role="table" aria-label="主题基线与双视图职责提名各阶段覆盖">
-<div role="row" style="display:contents"><span role="columnheader" class="metric-title">阶段</span><span role="columnheader" class="metric-title">主题前四篇</span><span role="columnheader" class="metric-title">双视图＋职责</span></div>
-<div role="row" style="display:contents"><span role="rowheader">读到已知来源</span><span role="cell" class="metric-value "><span class="latency-track" aria-hidden="true"><i style="--bar:35.48%"></i></span><strong>11</strong></span><span role="cell" class="metric-value latency-guarded"><span class="latency-track" aria-hidden="true"><i style="--bar:51.61%"></i></span><strong>16</strong></span></div>
-<div role="row" style="display:contents"><span role="rowheader">来源通过核验</span><span role="cell" class="metric-value "><span class="latency-track" aria-hidden="true"><i style="--bar:35.48%"></i></span><strong>11</strong></span><span role="cell" class="metric-value latency-guarded"><span class="latency-track" aria-hidden="true"><i style="--bar:45.16%"></i></span><strong>14</strong></span></div>
-<div role="row" style="display:contents"><span role="rowheader">带该来源推荐</span><span role="cell" class="metric-value "><span class="latency-track" aria-hidden="true"><i style="--bar:29.03%"></i></span><strong>9</strong></span><span role="cell" class="metric-value latency-guarded"><span class="latency-track" aria-hidden="true"><i style="--bar:41.94%"></i></span><strong>13</strong></span></div>
+<p>eLife 110 条查询中，31 条在库内有同时满足 MEDLINE 主要主题和本人职责的已知来源。条形以 31 条为满格。</p>
+<div class="verifier-grid" role="table" aria-label="主题基线、固定双视图和按职责缺位补查的主要主题证据覆盖">
+<div role="row" style="display:contents"><span role="columnheader" class="metric-title">阶段</span><span role="columnheader" class="metric-title">主题前四</span><span role="columnheader" class="metric-title">固定双视图</span><span role="columnheader" class="metric-title">按缺位补查</span></div>
+<div role="row" style="display:contents"><span role="rowheader">读到已知来源</span><span role="cell" class="metric-value"><span class="latency-track" aria-hidden="true"><i style="--bar:35.48%"></i></span><strong>11</strong></span><span role="cell" class="metric-value fixed-mix"><span class="latency-track" aria-hidden="true"><i style="--bar:51.61%"></i></span><strong>16</strong></span><span role="cell" class="metric-value latency-guarded"><span class="latency-track" aria-hidden="true"><i style="--bar:48.39%"></i></span><strong>15</strong></span></div>
+<div role="row" style="display:contents"><span role="rowheader">来源通过核验</span><span role="cell" class="metric-value"><span class="latency-track" aria-hidden="true"><i style="--bar:35.48%"></i></span><strong>11</strong></span><span role="cell" class="metric-value fixed-mix"><span class="latency-track" aria-hidden="true"><i style="--bar:45.16%"></i></span><strong>14</strong></span><span role="cell" class="metric-value latency-guarded"><span class="latency-track" aria-hidden="true"><i style="--bar:45.16%"></i></span><strong>14</strong></span></div>
+<div role="row" style="display:contents"><span role="rowheader">带该来源推荐</span><span role="cell" class="metric-value"><span class="latency-track" aria-hidden="true"><i style="--bar:29.03%"></i></span><strong>9</strong></span><span role="cell" class="metric-value fixed-mix"><span class="latency-track" aria-hidden="true"><i style="--bar:41.94%"></i></span><strong>13</strong></span><span role="cell" class="metric-value latency-guarded"><span class="latency-track" aria-hidden="true"><i style="--bar:38.71%"></i></span><strong>12</strong></span></div>
 </div>
-<p>16 条可达查询的首个已知来源排在主题第八名之后。双视图在 eLife 的局部 P95 为 29.47 ms，主题前四篇为 26.58 ms。标题向量使稠密索引体积翻倍。PLOS 上双视图比单独职责提名少 6 个标签命中；eLife 也仍未达到八篇主题基线的整体质量门槛。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7b11719ea8d1e36394c5ca68b6c94f88e8ab73bf/benchmarks/elife-mesh-stage-v1">损失定位</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c5cfd2e0e8bcf7782a8f5a483f2dc3ab5cc94d48/benchmarks/role-field-ranking-v1">双视图对照</a></p>
+<p>双视图固定扫描 110 次，按缺位补查扫描 76 次。只用混合检索做职责补位时，最终带主要主题引文的查询为 10 条。三种补位／混合路径的局部 P95 均约 29.4–29.5 ms。PLOS 上，标题补位的标签命中为 48，混合检索补位为 52。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7f1811d77afdaeef3358666fdf2be507bebb85f8/benchmarks/role-gap-title-refill-v1">四篇预算复跑</a></p>
 </figure>
 <div class="plan-table" tabindex="0" role="region" aria-label="公开数据集关键对照结果">
 <table class="study-table">
@@ -788,7 +791,7 @@ html[data-theme="dark"] .agent-map {
 <tbody>
 <tr><th scope="row">同预算找到更多有据专家</th><td>四篇阅读预算下，PLOS、eLife 关键词组分别多 15、16 个标签命中。逐查询配平推荐数后只多 1、3 个，区间均含零。当前支持候选覆盖线索，实际证据支持待独立盲审。 <a href="#role-cross-publisher-result">公开数据对照</a></td><td><strong>首轮提名</strong>用同一核验预算比较主题提名后核验和职责参与提名。<strong>后续补查</strong>按冻结企业协议固定稠密首轮、每臂最多补读两段，比较原池与全库补查。有据 P@5 配对 95% 区间下界须高于 +2 个百分点，同时满足覆盖和风险门槛。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0585b7b54babc28b1a2ce4dc756e7729d75fcbad/benchmarks/enterprise-sealed-first-query-v1">冻结协议</a></td></tr>
 <tr id="claim-window-transfer"><th scope="row">质量达标时降低完整首查成本</th><td>企业回放的通用核验优化在 480 对响应逐字节一致时减少 28.1% 核验 token，客户端 P95 降 13.9%–18.1%。SciRepEval 的 73,257 条标题回放中，INT8 扫描加 FP32 连续块复核在每次运行的 273 对请求中保留原引文输出，暖态标题检索子链路 P95 由 14.67 降至 10.02 ms。这是同一环境下从查询编码到本地引文输出的耗时，仍需完整 FP32 后备文件。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b2958bbd47a8fd9e9d8b1f154d33cc80036a7c53/benchmarks/enterprise-rescue-load-sweep-v1">企业负载对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c3ba8fd24844140520b82f8dda011eb65534fb36/benchmarks/real-title-block-recheck-v1">标题索引复核</a></td><td>强混合检索加重排、GroundedPipeline、末端职责核验和新框架共用可迁移的执行优化。质量差下界至少为 −1 个百分点，并满足覆盖和风险门槛。用同硬件、同到达序列比较客户端 P95 与每次有据成功的总成本，计入排队、模型、回退和失败请求，另报索引、训练及摊销。</td></tr>
-<tr id="facet-slot-transfer"><th scope="row">动态取证提高预算利用率</th><td>前四篇明确缺少目标职责时补查，PLOS 标签命中增加，eLife 关键词组未复现。FollowIR 短窗实验中，4B 核验只接受 4／33 个补查正例，0.6B 初筛又丢失其中 2 个。需分别诊断找不到证据和找到后无法核验。 <a href="#role-safe-expansion-result">职责补查</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/8f2e2ad9d28235d84b7bdb3f7d83729728f517f4/benchmarks/followir-robust04-reader-routing-v1">短窗核验</a></td><td>固定候选池、动作、核验器和预算，比较固定补读、规则触发与开源决策模型。记录每次动作是否补齐同一人的约束、是否增加有据推荐、耗时及读取量。PageIndex 式导航单独比较同源浅检索，避免把篇内定位收益归给决策模型。</td></tr>
+<tr id="facet-slot-transfer"><th scope="row">动态取证提高预算利用率</th><td>按职责缺位补查在 eLife 保留了固定双视图的多数主要主题收益，扫描次数较少，局部 P95 接近。PLOS 对比混合检索补位仍少 4 个标签命中。CoF 上，基于分数与分差的轻量决策器在排除同题训练后，三个集合均无净增益。 <a href="#role-field-stage-result">职责缺位对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/f67557ea9ca425b0e4f1a0883b0182b727de5932/benchmarks/cof-title-route-transfer-v1">CoF 迁移</a></td><td>首轮对照同为四篇的混合检索补位、固定双视图和按缺位补查。后续补读固定首轮候选、可用动作、核验器和预算，再比较固定补读、规则触发与开源决策模型。记录每次动作是否补齐同一人的约束、是否增加有据推荐、耗时及读取量。PageIndex 式导航单独比较同源浅检索，避免把篇内定位收益归给决策模型。</td></tr>
 </tbody>
 </table></div>
 
