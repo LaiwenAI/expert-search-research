@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-20T09:09:24+08:00">2026-11-20 09:09（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-21T02:52:32+08:00">2026-11-21 02:52（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -181,6 +181,17 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </tbody></table></div>
 <p>等权融合相对最佳来源的已标注正例 P@5 差值分别为 +0.16 和 +1.02 个百分点，两组配对重采样区间均跨零。CoF 只标注了部分候选，引用也缺少独立人工标注。此前 CMU Gold 和 MERIT 的对照展示了固定画像聚合的竞争力。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/eafc6cfa437df10149c0c2ebde09533c2b37a2e5/benchmarks/cof-global-profile-pooling-v1">全候选代码与聚合结果</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/1bb54a862acf370e62fa1c42ca00e954e0f243bd/benchmarks/cmu-profile-ranking-v1">CMU 与 MERIT 对照</a></p>
 
+<h3 id="cof-resident-bundle-transfer">离线证据组在候选内与全库的表现</h3>
+<p>LR-Bench 的给定候选实验中，多证据组把评审排序 P95 从 575.82 ms 降至 50.23 ms，正确数从 112 增至 113／148，配对准确率区间跨零。迁移到 CoF 全库时，直接用多证据组召回，KDD 和 SciRepEval 的完整 P95 都上升，带模型引文的已知正例也减少。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/d8d0f38d1ef6343ffa4a77ebd4461512d11c8a8b/benchmarks/merit-resident-profile-bundles-v1">候选内排序</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/e22a14ac105d4a4f27960e59e83d6334afe3f1d3/benchmarks/cof-merit-resident-bundles-v1">全库对照</a></p>
+<div class="result-table-scroll" tabindex="0" role="region" aria-label="固定候选后的证据组质量和延迟对照"><table>
+<caption>固定候选与顺序，每人最多三条证据</caption>
+<thead><tr><th scope="col">数据</th><th scope="col">证据策略</th><th scope="col">已知正例附引文</th><th scope="col">暖态完整 P95</th></tr></thead>
+<tbody>
+<tr><th scope="row">KDD（122 条）</th><td>稠密／纯证据组／混合</td><td>13／4／13</td><td>136／165／194 ms</td></tr>
+<tr><th scope="row">SciRepEval（59 条）</th><td>稠密／纯证据组／混合</td><td>25／6／22</td><td>130／141／168 ms</td></tr>
+</tbody></table></div>
+<p>两条证据组路径在全库的固定候选对照中均增加延迟。纯证据组在两个面板都损失带引文的已知正例，说明来源选择本身就会影响结果。CoF 的专家标注不完整，引文由冻结模型判选，仍需独立评审本人贡献。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/79ea006a6fae6731b4135ca9b6186afc3a2ff910/benchmarks/cof-merit-fixed-nominees-v1">固定候选消融与置信区间</a></p>
+
 <h3 id="cof-candidate-to-citation">候选召回与引用交付</h3>
 <p>CoF KDD 的 122 条查询和 SciRepEval 的 59 条查询使用同一批来源快照。表中引用由冻结核验器选择，CoF 的已发布标签评判专家适配，未独立评价这些引用。</p>
 <div class="plan-table" tabindex="0" role="region" aria-label="CoF 候选到引用对照">
@@ -304,6 +315,9 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>CoF KDD／SciRepEval 在单张 RTX 5090 上各回放 432 条请求，按每秒 12 条持续 36 秒。逐段观察时，填充基线的 P95 随排队上升；无填充路线分别为 138／182／129 ms 和 124／124／124 ms。四线程闭环完成速率提高 32.5%／29.8%，两种负载下共 1,411 条无填充响应复现原专家顺序与引用。测试含实时编码、全库检索、核验和等待，采用进程内回放。闭环速率限于本负载，引用一致性衡量实现对照。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/4a76bb6cee846295e7f9a84540e92fc607b8f80e/benchmarks/cof-ragged-sustained-v1">代码与完整结果</a></p>
 <h3 id="cof-profile-first">全量评分与画像筛选</h3>
 <p>CoF KDD／SciRepEval 各用 64 位画像候选时，来源比较分别减少 90.9%／88.2%，检索加引用核验的 P95 从 134.78／120.95 增至 135.65／123.07 ms。两组已标注 P@5 一致，但推荐和引用有变化。SciRepEval 已标注 Recall@10 从 53.59% 降至 51.63%。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/34fe493/benchmarks/cof-profile-first-v1">完整对照</a></p>
+<h3 id="role-index-reuse">等容量职责索引的跨请求复用</h3>
+<p>PLOS 和 eLife 各回放 312 条留出请求，两种顺序下每种策略都逐条复现专家排序与最短引文。将四分之一索引预算中的一半留给在线缓存后，最佳混合策略较各自最佳静态方案多读约 33% 和 13–14%。eLife 的混合策略有更多请求无需回源，但总读取数和轮次上升。结果适用于固定的结构化声明、留出职责组合和本次容量分配。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/79ea006a6fae6731b4135ca9b6186afc3a2ff910/benchmarks/role-index-cross-query-cache-v1">等容量回放与统计</a></p>
+
 <h3 id="candidate-role-and-owner-routing">共享向量与按作者取证</h3>
 <p>在 PLOS 的 118 条匹配请求上，固定两次读取预算、候选和字段核验。用共享向量匹配职责时，按作者组织取证与来源轮询分别找回 34／59 和 28／59 条正例，各误荐 1／59 条。两条路径的组件 P95 约为 8.6 ms。相同校准目标下，MiniLM 没有找回正例。另以 23 篇未用于前一试验的论文和 78 组易混淆措辞比较，定义匹配、共享 Ridge 和专用 Ridge 分别完整判对 18、41、39 组，误荐 17、7、16 次（共 154 条负例）。两组目的是测给定来源下的取证和职责语义。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/9c0f30bc1f34575b5fbd9fac94abd8b614074e52/benchmarks/plos-shared-embedding-witness-v1">同预算取证</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/14e53cdd31105275f94ddab5e21a9cda536fd39a/benchmarks/plos-external-shared-role-gate-v1">外部措辞</a></p>
 <h3 id="batched-source-role-proof">来源检索与职责核验的合批编码</h3>
