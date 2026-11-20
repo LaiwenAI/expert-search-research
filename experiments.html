@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-20T08:44:45+08:00">2026-11-20 08:44（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-20T09:09:24+08:00">2026-11-20 09:09（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -17,6 +17,14 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <li><a href="#capability-transfer">能力迁移</a></li>
 <li><a href="#historical">早期组件与反馈回放</a></li></ul></nav></header>
 <section aria-labelledby="plan-evidence"><h2 id="plan-evidence">研究计划依据</h2>
+<h3 id="declared-role-stage">结构化职责筛选的收益与企业覆盖</h3>
+<div class="result-table-scroll"><table>
+<thead><tr><th scope="col">实验</th><th scope="col">实测结果</th><th scope="col">接入条件</th></tr></thead>
+<tbody>
+<tr><th scope="row">PLOS 独立目录</th><td>78 篇文章、46 条查询。相同四篇预算下，本人职责索引比主题排序多 15 条有据推荐，提升 6.52 个百分点。四篇对八篇虽然降低延迟，仍未通过预设质量门槛。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/4b4aa51720060b4a6ad097702c3b7245acbeff88/benchmarks/plos-topic-role-holdout-v1">冻结协议与结果</a></td><td>区分等预算提名和等质量加速。索引未知时保留原来源。</td></tr>
+<tr><th scope="row">同宽批次压缩</th><td>只移除声明已确认不满足的来源。42／78 或 78／78 篇有声明时，核验从 368 次减到 251 或 161 次，两次回放的推荐和引文顺序均复现。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c416ce45f29820f1e509820a4ce8e5f86af73144/benchmarks/plos-stable-topic-compaction-v1">压缩对照</a></td><td>保留原批次填充宽度。继续检查分数与最终结果一致性。</td></tr>
+<tr><th scope="row">企业首查覆盖</th><td>80 条请求、800 段首轮核验原文中，70 段检出职责线索，仅 1 段明确列出候选人为发明人。73 条暂定推荐中，65 条的引文均未检出职责线索。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/d1bc433522c5a07b11d3ef4b30448e71f199be05/benchmarks/enterprise-declaration-reach-v1">字段覆盖审计</a></td><td>这些线索可用于提名和找原文。企业字段完整性与暂定推荐质量仍需盲审。</td></tr>
+</tbody></table></div>
 <h3 id="first-query-stage-consolidation">首查对照：本人职责、证据覆盖与解析成本</h3>
 <div class="result-table-scroll"><table>
 <thead><tr><th scope="col">对照</th><th scope="col">实测结果</th><th scope="col">纳入主实验的口径</th></tr></thead>
