@@ -309,7 +309,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T07:07:17+08:00">2026-11-21 07:07:17</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T07:27:51+08:00">2026-11-21 07:27:51</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -731,7 +731,7 @@ html[data-theme="dark"] .agent-map {
 <p>短预算下比较一次性图传播、静态学习排序与基于本次已选证据的轻量决策。三组共享召回和候选条件，按相同段落预算选择证据。跨文档多跳任务使用已有段落的链接、覆盖与重复信息调整下一段。已定位的单篇资料单独比较固定选段。继续用本人归属和硬约束核验新增证据。 <a href="#cross-domain-short-read-result">跨数据集对照</a></p>
 <p>先对浅池做职责规划。只有原文已支持同一人，且未读来源无法改写专家及引用时，才省去后续规划与读取，其余请求回退到固定深度方案。当前实验两组均已完成深池排序。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/bd9b04f144c3840c555320a5548a33ca9c407d4d/benchmarks/adaptive-role-depth-v1">浅池规划与固定深度对照</a></p>
 <p>只有缺口能定位且补证可能改变推荐时，才进入二轮。在同一候选上区分库内有证据但未读到、现有来源未覆盖、给定原文仍核验不通过。按缺口选择同源补证、定向查本人来源或复核。只有候选本身不足时才扩库。复用已核验条件，只重查受影响项。单批核验、通用缺证补读和候选人定向补读共享核验器及文本预算。分别评价原文覆盖、等人数推荐、错荐风险与时延。先用人工标注的既往资格与自动解析作对照，再固定资格检查证据是否可达、给定证据后是否通过。 <a href="#owner-bound-action-result">同预算补证对照</a></p>
-<p>核验分开记录原文支持、明确违反和证据不足，并保留本人归属与所查范围。归属待查或硬条件缺证时，只返回已核实的部分。验证门槛时，分别统计对真实正例的保留、对违反硬条件的误收，以及由核验造成的覆盖损失。短窗和前缀复用单独验收。强模型复核先在同一摘录上比较，并与定向扩读分开计量。首查的复核预算需同时约束正确接受、硬条件误收和客户端 P95。 <a href="#verification-boundary-result">核验对照</a></p>
+<p>核验分开记录原文支持、明确违反和证据不足，并保留本人归属与所查范围。归属待查或硬条件缺证时，只返回已核实的部分。候选排序与证据能否出示分开决策。固定候选及原文，比较通用核验器重排、保留候选顺序取首个通过者、仅核验首位。核验器的训练与校准优先使用条件相近但本人、职责或资格不同的证据。验证门槛时，分别统计对真实正例的保留、对违反硬条件的误收，以及由核验造成的覆盖损失。短窗和前缀复用单独验收。强模型复核先在同一摘录上比较，并与定向扩读分开计量。首查的复核预算需同时约束正确接受、硬条件误收和客户端 P95。 <a href="#verification-boundary-result">核验对照</a></p>
 <p>同一组策略共享核验与执行方式。离线与在线评测锁定查询编码的批次形状和精度，避免缓存分数掩盖在线变化。并发时按等待期限合批编码，拆回各请求后分别排序和核验。评测逐条对照响应，并区分排队、计算和 HTTP 往返。无填充、前缀复用和重算作为执行消融。</p>
 
 <h3>4.5 在线与离线迭代（Online and Offline Improvement，RQ4–RQ5）</h3>
@@ -760,7 +760,7 @@ html[data-theme="dark"] .agent-map {
 <p>公开对照使用 CoF 和 TREC Enterprise 评价排名，MERIT 评价适配，QASPER、EvidenceBench 和 LitSearch 检验取证，CRediT 角色声明评估贡献归属。CoF 全库结果同步报告标注覆盖。MERIT 按目标论文和精确重复履历分组。Re-DocRED 的关系标签与证据句分开计分，区分提名命中、核验通过与标注证据覆盖。</p>
 
 <h3 id="implemented-agent-architecture">7.2 强基线与消融（Baselines and Ablations）</h3>
-<p>全链路比较领域先验、BM25、稠密与混合检索及 GroundedPipeline；固定候选与核验器时，对照固定深度、固定批量、最短约束优先和自适应截断。单源公开对照保留按来源检索再归并作者、固定三／四／五读及等预算扩人，同时报告漏人、选错来源和核验拒绝。多条件对照分别统计结构上可行、主题核验后完整和本人证据完整。统一语料、硬件、缓存条件与负载，超参数在验证集确定。 <a href="experiments.html#community-first-query-evidence">单证据对照</a> · <a href="experiments.html#multi-condition-proof-evidence">多条件对照</a></p>
+<p>全链路比较领域先验、BM25、稠密与混合检索及 GroundedPipeline；固定候选与核验器时，对照固定深度、固定批量、最短约束优先和自适应截断。单源公开对照保留按来源检索再归并作者、固定三／四／五读及等预算扩人，同时报告漏人、选错来源和核验拒绝。多条件对照分别统计候选命中、证据页覆盖、逐项核验通过和本人证据完整。保留零核验的整句向量和分条件 BM25 为排序强基线。接受阈值在来源隔离的验证集冻结，在留出集分别报告完整出榜、错荐、覆盖和 P95。统一语料、硬件、缓存条件与负载，超参数在验证集确定。 <a href="experiments.html#community-first-query-evidence">单证据对照</a> · <a href="experiments.html#multi-condition-proof-evidence">多条件对照</a></p>
 <div class="plan-table" tabindex="0" role="region" aria-label="实验与评价判据表">
 <table class="study-table">
 <caption>表 2. 实验与判据</caption>
@@ -1011,7 +1011,8 @@ html[data-theme="dark"] .agent-map {
 <thead><tr><th scope="col">研究判断</th><th scope="col">关键证据</th><th scope="col">实验取舍</th></tr></thead>
 <tbody>
 <tr><th scope="row">首查同输出提速已复现</th><td id="role-index-transport-result">80 条企业开发请求、52,667 条来源。本地首查 P95 从 2.15 降至 1.14 秒，资格、排序、引文和未决状态一致。 <a id="role-index-budget-result" href="#enterprise-cross-precision-result">首查与负载对照</a></td><td><span id="verification-boundary-result">所有对照共用快速实现。</span> <span id="selective-verification-tradeoff">用独立盲审测质量，另用持续负载测排队与回退成本。</span></td></tr>
-<tr><th scope="row">结构剪枝有效，正文支持仍是瓶颈</th><td>来源互异的构造对照中，职责载荷从 6,114 B 降至 68 B，读源计划与穷举一致，完整本地 P95 约省 0.2 ms。公开 CrossPage 的 28 条请求上，同一阈值过滤疑似目录页后，完整标注文档出榜由 1 增至 6，部分满足仍为 1。正文核验 P95 约 133 ms，整句向量约 8 ms。 <a href="experiments.html#multi-condition-proof-evidence">来源约束</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/efba9bccbfef1b1939af5dd7e696ffe9139d07aa/benchmarks/crosspage-condition-v1">公开长文档对照</a></td><td>保留静态剪枝、整句向量和整句核验对照。CrossPage 标注覆盖整篇文档，下一轮须盲审定位页及逐项原文支持。按文档分组留出，避免共享来源造成泄漏。</td></tr>
+<tr><th scope="row">结构剪枝可行，证据页命中需单独验收</th><td>三份来源须互异时，职责载荷从 6,114 B 降至 68 B，读源计划与穷举一致，完整本地 P95 约省 0.2 ms。19 项评审认可的长文档条件中，混合提名只核验两页，与向量四页各出示 9 个已知证据页，局部 P95 约 27 和 38 ms。 <a href="experiments.html#multi-condition-proof-evidence">结构与证据页对照</a></td><td>同人跨源索引测资格和归属。篇内证据页另测可达与给定原文后的判定，遇到缺字段时计入完整回退成本。</td></tr>
+<tr><th scope="row">通用核验尚无稳定净收益</th><td>CrossPage 的 110 条多条件请求中，最多放出 10 个部分匹配时，整句向量保留 18 个完整标注文档，最好的核验路径保留 10 个。RELISH 来源隔离留出集上，两候选保序核验比纯向量多 2 个强相关结果，配对 95% 区间为 −8 至 +12 个百分点。 <a href="experiments.html#verification-order-ablation">排序与出榜对照</a></td><td>保留低成本排序作为强基线。冻结候选与原文，验证针对条件训练的核验器能否在相同错荐风险下多保留有据结果。</td></tr>
 <tr id="enterprise-first-round-boundary"><th scope="row">企业质量优先定位资格和归属错误</th><td><span id="fixed-slot-transfer">80 条开发请求的等预算换证未改变人选与引文。</span> <span id="enterprise-qualification-depth">另 25 条中，替换资格解释使模型暂准从 2 增至 16。</span> <span id="publication-evidence-figures">55 条首轮未推荐请求回读得到 10 条题名匹配全文，仅 1 条贡献声明出现候选姓名。</span> <a href="#enterprise-fulltext-stage-result">全文覆盖</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/119a65bd955fdbf0f8231673a821c8cbc1a8734e/benchmarks/enterprise-qualification-scope-depth-v1">资格深读</a></td><td id="owner-bound-publication-test">盲审依次区分资格错解、候选漏召、原文缺失、归属错误和核验误判。姓名出现与模型暂准只作诊断。 <a href="#clarification-order-result">澄清对照</a></td></tr>
 <tr id="facet-slot-transfer"><th scope="row">动态决策暂未超过低成本强基线</th><td>Unix &amp; Linux 等五读对照中，固定扩人找回 99 条已知证据，同人补读 91 条。RELISH 将部分相关也计作不合格后，在相同不合格数下，学习后按需核验与纯向量均找回 30／100 条强相关结果，局部 P95 分别约 28 和 9 ms。 <a href="experiments.html#community-first-query-evidence">归属与预算对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/af197e7930c8edcff78ee8ec2b64f8c303523730/benchmarks/relish-strict-risk-v1">严格风险对照</a></td><td>默认采用便宜的静态路径。只有识别出原文可达、且追加动作可能补齐本人硬条件时，才继续验证动态回退。</td></tr>
 </tbody></table></div>

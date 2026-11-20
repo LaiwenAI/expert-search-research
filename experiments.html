@@ -319,6 +319,14 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">分面提名与向量复用</th><td>固定文章切换分面，纯提示／定向摘录／分面向量判对 5／21／24 对，等句数开头对照为 13 对。50 条实时请求上，固定四读 P95 约 24 ms，复用向量的纯向量路径约 9 ms，相对固定八读新找回 7 条、漏 6 条强相关请求。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/fa0c0690893cfdb89cf4b1c281a9620b360aa715/benchmarks/csfcube-paired-facet-v1">分面对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b013899c111e48194deb529c01d652ba7c7006c3/benchmarks/csfcube-live-facet-gate-v1">首查延迟</a></td><td>复用向量可减少编码开销。分面选择相对等句数对照的增益仍不确定。向量快路保留为提名候选，并验证选择性核验。</td></tr>
 <tr><th scope="row">按预期收益核验</th><td>50 条分面请求上只核验 17 条，强相关命中由固定四读的 26 增至 32，明确无关输出由 8 增至 10。本地 P50 约 21 降至 9 ms，P95 约 24 降至 22 ms。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/6fb5aa00fc3268cd27f9a2dce3ffd52977a8c2db/benchmarks/csfcube-facet-fallback-v1">选择性核验</a></td><td>配对区间触及零，仍需在独立任务上复验，尤其要计入误放与回退的尾部时延。</td></tr>
 </tbody></table></div>
+<h3 id="verification-order-ablation">证据页定位、候选排序与核验出榜</h3>
+<div class="result-table-scroll"><table>
+<thead><tr><th scope="col">对照</th><th scope="col">结果</th><th scope="col">适用范围</th></tr></thead>
+<tbody>
+<tr><th scope="row">已知文档内定位</th><td>19 项条件的两页混合提名覆盖 15 个评审证据页，两页向量覆盖 12 个。两页混合与四页向量均出示 9 个已知证据页，局部 P95 约 27／38 ms。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/896845abe8faf6e07ebf43362238b5664f5684c4/benchmarks/crosspage-audited-pages-v1">页级对照</a></td><td>文档和条件已给定，页级标签覆盖有限。</td></tr>
+<tr><th scope="row">四候选竞争</th><td>110 条请求中，整句向量、分条件 BM25、混合核验两份与四份分别将 54、46、41、31 个完整文档排第一。核验两份的 P95 约 44 ms，整句向量约 8 ms。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/b6039e403364f82e09a036ab4d9c3636c1ae3d13/benchmarks/crosspage-competing-pools-v1">竞争池对照</a></td><td>最常见的来源家族移除后，两份核验与整句向量的排序优劣反转。该组用于诊断来源构成的影响。</td></tr>
+<tr><th scope="row">同证据比较重排与保序出榜</th><td>CrossPage 回看门槛下，最多误放 10 个部分匹配，整句向量保留 18 个完整标注文档，最佳核验路径保留 10 个。RELISH 阈值在 55 条校准查询冻结，100 条留出查询上，纯向量为 39 个强相关、8 个部分或无关。两候选保序为 41／7，四候选重排为 50／12，局部 P95 约 9、21、31 ms。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/4313d3606b92ec10964b3d9828df44cdb692c487/benchmarks/certificate-order-ablation-v1">核验顺序与风险对照</a></td><td>保序与重排共用证据和模型分数。两套标签均衡量文档相关性，专家资格和本人归属另由原文评审。</td></tr>
+</tbody></table></div>
 </section>
 <section aria-labelledby="verification"><h2 id="verification">来源核验、冲突与停止</h2>
 <h3 id="enterprise-cross-precision-search">按需双精度复核的完整首查</h3>
