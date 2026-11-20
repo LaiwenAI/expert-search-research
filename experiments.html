@@ -8,12 +8,13 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-21T06:12:30+08:00">2026-11-21 06:12（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-21T06:43:06+08:00">2026-11-21 06:43（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
 <li><a href="#action-selection">证据选择与决策模型</a></li>
 <li><a href="#community-first-query-evidence">首查的单证据对照</a></li>
+<li><a href="#multi-condition-proof-evidence">同人多条件的证据组合与核验</a></li>
 <li><a href="#verification">来源核验、冲突与停止</a></li>
 <li><a href="#capability-transfer">能力迁移</a></li>
 <li><a href="#historical">早期组件与反馈回放</a></li></ul></nav></header>
@@ -305,6 +306,18 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">核验深度与跨域预算</th><td>27 条 Cross Validated 和 20 条 MathOverflow 上，固定三读与五读共找回相同的 29 条已知证据。195 条 Unix &amp; Linux 请求上，三／四／五读分别找回 91／95／99 条，P95 约 34／39／47 ms。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/237ca0ae3c0c2dbc6c9c397c0265d96315a3cde6/benchmarks/community-distilled-reads-v1">蒸馏对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/1f95f3812e134d61c6650519917e52636dcb2271/benchmarks/community-read-budget-v1">独立社区</a></td><td>保留不同深度的固定基线。跨域阈值把 175／195 条分到五读，P95 与固定五读相当，已知回收落在同预算随机分配范围。</td></tr>
 <tr><th scope="row">扩人或补读本人来源</th><td>Unix 单批五读中，扩人／补读分别找回 99／91 条已知证据，配平推荐数后区间含零。前十已知证据缺失的 50 条中，44 条未找到作者，6 条找到作者但首选来源不符。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/cd9cec9f20ce3254bdb94cc8638b367d77d9fd35/benchmarks/community-alternate-witness-v1">作者与来源诊断</a></td><td>单证据场景优先针对漏人。对多条件请求另测同人补证，其判据是补齐缺失资格。</td></tr>
 <tr><th scope="row">同候选的答文核验</th><td>Unix 固定五读下，开头、定向、拼接与长答文找回 99／100／102／104 条已知证据。长答文使 P95 由约 47 ms 升到 68 ms，配平推荐数后增量消失。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/40564c30de00bf5fe321d42805ae759a45ec0c7a/benchmarks/community-context-repair-v1">上下文对照</a></td><td>40 条被拒的已知答文中，34 条在换成原始采纳问题后通过。该对照表明措辞敏感，独立复核应针对实际请求与展示的原文。</td></tr>
+</tbody></table></div>
+</section>
+<section aria-labelledby="multi-condition-proof-evidence"><h2 id="multi-condition-proof-evidence">同人多条件的证据组合与核验</h2>
+<p>对同一人分别检查来源约束、个人职责和每项要求的原文支持。公开实验分别测量结构组证和原文主题核验。</p>
+<div class="result-table-scroll"><table>
+<thead><tr><th scope="col">对照</th><th scope="col">关键结果</th><th scope="col">研究判断</th></tr></thead>
+<tbody>
+<tr><th scope="row">三项资格与来源互斥</th><td>48 条公开请求变体。三份来源均须互异时，职责载荷由 6,114 B 降至 68 B，完整本地 P95 减少约 0.2 ms。各表的人选、引文和计划一致。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/6cd625a1ad8bbabf811e708357ce4756e9124537/benchmarks/multi-qualification-proofs-v1">来源约束对照</a></td><td>可把来源互斥用于精确剪枝。PLOS 可复用来源时，选中的已知主题匹配从 9 降至 2，须独立验证每项主题。</td></tr>
+<tr><th scope="row">逐项主题核验</th><td>零阈值通过 18／138 个有主题标注的条件对，完整结果为 0。宽松阈值下，逐轮核验把检查数从 213 减至 162，GPU 前向由 40 增至 57。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/a6fd764ffd892c58e9aa5b676ba3f8b30f449943/benchmarks/topic-proof-certification-v1">核验调度对照</a></td><td>区分核验条数与模型前向次数。保留固定单批核验，先修复完整证据覆盖。</td></tr>
+<tr><th scope="row">外部校准迁移</th><td>2,000 对 TREC-COVID 人工标注。留出主题上保留 67.5%–70.3% 的完全相关文章，误放 10.9%–11.9% 的无关文章。直接迁移后，48 条三条件请求均未输出完整证据。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/a928253f7a2203609351ee9e1d948cc854f06473/benchmarks/calibrated-topic-evidence-v1">外部校准</a></td><td>按目标任务的实际资格和展示原文独立评审，逐项校准。</td></tr>
+<tr><th scope="row">分面提名与向量复用</th><td>固定文章切换分面，纯提示／定向摘录／分面向量判对 5／21／24 对，等句数开头对照为 13 对。50 条实时请求上，固定四读 P95 约 24 ms，复用向量的纯向量路径约 9 ms，相对固定八读新找回 7 条、漏 6 条强相关请求。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/fa0c0690893cfdb89cf4b1c281a9620b360aa715/benchmarks/csfcube-paired-facet-v1">分面对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b013899c111e48194deb529c01d652ba7c7006c3/benchmarks/csfcube-live-facet-gate-v1">首查延迟</a></td><td>复用向量可减少编码开销。分面选择相对等句数对照的增益仍不确定。向量快路保留为提名候选，并验证选择性核验。</td></tr>
+<tr><th scope="row">按预期收益核验</th><td>50 条分面请求上只核验 17 条，强相关命中由固定四读的 26 增至 32，明确无关输出由 8 增至 10。本地 P50 约 21 降至 9 ms，P95 约 24 降至 22 ms。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/6fb5aa00fc3268cd27f9a2dce3ffd52977a8c2db/benchmarks/csfcube-facet-fallback-v1">选择性核验</a></td><td>配对区间触及零，仍需在独立任务上复验，尤其要计入误放与回退的尾部时延。</td></tr>
 </tbody></table></div>
 </section>
 <section aria-labelledby="verification"><h2 id="verification">来源核验、冲突与停止</h2>
