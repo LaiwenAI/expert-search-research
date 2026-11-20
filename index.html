@@ -283,7 +283,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-20T16:06:59+08:00">2026-11-20 16:06:59</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-20T16:19:07+08:00">2026-11-20 16:19:07</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -462,28 +462,28 @@ html[data-theme="dark"] .agent-map {
       </g>
       <g id="agent-map-verify">
         <rect class="diagram-card" width="320" height="166" rx="9"/>
-        <text class="diagram-text diagram-title" x="13" y="18">首轮核验 · 同一人满足各项约束</text>
+        <text class="diagram-text diagram-title" x="13" y="16">首轮核验 · 先确认来源，再核对本人</text>
         <g class="diagram-center">
-          <path class="diagram-wire" d="M145 43H175"/><path class="diagram-branch" d="M243 56V63H85M243 63H235"/>
-          <path class="diagram-wire" d="M85 63V72"/><path class="diagram-wire" d="M235 63V72"/>
-          <rect class="diagram-node" x="13" y="30" width="132" height="26" rx="5"/><text class="diagram-text" x="79" y="43">定位来源 · 同源复用</text>
-          <rect class="diagram-node" x="175" y="30" width="132" height="26" rx="5"/><text class="diagram-text" x="241" y="43">绑定本人 · 同项目</text>
-          <rect class="diagram-key" x="13" y="72" width="144" height="52" rx="6"/>
-          <text class="diagram-text" x="85" y="83">指定来源 · 声明完整</text>
-          <rect class="diagram-node" x="20" y="94" width="60" height="21" rx="4"/>
-          <text class="diagram-text diagram-label" x="50" y="104.5">可行解释</text>
-          <path class="diagram-wire" d="M80 104.5H90"/>
-          <rect class="diagram-pass" x="90" y="94" width="60" height="21" rx="4"/>
-          <text class="diagram-text diagram-label" x="120" y="104.5">同一人交集</text>
-          <rect class="diagram-key" x="163" y="72" width="144" height="52" rx="6"/>
-          <text class="diagram-text" x="235" y="83">开放搜索 · 或声明缺失</text>
-          <rect class="diagram-node" x="170" y="94" width="60" height="21" rx="4"/>
-          <text class="diagram-text diagram-label" x="200" y="104.5">逐项找原文</text>
-          <path class="diagram-wire" d="M230 104.5H240"/>
-          <rect class="diagram-warn" x="240" y="94" width="60" height="21" rx="4"/>
-          <text class="diagram-text diagram-label" x="270" y="104.5">归属与工况</text>
-          <path class="diagram-branch" d="M85 124V130H160M235 124V130H160M58 130H262"/>
-          <path class="diagram-wire" d="M58 130V138"/><path class="diagram-wire" d="M160 130V138"/><path class="diagram-wire" d="M262 130V138"/>
+          <rect class="diagram-node" x="13" y="27" width="132" height="20" rx="4"/>
+          <text class="diagram-text diagram-label" x="79" y="37">DOI / 来源标识</text>
+          <rect class="diagram-node" x="175" y="27" width="132" height="20" rx="4"/>
+          <text class="diagram-text diagram-label" x="241" y="37">标题 / 作者 / 年份提名</text>
+          <path class="diagram-branch" d="M79 47V51H241V47"/>
+          <path class="diagram-wire" d="M160 51V56"/>
+          <rect class="diagram-pass" x="75" y="56" width="170" height="20" rx="5"/>
+          <text class="diagram-text diagram-label" x="160" y="66">核对原文出处 · 不明则未决</text>
+          <path class="diagram-branch" d="M160 76V80H85M160 80H235"/>
+          <path class="diagram-wire" d="M85 80V86"/><path class="diagram-wire" d="M235 80V86"/>
+          <rect class="diagram-key" x="13" y="86" width="144" height="41" rx="6"/>
+          <text class="diagram-text diagram-label" x="85" y="96">指定来源 · 声明完整</text>
+          <rect class="diagram-pass" x="20" y="104" width="130" height="17" rx="4"/>
+          <text class="diagram-text diagram-label" x="85" y="112.5">求同一人的职责交集</text>
+          <rect class="diagram-key" x="163" y="86" width="144" height="41" rx="6"/>
+          <text class="diagram-text diagram-label" x="235" y="96">开放搜索 · 或声明缺失</text>
+          <rect class="diagram-warn" x="170" y="104" width="130" height="17" rx="4"/>
+          <text class="diagram-text diagram-label" x="235" y="112.5">逐项核对本人 · 工况</text>
+          <path class="diagram-branch" d="M85 127V132H160M235 127V132H160M58 132H262"/>
+          <path class="diagram-wire" d="M58 132V138"/><path class="diagram-wire" d="M160 132V138"/><path class="diagram-wire" d="M262 132V138"/>
           <rect class="diagram-pass" x="13" y="138" width="90" height="21" rx="5"/><text class="diagram-text diagram-label" x="58" y="148.5">已证 · 原文引用</text>
           <rect class="diagram-node" x="115" y="138" width="90" height="21" rx="5"/><text class="diagram-text diagram-label" x="160" y="148.5">限定范围内无匹配</text>
           <rect class="diagram-warn" x="217" y="138" width="90" height="21" rx="5"/><text class="diagram-text diagram-label" x="262" y="148.5">未决 · 按缺口补查</text>
@@ -546,7 +546,7 @@ html[data-theme="dark"] .agent-map {
     </defs>
   </svg>
 
-  <svg class="diagram diagram-wide" viewBox="0 0 740 1088" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。关键词与稠密召回保留原候选。一次查询编码用于标题摘要。只有完整职责声明排除原候选造成缺位时，试验路径才扫描标题索引并补位。其他原候选保留，合并后单批核验。是否读入新来源取决于能否补齐候选的证据与剩余预算。来源有完整声明且明确不满足时补位。并发时在 GPU 核验另一请求期间，在 CPU 上准备下一请求的证据，保持各自的核验批次形状。同一来源只确认一次。指定来源且声明完整时，求各职责解释下的作者交集；开放搜索或缺声明时，逐项读取原文。数值约束先绑定本人、职责和项目，再核对实测工况与阈值。分别输出有据候选、限定范围内无匹配或未决。需要时按缺口选择同源补证、原池补读或全库职责补查，再逐人核验短窗。强模型核验作为实验对照。返回时将专家与本人原文绑定，并保留未决约束。后续版本独立评估在线和离线反馈。">
+  <svg class="diagram diagram-wide" viewBox="0 0 740 1088" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。关键词与稠密召回保留原候选。一次查询编码用于标题摘要。只有完整职责声明排除原候选造成缺位时，试验路径才扫描标题索引并补位。其他原候选保留，合并后单批核验。是否读入新来源取决于能否补齐候选的证据与剩余预算。来源有完整声明且明确不满足时补位。并发时在 GPU 核验另一请求期间，在 CPU 上准备下一请求的证据，保持各自的核验批次形状。同一来源只确认一次。标题、作者和年份用于提名来源。核对稳定标识或原文出处之后，才进行本人归属核验。指定来源且声明完整时，求各职责解释下的作者交集；开放搜索或缺声明时，逐项读取原文。数值约束先绑定本人、职责和项目，再核对实测工况与阈值。分别输出有据候选、限定范围内无匹配或未决。需要时按缺口选择同源补证、原池补读或全库职责补查，再逐人核验短窗。强模型核验作为实验对照。返回时将专家与本人原文绑定，并保留未决约束。后续版本独立评估在线和离线反馈。">
     <rect class="diagram-zone" x="8" y="5" width="724" height="175" rx="13"/>
     <text class="diagram-text diagram-zone-title" x="30" y="23">离线准备 · 教师画像、论文、专利与项目</text>
     <rect class="diagram-zone" x="8" y="202" width="724" height="748" rx="13"/>
@@ -578,7 +578,7 @@ html[data-theme="dark"] .agent-map {
     <text class="diagram-text diagram-label" x="384" y="965">交互与运行轨迹</text>
   </svg>
 
-  <svg class="diagram diagram-narrow" viewBox="0 0 374 1785" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。关键词与稠密召回保留原候选。一次查询编码用于标题摘要。只有完整职责声明排除原候选造成缺位时，试验路径才扫描标题索引并补位。其他原候选保留，合并后单批核验。是否读入新来源取决于能否补齐候选的证据与剩余预算。来源有完整声明且明确不满足时补位。并发时在 GPU 核验另一请求期间，在 CPU 上准备下一请求的证据，保持各自的核验批次形状。同一来源只确认一次。指定来源且声明完整时，求各职责解释下的作者交集；开放搜索或缺声明时，逐项读取原文。数值约束先绑定本人、职责和项目，再核对实测工况与阈值。分别输出有据候选、限定范围内无匹配或未决。需要时按缺口选择同源补证、原池补读或全库职责补查，再逐人核验短窗。强模型核验作为实验对照。返回时将专家与本人原文绑定，并保留未决约束。后续版本独立评估在线和离线反馈。">
+  <svg class="diagram diagram-narrow" viewBox="0 0 374 1785" role="img" aria-label="离线构建专家证据树和本人职责索引，记录来源与原文位置。关键词与稠密召回保留原候选。一次查询编码用于标题摘要。只有完整职责声明排除原候选造成缺位时，试验路径才扫描标题索引并补位。其他原候选保留，合并后单批核验。是否读入新来源取决于能否补齐候选的证据与剩余预算。来源有完整声明且明确不满足时补位。并发时在 GPU 核验另一请求期间，在 CPU 上准备下一请求的证据，保持各自的核验批次形状。同一来源只确认一次。标题、作者和年份用于提名来源。核对稳定标识或原文出处之后，才进行本人归属核验。指定来源且声明完整时，求各职责解释下的作者交集；开放搜索或缺声明时，逐项读取原文。数值约束先绑定本人、职责和项目，再核对实测工况与阈值。分别输出有据候选、限定范围内无匹配或未决。需要时按缺口选择同源补证、原池补读或全库职责补查，再逐人核验短窗。强模型核验作为实验对照。返回时将专家与本人原文绑定，并保留未决约束。后续版本独立评估在线和离线反馈。">
     <rect class="diagram-zone" x="4" y="4" width="366" height="342" rx="11"/>
     <text class="diagram-text diagram-zone-title" x="27" y="23">离线准备 · 教师画像与多源证据</text>
     <rect class="diagram-zone" x="4" y="370" width="366" height="1250" rx="11"/>
@@ -615,7 +615,7 @@ html[data-theme="dark"] .agent-map {
 <p>将需求转为技术方向、硬约束、软偏好及可追溯的原文片段。解析与召回各自读取完整需求，核验时汇合资格和候选。资格边界仍用整块独立复核。区分现有工况、既往资质和未来交付。如果不同解释会改变推荐，则保留解释并核对其共同依据，必要时请求澄清。</p>
 
 <h3 id="expertise-transfer">4.3 多源证据索引与能力迁移（Evidence Indexing and Expertise Transfer，RQ2）</h3>
-<p>按「专家 → 能力 → 来源 → 原文」组织论文、专利和项目证据。关键词与向量召回先确定候选，再计算来源融合排名。来源线索与任务片段可在同一批中编码，任务向量供字段核验；按来源能否定位分层评估合批及按需编码。将来源定位和篇内选证分别评测。存在可唯一定位的标题或别名时先直达来源，再比较同源浅检索与 PageIndex 式导航。名称不完整或有冲突时保留普通召回入口。分别测自动实体抽取下的来源命中、候选覆盖和完整证据。索引分别记录论文与画像的关联、共同署名和可核验的个人职责。项目分工、专利发明人字段和明确指向本人的原文另建职责索引。索引区分来源登记的身份与在原文中可定位的具体职责，支持首轮候选排序、同源证据定位及按需全库补召回。画像声明接受单独核验。出版标识符用于定位原文。只有来源明确界定了本人和职责的完整范围，才能据此跳过该条不满足的证据。字段缺失、身份未对齐或只有画像线索时保留核验。</p>
+<p>按「专家 → 能力 → 来源 → 原文」组织论文、专利和项目证据。关键词与向量召回先确定候选，再计算来源融合排名。来源线索与任务片段可在同一批中编码，任务向量供字段核验；按来源能否定位分层评估合批及按需编码。将来源定位和篇内选证分别评测。来源有 DOI 或稳定标识时优先查原文。只有标题片段时，可结合作者和年份缩小候选，再核对原文出处。完整标题唯一命中但书目信息冲突时，保留候选待查。来源确认后，再比较同源浅检索与 PageIndex 式导航。名称不完整或有冲突时保留普通召回入口。分别测自动实体抽取下的来源命中、候选覆盖和完整证据。索引分别记录论文与画像的关联、共同署名和可核验的个人职责。项目分工、专利发明人字段和明确指向本人的原文另建职责索引。索引区分来源登记的身份与在原文中可定位的具体职责，支持首轮候选排序、同源证据定位及按需全库补召回。画像声明接受单独核验。出版标识符用于定位原文。只有来源明确界定了本人和职责的完整范围，才能据此跳过该条不满足的证据。字段缺失、身份未对齐或只有画像线索时保留核验。</p>
 <p id="expertise-transfer-protocol">直接经验不足时，核对源领域的方法机制、专家个人贡献和目标场景的适配条件，标明待验证的差异。数值硬约束需把实测结果绑定到本人及其职责，并核对同对象、同指标、同工况。指定项目时须绑定该项目。归属不清时保留未决。 <a href="#owner-scope-evidence-result">归属对照</a></p>
 
 <h3>4.4 搜索决策与停止（Search Decisions and Stopping，RQ3）</h3>
@@ -757,6 +757,7 @@ html[data-theme="dark"] .agent-map {
 <tr id="packed-verifier-load"><th scope="row">无填充证据核验</th><td>CoF 两组各以 12 条／秒回放 36 秒。共享权重的无填充批次将到达至响应的 P95 从 1,559／1,355 降至 167／124 ms；864 条响应的专家及引用顺序一致。</td><td>四线程闭环完成速率由 11.28／11.56 增至 14.94／15.00 条／秒。纳入核验实现的强基线，再比较节省的预算能否提高有据匹配质量。 <a href="experiments.html#cof-packed-verifier-load">负载对照</a></td></tr>
 <tr id="open-role-gate-result"><th scope="row">先确认本人，再核验职责</th><td>45 篇 PLOS 长文档的贡献声明窗口上，分开核验使无误引的结果由 20 增至 24，出现误引的文章由 10 降至 0，模型比较由 90 次减至 44 次，核验 P95 由 8.72 降至 7.35 ms。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/4c6b30e050b0ad3b6699bae75979116c04f638fc/benchmarks/plos-factored-article-role-v1">固定窗口对照</a></td><td>迁移至现代 CRediT 字段和相似职责措辞时，旧阈值仅接受 29／127 个正例。独立校准后，近邻对照加交叉熵的无误收结果为 96／127，单句训练为 87／127，误收由 5 增至 7。快速路径须按目标格式重新验证覆盖与错荐。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/892d4dd7f5f246a07efccf547f815ebfe4c78336/benchmarks/plos-frozen-scope-role-transfer-v1">跨格式对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/5a532769c92559bddf032a704148b2f2643c5ccf/benchmarks/plos-calibrated-role-contrasts-v1">独立校准</a></td></tr>
 <tr id="complement-stage-result"><th scope="row">来源定位与补证</th><td>QASPER 已知论文、系统选首段时，轻量选证完成 21／137，冻结重排为 20／137，组件 P95 为 9.13／56.38 ms。全库有标题线索时，标题匹配使可补齐的候选窗口由 7 增至 19／137。 <a href="experiments.html#qasper-source-first">分阶段对照</a></td><td>已知来源的补证速度可复现。无线索时仍需验证来源回退；固定分配更多来源会挤压补齐同一证据组的预算。</td></tr>
+<tr id="bibliographic-binding-result"><th scope="row">目录缺失时的来源定位</th><td>eLife 真实引文构造的三词线索中，加入第一作者姓氏和年份后，正确定位从 182/192 增至 187/192，目录外误匹配从 440/19,568 降至 1/19,568。完整标题遇到姓氏字段差异时，严格过滤少找回 3 份。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/410c75f12d989e1088f6b1d56b57bb5b5174f715/benchmarks/elife-citation-expansion-v1">真实引文复验</a></td><td>PLOS 受控漏词线索在目标仍登记时零误绑，删去登记后误绑 6/163。标题及书目信息用于提名，稳定标识或独立出处用于绑定。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/96bf9835f81479f11819c7186c4379f18b313cea/benchmarks/plos-study-omission-v1">漏词与缺源对照</a></td></tr>
 <tr id="indexed-role-first-batch"><th scope="row">本人职责索引与单批核验</th><td>Re-DocRED 精确名称组 754 条查询中，同核验对数、单批执行。原候选、语法替换与监督替换分别完整覆盖 296、311、306 个已标注正例，P95 均约 61 ms。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/ac9ed0eb3edc54dcc97edc542d00462c3f69d234/benchmarks/redocred-syntax-v1">索引消融</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/643d6c02ac8c90df118354df6958ab0c55a3d770/benchmarks/redocred-paired-gate-v1">决策对照</a></td><td>监督替换的未标注接受结果为 73 个，语法替换为 136 个。将监督替换用作强对照。名称缺词时增益较小，待在独立来源和企业盲审中复核。</td></tr>
 <tr id="automatic-source-routing-result"><th scope="row">公开全库来源路由</th><td>Re-DocRED 的 161 条精确名称查询中，共用自动人名抽取和核验器时，定向路由将读入文档从 644 减至 392 篇次，保留的已标注正例从 87 增至 98。</td><td>标题对照已保留 97 个正例。正文实体减少了额外读取，整体 P95 仅缩短约 1.2 ms。来源找对后仍可能漏认人，须分别评测。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/15dd39270aad3986a9061344a7addfd842a32d22/benchmarks/redocred-automatic-entity-index-v1">自动索引对照</a></td></tr>
 <tr id="declared-role-pruning-result"><th scope="row">职责声明的覆盖位置</th><td>PLOS 的 46 条查询中，同为四篇预算，职责提名使有出版社主题标签的推荐从 37 增至 52，也多出 12 个标签外引文。逐查询公开前排 20 篇声明即可复现 52 个推荐。固定索引收录 20 篇时，24 条未见主题查询得到 22 个推荐，与随机索引中位数相同。</td><td>同时报告前排和全库的声明覆盖。企业 800 段原文仅 70 段检出职责线索，缺失字段继续核验。固定索引对照按历史与未见主题分别汇报，并计入声明提取成本。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/1db787365be182414154298fb4ed367de953d6f7/benchmarks/plos-declaration-coverage-v1">覆盖位置</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/340a59c0db97a696b1af42f50b8f767efe65a3e5/benchmarks/plos-fixed-role-index-v1">固定索引</a></td></tr>
@@ -811,7 +812,7 @@ html[data-theme="dark"] .agent-map {
 <thead><tr><th scope="col">环节</th><th scope="col">已观察到的结果</th><th scope="col">对框架及论文的影响</th></tr></thead>
 <tbody>
 <tr id="facet-slot-transfer"><th scope="row">找到原池遗漏的人</th><td>在相同的四篇阅读预算下，PLOS、eLife 关键词组分别多命中 15、16 个标签。逐查询配平推荐数量后，差值降至 1、3，区间都包含零。 <a href="#role-cross-publisher-result">跨出版社对照</a></td><td>优先检验能否在固定预算内多找到有据专家。配平推荐数量后单独检查前排质量，区分覆盖扩大和排序变好。</td></tr>
-<tr><th scope="row">把证据归给正确的人</th><td>在 59 对含同一姓名缩写的 PLOS 贡献声明对照中，已定位到目标报告及相关句子的固定 4B 判定仍误收 56/59 个不支持案例。在另一项 163 条完整标题的受控测试中，冻结目录的字面定位命中 160 条，目标已登记但无法读取时零误绑。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/144b9e4e97e7f4353233f4e529f78d990f82eb76/benchmarks/plos-study-bound-initials-v1">归属对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/59b4faef774cb1da6ea0e7d55a0dd9d964f1ab77/benchmarks/plos-study-anchor-v1">标题定位对照</a></td><td>来源定位和本人职责核验需分别计分。压力样本用于暴露错误机制，企业误荐率需由独立盲审估计。区域、工况等硬约束都应回到所推荐专家的原文核验。</td></tr>
+<tr><th scope="row">把证据归给正确的人</th><td>在 59 对含同一姓名缩写的 PLOS 贡献声明对照中，已定位到目标报告及相关句子的固定 4B 判定仍误收 56/59 个不支持案例。eLife 真实引文的三词线索加入作者和年份后，目录外误匹配从 440 降至 1。同一作者同年的不同报告仍可能冲突。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/144b9e4e97e7f4353233f4e529f78d990f82eb76/benchmarks/plos-study-bound-initials-v1">归属对照</a> · <a href="#bibliographic-binding-result">标题与书目信息对照</a></td><td>先分别计分来源查找、来源绑定和本人职责核验，再计有据 P@5。压力实验支持这三道独立验证；专家排序及完整首查成本仍按第 10.3 节检验。</td></tr>
 <tr id="claim-window-transfer"><th scope="row">降低首查耗时和成本</th><td>企业开发回放的一个对照中，480 对响应逐字节一致，核验 token 减少 28.1%，客户端 P95 下降 13.9%–18.1%。SciRepEval 的标题索引也有同输出加速。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b2958bbd47a8fd9e9d8b1f154d33cc80036a7c53/benchmarks/enterprise-rescue-load-sweep-v1">企业负载对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c3ba8fd24844140520b82f8dda011eb65534fb36/benchmarks/real-title-block-recheck-v1">标题索引对照</a></td><td>可共享的提速优化应交给各臂。框架的效率贡献由提名、补证和停止机制额外节省的完整请求成本衡量。输出保持与质量达标分别验证。</td></tr>
 </tbody>
 </table></div>
