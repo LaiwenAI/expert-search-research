@@ -8,11 +8,12 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-21T04:42:45+08:00">2026-11-21 04:42（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-21T06:12:30+08:00">2026-11-21 06:12（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
 <li><a href="#action-selection">证据选择与决策模型</a></li>
+<li><a href="#community-first-query-evidence">首查的单证据对照</a></li>
 <li><a href="#verification">来源核验、冲突与停止</a></li>
 <li><a href="#capability-transfer">能力迁移</a></li>
 <li><a href="#historical">早期组件与反馈回放</a></li></ul></nav></header>
@@ -294,6 +295,17 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <p>从已探索过的官方开发集按固定哈希抽取 512 题，其中 360 题有多个许可动作。保持首段、候选池与逐题字符上限一致。BM25、265 参数 MLP、冻结 Qwen、LoRA 分别补齐全部标注来源 173、244、241、243 次，同候选池事后上界为 281 次。LoRA 相对冻结模型提高 0.39 个百分点，按题配对的描述性 95% 区间为 −0.39 至 +1.17 个百分点。相对 MLP 差值为 −0.20 个百分点，区间为 −3.13 至 +2.54 个百分点。MLP、冻结 Qwen 和 LoRA 平均返回 924.0、908.6、916.7 字符。对 128 题交错计时，冻结版与未合并适配器版的单条 GPU 决策 P95 分别为 23.55 与 23.58 毫秒，包括张量构造、前向和动作读取。两组各有一题的单条动作与批量动作不同。计时不包含分词、召回和服务。该实验检验的是给定段落池内的取证动作，可用于确定模型对照。企业专家排序、证据核验和完整 Agent 的收益需独立测试。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/091e575f6e1cbf784cbc9388815eddbe3045f952/experiments/decision/hotpot_qwen_lora.py">数据构造与微调代码</a> · <a href="https://aclanthology.org/D18-1259/">HotpotQA</a> · <a href="https://openreview.net/forum?id=nZeVKeeFYf9">LoRA</a></p>
 <p id="evidencebench-block-navigation"><strong>单篇内的分层导航与平面检索。</strong>ws5 作业 40178 使用 RTX 5090 编码 293 条复用 EvidenceBench 查询，并读取 284 篇论文的 47,779 个缓存句向量。固定每八句一块，在相同原文字符上限下，对比全量稠密、句级 BM25 短名单、块质心、两句代表及词向量混合块导航。裁剪组对约四分之一的叶子评分。全量前十逐题复现历史结果。</p>
 <p>在 1,000 字符上限下，五组要点覆盖依次为 31.47%、31.36%、29.20%、28.85%、30.10%。质心组评分约 45 个叶子和 21 个质心，平面组平均 168 句；质心保留的候选只覆盖约 69.49% 的标注要点。按论文分组的描述性 95% 区间显示质心相对全量变化为 −4.22 至 −0.44 个百分点。选证阶段 P95 为 0.062 → 0.035 毫秒，计入共享查询编码为 7.992 → 7.973 毫秒。质心增量构建约 0.037 秒，增加约 25 MB 向量。计时与覆盖限于预热的已知单篇，不含跨来源召回或语义核验。<a href="https://github.com/LaiwenAI/expert-find-agent/blob/a03244ff61f740b996cdb04338afc4ec8136315e/experiments/retrieval/evidencebench_block_navigation.py">复现实验代码</a></p>
+</section>
+<section aria-labelledby="community-first-query-evidence"><h2 id="community-first-query-evidence">首查的单证据对照</h2>
+<p>公开社区问题通过重复链接关联到历史答文，作者由发帖账号确定。核验只看请求和答文原文。已采纳答文用于计算已知证据回收，其余输出的真实支持度待评审。</p>
+<div class="result-table-scroll"><table>
+<thead><tr><th scope="col">对照</th><th scope="col">关键结果</th><th scope="col">研究判断</th></tr></thead>
+<tbody>
+<tr><th scope="row">先查来源或先查画像</th><td>115 条请求，每题五读。稠密答文检索后按人归并，两组 Cross Validated 分别找回 36 比 30、16 比 15 条已知证据，MathOverflow 持平。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/8f567d0dd0a695def562afcc9a0ab3eadcde2ff7/benchmarks/community-first-query-owner-v1">路线对照</a></td><td>按来源检索再归并作者作为强对照。两组 Cross Validated 的推荐数也增加。向量上界几乎未省完整打分。</td></tr>
+<tr><th scope="row">核验深度与跨域预算</th><td>27 条 Cross Validated 和 20 条 MathOverflow 上，固定三读与五读共找回相同的 29 条已知证据。195 条 Unix &amp; Linux 请求上，三／四／五读分别找回 91／95／99 条，P95 约 34／39／47 ms。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/237ca0ae3c0c2dbc6c9c397c0265d96315a3cde6/benchmarks/community-distilled-reads-v1">蒸馏对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/1f95f3812e134d61c6650519917e52636dcb2271/benchmarks/community-read-budget-v1">独立社区</a></td><td>保留不同深度的固定基线。跨域阈值把 175／195 条分到五读，P95 与固定五读相当，已知回收落在同预算随机分配范围。</td></tr>
+<tr><th scope="row">扩人或补读本人来源</th><td>Unix 单批五读中，扩人／补读分别找回 99／91 条已知证据，配平推荐数后区间含零。前十已知证据缺失的 50 条中，44 条未找到作者，6 条找到作者但首选来源不符。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/cd9cec9f20ce3254bdb94cc8638b367d77d9fd35/benchmarks/community-alternate-witness-v1">作者与来源诊断</a></td><td>单证据场景优先针对漏人。对多条件请求另测同人补证，其判据是补齐缺失资格。</td></tr>
+<tr><th scope="row">同候选的答文核验</th><td>Unix 固定五读下，开头、定向、拼接与长答文找回 99／100／102／104 条已知证据。长答文使 P95 由约 47 ms 升到 68 ms，配平推荐数后增量消失。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/40564c30de00bf5fe321d42805ae759a45ec0c7a/benchmarks/community-context-repair-v1">上下文对照</a></td><td>40 条被拒的已知答文中，34 条在换成原始采纳问题后通过。该对照表明措辞敏感，独立复核应针对实际请求与展示的原文。</td></tr>
+</tbody></table></div>
 </section>
 <section aria-labelledby="verification"><h2 id="verification">来源核验、冲突与停止</h2>
 <h3 id="enterprise-cross-precision-search">按需双精度复核的完整首查</h3>
