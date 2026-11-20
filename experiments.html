@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-20T02:33:01+08:00">2026-11-20 02:33（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-20T08:44:45+08:00">2026-11-20 08:44（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -17,6 +17,16 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <li><a href="#capability-transfer">能力迁移</a></li>
 <li><a href="#historical">早期组件与反馈回放</a></li></ul></nav></header>
 <section aria-labelledby="plan-evidence"><h2 id="plan-evidence">研究计划依据</h2>
+<h3 id="first-query-stage-consolidation">首查对照：本人职责、证据覆盖与解析成本</h3>
+<div class="result-table-scroll"><table>
+<thead><tr><th scope="col">对照</th><th scope="col">实测结果</th><th scope="col">纳入主实验的口径</th></tr></thead>
+<tbody>
+<tr><th scope="row">候选与证据</th><td>Re-DocRED 自动索引固定候选数和句数。强制向量替换后，接受且覆盖全部标注句的关系在精确名称组由 53 降至 47，在名称转置组由 43 降至 35。将提名句用作证据锚点，汇总结果相同。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/99a6c2dd4d4424ededf25db7b84bb0b7aa814703/benchmarks/redocred-dense-evidence-nomination-v1">固定替换</a></td><td>提名命中、核验接受和标注句覆盖分别统计。未标注接受项单列。</td></tr>
+<tr><th scope="row">人名位置与选择性替换</th><td>普通句向量和标记人名位置的向量，在 172 条开发查询上均未找到满足换人条件的阈值。按正分差在测试集换人时，标记人名位置的版本在两组分别保留 50 和 37 条有完整标注证据的关系，原候选为 53 和 43 条。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/45fc834ae778172e6fe732b05d0f0306ed4f0e8c/benchmarks/redocred-owner-anchored-reserve-v1">选择性替换</a></td><td>研究直接指向本人的贡献声明和项目分工，优先检查替补是否增加原池缺失的证据。</td></tr>
+<tr><th scope="row">评审熟悉度</th><td>LR-Bench 的三篇证据预算下，通用论文降权使论文找评审的正确数由 143 增到 146／212，配对区间跨零。RATE 公开预测为 163／212。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/286786551cb2da46e800999c7100b90b2d3d5d8b/benchmarks/lrbench-specificity-v1">等预算排序</a></td><td>保留稠密前三篇均值和 RATE 作为两种公开排序对照，另用职责标签判定本人归属。</td></tr>
+<tr><th scope="row">企业资格解析</th><td>轻量嵌入门控在 80 条开发请求中跳过 11 次解析，完整 P95 从 991 增至 1,153 ms。打包分数门控只免除 7 次整块复核中的 1 次，完整 P95 从 994 到 1,005 ms，差异区间跨零。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0c1daf53df3010da775492ca3f4cc1a66b4133c7/benchmarks/enterprise-qualification-student-v1">轻量解析</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/a17205eb2fd014420985e768c7f12084de8c0eab/benchmarks/enterprise-packed-consensus-v1">打包复核</a></td><td>主实验继续使用整块资格复核。完整计算成本含解析、候选核验与回退。</td></tr>
+</tbody></table></div>
+
 <div class="result-table-scroll"><table><thead><tr><th scope="col">对照</th><th scope="col">已观察到的结果</th><th scope="col">对主实验的影响</th></tr></thead><tbody>
 <tr><th scope="row">QASPER 全文</th><td>全量重排、有界停止、固定 32 段的 P95 为 292、234、132 ms，完整证据率同为 69.9%。</td><td>篇内保留精确召回。把固定深度纳入效率对照，另报顺序一致性。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7293064b0246180c231df42352f2f701fb472555/benchmarks/qasper-certified-reranking-v1">重排实验</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c4736cc55cfa9937c466e16ff8ce77e4a826008f/benchmarks/qasper-section-bounds-v1">索引实验</a></td></tr>
 <tr><th scope="row">QASPER 证据组合</th><td>在 232 条可评估查询中，固定重排 32 段后返回 170 组完整证据，同一候选池的标注上限为 219 组。试验中的补证策略未超过逐段排序。</td><td>分别评估候选池是否含完整证据，以及最终选择能否保留。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/cee2040d86e99b7c0f846103ae739b3c24fbdc7b/benchmarks/qasper-final-evidence-sets-v1">选证对照</a></td></tr>
