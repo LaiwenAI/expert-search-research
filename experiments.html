@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-21T08:42:10+08:00">2026-11-21 08:42（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-21T09:18:53+08:00">2026-11-21 09:18（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -342,6 +342,14 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">职责分支预检</th><td>工程论文给定正确来源时，复核调用从 29 降至 10，严格正例同为 6／15。eLife 检索摘录时从 77 降至 33，严格正例同为 32／51，平均约 23.5 降至 16.8 ms。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7ec873fe38232401bd79c7e361edd7c5026e68b9/benchmarks/engineering-one-role-recheck-v1">工程</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/8a375e96e8d66b1d04d68d955af54dd4b8aff3cb/benchmarks/elife-one-role-transfer-v1">eLife</a></td><td>固定所选来源及另一条职责的候选范围。跳过的是当前这次复核，其他来源仍可能提供证据。</td></tr>
 <tr><th scope="row">职责一致性检查</th><td>eLife 摘录检索中，未经检查的复核保留 32／51 个正例，102 条请求有 3 条错荐或错引，204 个缺篇对照有 2 次替代。加入检查后保留 30／51 个，两类错误均未观察到。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/ee9c18276e00e7e345e8c002624aee934eb1cea3/benchmarks/guarded-role-recheck-v1">来源与职责的交叉对照</a></td><td>只覆盖十组 eLife 论文，重复请求共享来源。两种错误须分别测量，零次观察值不能估计真实企业风险。</td></tr>
 <tr><th scope="row">复用首查向量的蒸馏</th><td>eLife 摘录检索中，线性头将带检查 4B 路径的 P95 从约 35 降至 13 ms，严格正例从 30／51 降至 26／51，并增加 3 条错荐或错引。工程组也出现质量退化。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/8bfa04f5cb14ae792856f9d9da6103715d00aa08/benchmarks/distilled-role-recheck-v1">训练与消融</a></td><td>计入在线编码、来源检索及模型调用。原始需求解析、建索引和网络传输另测。</td></tr>
+</tbody></table></div>
+<h3 id="role-prompt-held-service">职责提示的留出复验、服务压测与错误归因</h3>
+<div class="result-table-scroll"><table>
+<thead><tr><th scope="col">比较</th><th scope="col">实测结果</th><th scope="col">适用范围</th></tr></thead>
+<tbody>
+<tr><th scope="row">留出来源和 HTTP 负载</th><td>393 篇论文、13 组跨文配对。按 DOI、题名、作者与 ORCID 排查重合。仅职责名将摘录 P95 从 38–39 ms 降至约 26.5 ms。约 71 请求／秒的单工作进程服务下，客户端 P95 从 0.93–1.05 秒降至 0.39–0.48 秒。<a href="https://github.com/LaiwenAI/expert-find-agent/tree/acfc7b9cfbe63878af877a4f224ae6fbda08797c/benchmarks/elife-prompt-holdout-v1">留出集</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/169b6d25b8d36f36d1aec90a43267649fcfa91d5/benchmarks/elife-role-prompt-service-v1">服务回放</a></td><td>起点是已拆分的主题线索与职责片段。两组使用同一措辞库。两条复核路径均有积压。</td></tr>
+<tr><th scope="row">出榜错误来自哪里</th><td>仅职责名的 7 条出榜错误都来自被重判的职责。要求两份来源各自排名第一，或加强另一条职责的检查，均不改变结果。两选项经校准后合计保留 74 个严格正例，出榜错误仍为 5／79。<a href="https://github.com/LaiwenAI/expert-find-agent/tree/997255b411afb01837b51cfe7fd1769a72120999/benchmarks/role-issuance-audit-v1">错误归因</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/e9f37fbf162d267ffc8e41e89b24f8798b6dfd21/benchmarks/contrastive-role-recheck-v1">对照校准</a></td><td>正例与职责调换反例共享论文和短语。出榜错误率为该样本的观察值。</td></tr>
+<tr><th scope="row">复核上限与扩展成本</th><td>摘录正例中，在原选项内提供正确职责，上限为 45／66。允许重判一项并补入选项外的正确职责，上限为 55／66。实际前五项扩展在两种线索上只新增 3 个严格正例，调用从 51 增至 103。<a href="https://github.com/LaiwenAI/expert-find-agent/tree/3a2bfc792006c2490c5f4df29e268dd720985a44/benchmarks/role-recheck-opportunity-v1">上限诊断</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/217c3e224972cf0e9e4c8f9e7c45a8832d785ac8/benchmarks/bounded-role-expansion-v1">扩展对照</a></td><td>上限使用真实标签定位瓶颈。正式策略需在新来源和新措辞上验证质量、覆盖率与负载。</td></tr>
 </tbody></table></div>
 </section>
 <section aria-labelledby="verification"><h2 id="verification">来源核验、冲突与停止</h2>
