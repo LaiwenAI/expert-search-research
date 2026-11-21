@@ -330,7 +330,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1 lang="en">Fast and Cost-Efficient Academic Expert Search for Technology Transfer</h1><div class="title-zh" lang="zh-CN">面向技术转移的高效低成本专家检索</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-22T00:54:51+08:00">2026-11-22 00:54:51</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1 lang="en">Fast and Cost-Efficient Academic Expert Search for Technology Transfer</h1><div class="title-zh" lang="zh-CN">面向技术转移的高效低成本专家检索</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-22T01:02:50+08:00">2026-11-22 01:02:50</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -436,9 +436,21 @@ html[data-theme="dark"] .agent-map {
     <div class="map-stage">
       <strong>④ 验收与停止</strong>
       <div class="map-row map-row-three">
-        <div class="map-branch"><small>必要条件均获证</small><b>返回专家与引文</b></div>
+        <div class="map-branch"><small>必要条件均获证</small><b>确定可推荐人选</b></div>
         <div class="map-branch"><small>上下界锁定人选及引文</small><b>提前停止读取</b></div>
-        <div class="map-branch map-review"><small>固定预算内仍缺证</small><b>返回已证结果与缺口</b></div>
+        <div class="map-branch map-review"><small>固定预算内仍缺证</small><b>保留已证结果与缺口</b></div>
+      </div>
+    </div>
+    <span class="map-down" aria-hidden="true">↓</span>
+    <div class="map-stage" id="recommendation-rationale">
+      <strong>⑤ 汇总推荐理由</strong>
+      <div class="map-branch">
+        <div class="map-rescue" role="group" aria-label="从整份榜单提炼有证据支持的推荐理由">
+          <span class="map-node">整份榜单与已核验证据</span><span aria-hidden="true">→</span>
+          <span class="map-node">对照各候选的关键差异</span><span aria-hidden="true">→</span>
+          <span class="map-node">输出排名、理由与引文</span>
+        </div>
+        <small>优势明确时一句话，名次接近时只补充影响排序的差异。</small>
       </div>
     </div>
   </div>
