@@ -322,7 +322,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T17:25:33+08:00">2026-11-21 17:25:33</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T18:16:01+08:00">2026-11-21 18:16:01</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -397,7 +397,7 @@ html[data-theme="dark"] .agent-map {
       <span class="map-down" aria-hidden="true">↓</span>
       <div class="map-row">
         <div class="map-branch"><b>来源与本人</b><small>登记版本 · 归属 · 原文支持</small></div>
-        <div class="map-branch"><b>职责与资格</b><small>共享编码 → 轻量职责头<br>硬资格 → 原句核验</small></div>
+        <div class="map-branch"><b>职责与资格</b><small>职责映射 → 核对引文中的具体职责<br>硬资格 → 核验原句</small></div>
       </div>
       <span class="map-down" aria-hidden="true">↓</span>
       <div class="map-row map-row-three" role="group" aria-label="按候选人与条件记录证据状态"><div class="map-node">已证</div><div class="map-node map-review">缺证</div><div class="map-node">反证</div></div>
@@ -529,6 +529,25 @@ html[data-theme="dark"] .agent-map {
 </div>
 </div>
 <p class="result-figure-caption">MathOverflow 静态筛选相对完整静态核验，在四条回环负载轨迹上降低客户端 P95 约 46%–79%。PLOS 与 eLife 的对照为预先指定来源后的 GPU 组件回放。模拟缺链时直接取交集漏掉 6 个原先可核验的正确人选，分阶段补查保留全部基线输出。<a href="https://github.com/LaiwenAI/expert-find-agent/tree/d8a23173169991edef186ba6051804afe948f44c/benchmarks/community-expected-support-service-v1">公开问答回放</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/5cb488cc5c82d8be2a3a7bc784b544f1f3694555/benchmarks/credit-multisource-proof-filter-v1">贡献声明复验</a></p>
+</figure>
+<figure class="research-roadmap proof-flow" id="open-strict-proof-result">
+<figcaption>全库首查中，找到作者和引对职责之间的差距</figcaption>
+<p>eLife 2,011 篇论文、30 个留出来源组。条长按每类线索的 89 条正例归一，四种来源选择共用深度为 6 的候选列表。</p>
+<div class="proof-flow-panels">
+<div class="proof-flow-panel"><h4>来源到位<small>给定正确职责时的上界</small></h4>
+<div class="proof-flow-row"><strong>摘要片段</strong><div class="proof-flow-bar"><span aria-hidden="true" style="--share:100.0%"></span><b>89</b></div></div>
+<div class="proof-flow-row"><strong>关键词</strong><div class="proof-flow-bar proof-flow-joint"><span aria-hidden="true" style="--share:87.6%"></span><b>78</b></div></div>
+</div>
+<div class="proof-flow-panel"><h4>人选命中<small>至少返回一位正确作者</small></h4>
+<div class="proof-flow-row"><strong>摘要片段</strong><div class="proof-flow-bar"><span aria-hidden="true" style="--share:87.6%"></span><b>78</b></div></div>
+<div class="proof-flow-row"><strong>关键词</strong><div class="proof-flow-bar proof-flow-joint"><span aria-hidden="true" style="--share:77.5%"></span><b>69</b></div></div>
+</div>
+<div class="proof-flow-panel"><h4>引文核验通过<small>同一人的两项职责均引对</small></h4>
+<div class="proof-flow-row"><strong>摘要片段</strong><div class="proof-flow-bar"><span aria-hidden="true" style="--share:64.0%"></span><b>57</b></div></div>
+<div class="proof-flow-row"><strong>关键词</strong><div class="proof-flow-bar proof-flow-joint"><span aria-hidden="true" style="--share:56.2%"></span><b>50</b></div></div>
+</div>
+</div>
+<p class="result-figure-caption">直接按作者链接选来源时，关键词找回 26／30 组论文，和学习双源确认的结果一致。深度 6 内其余 4 组至少缺一篇。固定来源选择后，双角色索引一致性把关键词错荐从 34 条降至 1 条，正确证明从 50 条降至 13 条。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/164f3f7e5f5416866ab714494d8cfce6c97eed7a/benchmarks/held-open-proof-search-v1">全库、缺源和职责消融</a></p>
 </figure>
 <figure class="research-roadmap latency-figure" id="goja-binding-result">
 <figcaption>公开招聘文本的条件绑定与预算</figcaption>
@@ -815,7 +834,7 @@ html[data-theme="dark"] .agent-map {
 <tbody>
 <tr id="role-index-transport-result"><th scope="row">提速可作为共享底座</th><td>80 条企业开发需求上，预热串行 P95 从 2.15 降至 1.14 秒，资格、排序和引文一致。<span id="verification-boundary-result">公开 eLife 结构化留出任务中，复现 4B 输出的级联在客户端负载回放中降低 P95 约 20%–25%。</span></td><td id="facet-slot-transfer"><span id="selective-verification-tradeoff">将同输出优化给到全部对照组。完整框架仍须在共享底座上证实质量与成本收益。</span> <a id="role-index-budget-result" href="#enterprise-cross-precision-result">企业开发对照</a> · <a href="#paired-role-stage-result">公开负载回放</a></td></tr>
 <tr><th scope="row">筛选收益取决于身份记录</th><td>MathOverflow、PLOS 和 eLife 的对照保留了原核验输出，并分别减少检查。模拟缺链时，先验可靠侧再补查可保留正确推荐，同时减少额外核验。贡献声明对照中，原核验器在 24 条构造正例里仅找回 7 条。</td><td>把完整性判断与有据排序分开消融。给固定和自适应基线共享同一筛选规则，同时评估未标记的缺链与真实原文核验。筛选的省算力结果可支持效率主张，完整系统的质量收益由独立数据验收。 <a href="#proof-eligibility-result">核验量与缺链对照</a></td></tr>
-<tr><th scope="row">职责识别是首要瓶颈之一</th><td>eLife 两组双源任务在正确职责已知时，固定同人配对支持 39／51、52／72 条查询。在需要自动识别职责时，轻量模型支持 30／51、37／72，4B 支持 29／51、39／72。</td><td>保留固定配对作强对照。先锁定人选和原文，用独立措辞检查轻量路径的职责错判与漏判，再决定何时调用更强核验。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/394c90bd8912c7b5487759fe7e96e3d20f1cfa4e/benchmarks/elife-role-feedback-reads-v1">读源与职责对照</a></td></tr>
+<tr><th scope="row">引文中的职责是主要误差来源</th><td>eLife 全库首查中，关键词下 69 条正例返回正确作者，只有 50 条同时引对两项职责。学习双源确认没有增加深度 6 内的正确来源组。双角色索引一致性减少错荐，同时大幅压低正确证明覆盖。</td><td>保留简单作者链接为来源强基线。优先分离「角色解释错误」「作者归属错误」和「引文错误」，独立验证能否补回这些证据。按关键词和摘要入口分别报告结果，并保留缺源替代控制。 <a href="#open-strict-proof-result">全库首查对照</a></td></tr>
 <tr><th scope="row">联合调度暂未增加有效推荐</th><td>49 个 TREC 主题在逐主题匹配读取和核验上限后，固定候选的学习调度得到 10 个有据名额，联合计划得到 8 个，重新开放其来源仍为 8 个。有据 P@5 差值为 −0.82 个百分点，95% 区间为 −5.71 至 +2.45。CoF 配平出榜数量后，五种调度在两个面板分别都命中 12、25 个已知相关名额。CoF 人工标签覆盖评审人相关性，引文内容和本人归属尚无独立验证。</td><td>固定候选和简单排序保留作强对照。先检查换入的人选是否真有更充分的本人证据。新策略须在配平预算和出榜数后取得可复验的增益，再投入多步策略训练。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0691cf5af0bbd6b85a840453baa1d7330b7add5f/benchmarks/trec-joint-owner-source-plan-v1">TREC 回放</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/652be2af1853e5e50a1e37ed5cb1cded42017477/benchmarks/cof-relevance-weighted-routing-v1">CoF 等出榜对照</a></td></tr>
 <tr id="enterprise-first-round-boundary"><th scope="row">企业盲审优先判清硬条件</th><td><span id="enterprise-qualification-depth">一条企业需求仅切换资格解析标签，即可使同一条暂准推荐消失或恢复。</span> <span id="fixed-slot-transfer">固定预算换证未改变既有结果。</span> <span id="publication-evidence-figures">55 条首轮未荐需求中，10 条找到题名一致的论文全文。</span> GOJA 的条件候选扩展在配平绑定预算后也未改善人工关系命中。</td><td id="owner-bound-publication-test">盲审先区分既往硬资格、现有工况和未来交付。随后按漏召人、库内缺证、证据未读、证据误判分别归因，避免用模型输出变化代替资格真值。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/dedb20236ae8ebf531d0105b0cce619ede5485f7/benchmarks/enterprise-recheck-causal-audit-v1">资格干预</a> · <a href="#enterprise-fulltext-stage-result">全文覆盖</a> · <a href="#goja-binding-result">绑定预算</a></td></tr>
 </tbody>
