@@ -274,7 +274,7 @@ html[data-theme="dark"] .agent-map {
 }
 .agent-map figcaption span {font-size:12px; font-weight:500; color:var(--muted)}
 .map-zone {padding:10px; border:1px solid var(--map-border); border-radius:9px; background:var(--map-tint)}
-.map-first {position:relative; padding:12px 28px 12px 12px}
+.map-first {padding:12px}
 .map-zone-title {display:block; margin-bottom:7px; color:var(--map-accent); font-size:13px}
 .map-row {display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px}
 .map-row-three {grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -300,15 +300,11 @@ html[data-theme="dark"] .agent-map {
 .map-rescue {display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); gap:5px; align-items:stretch; margin-top:2px}
 .map-rescue .map-node {display:grid; place-items:center; padding:3px; background:var(--page); font-size:11px; line-height:1.35}
 .map-rescue > span {align-self:center; color:var(--map-wire); font-size:13px}
-.map-loop {position:absolute; inset:26% 10px 24% auto; width:10px; border:1px dashed var(--map-accent); border-left:0; border-radius:0 5px 5px 0}
-.map-loop::before {content:""; position:absolute; top:-4px; left:-2px; border-right:5px solid var(--map-accent); border-block:3px solid transparent}
-.map-loop-label {display:inline-block; margin-top:6px; color:var(--map-accent); font-size:11.5px}
 @container (max-width:390px) {
   .map-index {grid-template-columns:1fr}
   .map-index .map-down {transform:none}
-  .map-first {padding:8px 23px 8px 8px}
-  .map-action-row,.map-nomination-row {grid-template-columns:1fr}
-  .map-loop {right:7px}
+  .map-first {padding:8px}
+  .map-nomination-row {grid-template-columns:1fr}
 }
 @media print {
   .agent-map {break-inside:avoid; print-color-adjust:exact}
@@ -334,7 +330,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T22:50:15+08:00">2026-11-21 22:50:15</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T22:54:00+08:00">2026-11-21 22:54:00</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -373,9 +369,9 @@ html[data-theme="dark"] .agent-map {
 <p><strong>阶段依赖：</strong>P0 评测 → P1 开源强基线 → P2 轻量决策、索引与表示 → P3 初始框架端到端比较；P4 单独验证反馈驱动的后续迭代。</p>
 <h2>4. 研究内容与技术路线（Methodology）</h2>
 <h3 id="foundation-title">4.1 初始搜索框架（Initial Search Framework，RQ1–RQ3）</h3>
-<p>首查通过预建索引、一次候选提名和轻量核验完成默认路径。来源明确时先组合并核验同一人的证据，再根据候选、来源和条件的缺口决定是否追加计算。</p>
+<p>默认首查先提名，再按固定预算读取并核验本人证据。指定来源先核对来源身份，开放主题先用静态职责索引配对。只有未读材料无法改变人选与引文时，才提前停止。证据不全时返回已证结果与缺口。</p>
 <figure class="agent-map" id="base-agent-architecture" aria-labelledby="agent-map-title">
-  <figcaption id="agent-map-title">图 1. 首查专家检索智能体 <span>拟议架构 · 虚线表示复查或后续学习</span></figcaption>
+  <figcaption id="agent-map-title">图 1. 首查专家检索智能体 <span>首查默认路径 · 虚线框为单独验收的后续学习</span></figcaption>
   <div class="map-zone">
     <strong class="map-zone-title">离线证据底座</strong>
     <div class="map-index">
@@ -426,7 +422,7 @@ html[data-theme="dark"] .agent-map {
       <strong>③ 按证明可达性安排核验</strong>
       <div class="map-row">
         <div class="map-branch"><small>参与人记录完整</small><b>取同人交集，核验可成证的条目</b></div>
-        <div class="map-branch map-review"><small>已发现身份缺链</small><b>先验可靠侧，再对通过者补查</b></div>
+        <div class="map-branch map-review"><small>身份不完整或待消歧</small><b>回退通用归属核验</b></div>
       </div>
       <span class="map-down" aria-hidden="true">↓</span>
       <div class="map-row">
@@ -438,31 +434,18 @@ html[data-theme="dark"] .agent-map {
     </div>
     <span class="map-down" aria-hidden="true">↓</span>
     <div class="map-stage">
-      <strong>④ 下一步决策</strong>
-      <div class="map-row map-row-three map-action-row">
-        <div class="map-branch"><small>候选不足</small><b>扩召回</b></div>
-        <div class="map-branch">
-          <small>已知一侧，另一侧缺证</small><b>定向补证</b>
-          <div class="map-rescue" role="group" aria-label="候选补搜路径，待外部验证"><span class="map-node">已证一侧</span><span aria-hidden="true">→</span><span class="map-node">本人职责索引</span><span aria-hidden="true">→</span><span class="map-node">验收来源与引文</span></div>
-        </div>
-        <div class="map-branch map-review">
-          <small>来源已定位，职责未决</small><b>预算内复核</b>
-          <div class="map-rescue" role="group" aria-label="在来源独立核验和预算检查通过后，复核未决职责"><span class="map-node">核对来源</span><span aria-hidden="true">→</span><span class="map-node">检查预算</span><span aria-hidden="true">→</span><span class="map-node">仅复核未决职责</span></div>
-          <div class="map-rescue" role="group" aria-label="资格解释未决时尝试澄清"><span class="map-node">资格歧义</span><span aria-hidden="true">→</span><span class="map-node">澄清候选</span></div>
-        </div>
-      </div>
-      <span class="map-loop-label">↶ 用新证据更新候选和条件状态</span>
-      <div class="map-row map-output">
-        <div class="map-branch"><small>硬条件获证 · 达到停止条件</small><b>有据排序与引文</b></div>
-        <div class="map-branch"><small>到达预算 · 条件仍未决</small><b>返回已证结果与缺口</b></div>
+      <strong>④ 验收与停止</strong>
+      <div class="map-row map-row-three">
+        <div class="map-branch"><small>必要条件均获证</small><b>返回专家与引文</b></div>
+        <div class="map-branch"><small>上下界锁定人选及引文</small><b>提前停止读取</b></div>
+        <div class="map-branch map-review"><small>固定预算内仍缺证</small><b>返回已证结果与缺口</b></div>
       </div>
     </div>
-    <span class="map-loop" aria-hidden="true"></span>
   </div>
   <span class="map-down" aria-hidden="true">↓</span>
   <div class="map-stage map-feedback"><strong>在线／离线学习 · 单独验收</strong><div class="map-node">已核查的纠错与轨迹 → 更新策略 → 独立回归评测</div></div>
 </figure>
-<p>线索指向具体论文时，先核对来源，再顺序读取并验证同一人。开放主题先按本人和职责组合候选，首轮固定读三篇。预算内的语义复核放在对照路径。公开验证路径一次编码主题和职责，用轻量职责头配合作者声明查证。职责未决时，先独立核对来源，再按固定预算比较轻量复核、强模型复核和保留未决。来源不足时评估补搜，企业先按专家聚合候选，再独立核验硬资格原句。 <a href="#resident-role-load-result">首查负载对照</a> · <a href="#frozen-role-recheck">冻结复核实测</a></p>
+<p>职责提名、三篇联合取证和等价停止是已验证的公开任务路径。企业另行核验硬资格原句。动态改读、查询内位图以及预算内模型复核作为消融，记录其是否在同预算下增加有据名额。 <a href="#submission-gates">默认路径的取舍</a></p>
 <h3 id="demand-taxonomy">4.2 需求理解（Demand Understanding，RQ1）</h3>
 <p>将需求转为技术方向、硬约束、软偏好及原文定位。职责在查询入口归一，供提名与核验复用。资格条件分别记录条件原句、作用对象及所需证据，区分现有工况、既往资质与未来交付。条件提名与对象绑定使用独立预算。以完整段落复核为基线，比较结构明确时的局部核验和歧义时的全段复核。若澄清会改变可推荐人选，比较先澄清和先扩搜。未澄清时，只返回各合理解释下均有证据支持的人选。 <a href="#goja-binding-result">条件绑定实验</a></p>
 
