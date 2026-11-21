@@ -8,7 +8,7 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 </style></head>
 <body><main><header><p><a href="./">返回科研计划</a></p><h1>专家检索实验记录</h1>
 <p>按研究问题归档预实验的配置、结果、局限和复现链接。每组结果的适用范围见对应记录。</p>
-<p class="note">最近更新时间：<time datetime="2026-11-21T06:43:06+08:00">2026-11-21 06:43（北京时间）</time></p>
+<p class="note">最近更新时间：<time datetime="2026-11-21T08:42:10+08:00">2026-11-21 08:42（北京时间）</time></p>
 <nav aria-label="实验主题"><ul><li><a href="#plan-evidence">研究计划依据</a></li>
 <li><a href="#expert-ranking">专家索引与排序</a></li>
 <li><a href="#serving">批处理与服务延迟</a></li>
@@ -334,6 +334,14 @@ main{max-width:960px} [id]{scroll-margin-top:18px} .result-table-scroll{overflow
 <tr><th scope="row">标注覆盖与核验</th><td>Re-DocRED 的 166 个标注关系中，63 个有可用证据句标注，四句窗口覆盖 60 个。通用核验器在冻结阈值下接受其中 17 个。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/515b107ddcb5095c6bff67201bc105a1eea54c4b/benchmarks/redocred-reference-window-v1">证据分母审计</a></td><td>缺证据句标签的 103 个关系无法用该标注判断是否漏读。</td></tr>
 <tr><th scope="row">去掉竞争人物上下文</th><td>只读参考原文时，正确人物排在未标注竞争者之前的次数从 13／28 增至 26／28。沿用原阈值，支持关系由 17 降至 11。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/daec66893acfa49ce6a0f976fe19e66ae5486b05/benchmarks/redocred-reference-distractors-v1">同源上下文对照</a></td><td>把排序与接受分别测量。未标注竞争者仍可能有相关职责。</td></tr>
 <tr><th scope="row">贡献声明跨出版商</th><td>120 篇中有 54 篇角色和身份可完全对齐，另有 14 篇可解析但两个来源表述不同。改写请求上，按人选取声明使配对排序在 Frontiers 多正确 70 个，在 Sensors 多正确 10 个。两组局部 P95 仍约 10 ms。<br><a href="https://github.com/LaiwenAI/expert-find-agent/tree/8639902cf3e608e2dacfe3552c213dc01128f961/benchmarks/engineering-contribution-transfer-v1">两种声明格式的复现</a></td><td>校准与复验须覆盖格式及措辞变化。出版商声明可核对谁获署名，技术能力和硬条件另查本人证据。</td></tr>
+</tbody></table></div>
+<h3 id="one-role-recheck-evidence">固定来源下的单职责复核</h3>
+<div class="result-table-scroll"><table>
+<thead><tr><th scope="col">比较</th><th scope="col">实测结果</th><th scope="col">适用范围</th></tr></thead>
+<tbody>
+<tr><th scope="row">职责分支预检</th><td>工程论文给定正确来源时，复核调用从 29 降至 10，严格正例同为 6／15。eLife 检索摘录时从 77 降至 33，严格正例同为 32／51，平均约 23.5 降至 16.8 ms。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7ec873fe38232401bd79c7e361edd7c5026e68b9/benchmarks/engineering-one-role-recheck-v1">工程</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/8a375e96e8d66b1d04d68d955af54dd4b8aff3cb/benchmarks/elife-one-role-transfer-v1">eLife</a></td><td>固定所选来源及另一条职责的候选范围。跳过的是当前这次复核，其他来源仍可能提供证据。</td></tr>
+<tr><th scope="row">职责一致性检查</th><td>eLife 摘录检索中，未经检查的复核保留 32／51 个正例，102 条请求有 3 条错荐或错引，204 个缺篇对照有 2 次替代。加入检查后保留 30／51 个，两类错误均未观察到。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/ee9c18276e00e7e345e8c002624aee934eb1cea3/benchmarks/guarded-role-recheck-v1">来源与职责的交叉对照</a></td><td>只覆盖十组 eLife 论文，重复请求共享来源。两种错误须分别测量，零次观察值不能估计真实企业风险。</td></tr>
+<tr><th scope="row">复用首查向量的蒸馏</th><td>eLife 摘录检索中，线性头将带检查 4B 路径的 P95 从约 35 降至 13 ms，严格正例从 30／51 降至 26／51，并增加 3 条错荐或错引。工程组也出现质量退化。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/8bfa04f5cb14ae792856f9d9da6103715d00aa08/benchmarks/distilled-role-recheck-v1">训练与消融</a></td><td>计入在线编码、来源检索及模型调用。原始需求解析、建索引和网络传输另测。</td></tr>
 </tbody></table></div>
 </section>
 <section aria-labelledby="verification"><h2 id="verification">来源核验、冲突与停止</h2>
