@@ -327,7 +327,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T20:20:00+08:00">2026-11-21 20:20:00</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T20:42:42+08:00">2026-11-21 20:42:42</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -388,9 +388,12 @@ html[data-theme="dark"] .agent-map {
     <div class="map-stage">
       <strong>② 首轮提名与取证</strong>
       <div class="map-row map-nomination-row">
-        <div class="map-branch"><small>明确双源 · 身份已对齐</small><span aria-hidden="true">↓</span><b>固定同人配对</b></div>
         <div class="map-branch">
-          <small>单源或归属待证</small><b>精确混合召回</b>
+          <small>线索指向具体来源</small><b>先确认各来源</b>
+          <div class="map-rescue" role="group" aria-label="来源特定请求的顺序取证路径"><span class="map-node">核对来源</span><span aria-hidden="true">→</span><span class="map-node">顺序读取</span><span aria-hidden="true">→</span><span class="map-node">查验同一人</span></div>
+        </div>
+        <div class="map-branch">
+          <small>开放主题或归属待证</small><b>精确混合召回</b>
           <div class="map-rescue" role="group" aria-label="共享的企业候选排序与引文准备">
             <span class="map-node">按专家聚合</span><span aria-hidden="true">→</span><span class="map-node">融合入围</span><span aria-hidden="true">→</span><span class="map-node">排序候选引文</span>
           </div>
@@ -438,7 +441,7 @@ html[data-theme="dark"] .agent-map {
   <span class="map-down" aria-hidden="true">↓</span>
   <div class="map-stage map-feedback"><strong>在线／离线学习 · 单独验收</strong><div class="map-node">已核查的纠错与轨迹 → 更新策略 → 独立回归评测</div></div>
 </figure>
-<p>明确双源查询以固定同人配对为基线。公开验证路径一次编码主题和职责，用轻量职责头配合作者声明查证。职责未决时，先独立核对来源，再按固定预算比较轻量复核、强模型复核和保留未决。来源不足时评估补搜，企业硬资格继续按原句独立核验。 <a href="#resident-role-load-result">首查负载对照</a> · <a href="#frozen-role-recheck">冻结复核实测</a></p>
+<p>线索指向具体论文时，先核对来源，再顺序读取并验证同一人。开放主题请求保留同人联合提名，按同等读取预算与顺序取证比较。公开验证路径一次编码主题和职责，用轻量职责头配合作者声明查证。职责未决时，先独立核对来源，再按固定预算比较轻量复核、强模型复核和保留未决。来源不足时评估补搜，企业硬资格继续按原句独立核验。 <a href="#resident-role-load-result">首查负载对照</a> · <a href="#frozen-role-recheck">冻结复核实测</a></p>
 <h3 id="demand-taxonomy">4.2 需求理解（Demand Understanding，RQ1）</h3>
 <p>将需求转为技术方向、硬约束、软偏好及原文定位。职责在查询入口归一，供提名与核验复用。资格条件分别记录条件原句、作用对象及所需证据，区分现有工况、既往资质与未来交付。条件提名与对象绑定使用独立预算。以完整段落复核为基线，比较结构明确时的局部核验和歧义时的全段复核。若澄清会改变可推荐人选，比较先澄清和先扩搜。未澄清时，只返回各合理解释下均有证据支持的人选。 <a href="#goja-binding-result">条件绑定实验</a></p>
 
@@ -595,6 +598,18 @@ html[data-theme="dark"] .agent-map {
 <tr><th scope="row">定向补证</th><td>同一 35 组内，加职责条件后，作者索引访问减少 76%（摘要）和 73%（关键词），输出与仅按作者补搜一致。相对浅层搜索，每种入口各增 2 条正确、3 条错误证明，缺源错荐持平。</td><td>保留索引机制，冻结浅层首查作对照。补证出榜须另过等风险验收，索引访问量与端到端 P95 分报。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/656b177e27060a7d659670e65f5b896b93f241cc/benchmarks/elife-directed-source-rescue-v1">作者与职责索引</a></td></tr>
 <tr><th scope="row">跨出版方验收</th><td>PLOS 12 个新测试组中，冻结定向补证使原样关键词正确证明从 9 增至 10 条，缺源错荐从 0 增至 2 条。配对校准压回 0 条，同时失去新增证明。</td><td>用可恢复正例和真实替代来源校准，保留自然请求作独立验收。人工浅层漏召用于诊断。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b3871076be13deaf62f84f1582d3f1ae65d33dfd/benchmarks/plos-prospective-proof-split-v1">新作者组</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7268078600d2bf38c1452283c7b79c064b0193bd/benchmarks/plos-recoverable-source-calibration-v1">配对校准</a></td></tr>
 </tbody></table></div>
+<figure class="research-roadmap latency-figure" id="matched-contributor-reads">
+<figcaption>同一职责索引、同样三次读取 · 顺序与联合取证</figcaption>
+<p>在 13 个 PLOS 论文组的来源特定关键词请求中，两组共享排序、个人职责元数据和核验器。</p>
+<div class="plan-table" tabindex="0" role="region" aria-label="同预算顺序取证与联合取证结果">
+<table class="study-table">
+<thead><tr><th scope="col">取证方法</th><th scope="col">完整库正确／出榜<br>78 条请求</th><th scope="col">等出榜量时正确<br>各 43 条</th><th scope="col">缺源错荐<br>156 条请求</th></tr></thead>
+<tbody>
+<tr><th scope="row">顺序取证</th><td>39／43</td><td>39</td><td>8</td></tr>
+<tr><th scope="row">同人联合取证</th><td>39／54</td><td>36</td><td>50</td></tr>
+</tbody></table></div>
+<p>顺序取证已找全 39 条正确证明。此场景先核对指定来源。开放主题仍需在等出榜、等风险下检验联合提名的增益。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7f1c322e8cb2b5195d053786204a1eff196e9247/benchmarks/plos-matched-contributor-reads-v1">两轮实测与复现</a></p>
+</figure>
 <figure class="research-roadmap latency-figure" id="frozen-role-recheck">
 <figcaption>公开关键词首查 · 冻结职责复核的质量与延迟</figcaption>
 <p>PLOS 新留出 13 个论文组，440 篇来源。两轮 RTX 4090 单工作进程回环，客户端耗时包含编码、检索、核验和响应。</p>
@@ -605,7 +620,7 @@ html[data-theme="dark"] .agent-map {
 <tr><th scope="row">精确检索与轻量职责头</th><td>9／0</td><td>1</td><td>17.0–17.5 ms</td></tr>
 <tr><th scope="row">来源核对后调用 4B</th><td>10／0</td><td>1</td><td>79.4–80.1 ms</td></tr>
 </tbody></table></div>
-<p>新增证明来自一个论文组。复核在完整库调用 47 次，在缺源时调用 54 次。将其保留为质量对照。下一轮固定复核预算，检验能否只复核会改变出榜结果的请求。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/5736889e9f58f77c5ea9e2cdb58062de60b6e208/benchmarks/plos-frozen-role-recheck-service-v1">留出清单与端到端实测</a></p>
+<p>新增证明来自一个论文组。后续消融在不改变输出的前提下省去 84／101 次复核，缺源 P95 恢复到约 17 ms，完整库仍约 79 ms。保留轻量首查，4B 作为质量对照。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/502ca0c/benchmarks/plos-recheck-feasibility-v1">可行性消融</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/5736889e9f58f77c5ea9e2cdb58062de60b6e208/benchmarks/plos-frozen-role-recheck-service-v1">留出清单与端到端实测</a></p>
 </figure>
 <figure class="research-roadmap latency-figure" id="goja-binding-result">
 <figcaption>公开招聘文本的条件绑定与预算</figcaption>
@@ -888,7 +903,7 @@ html[data-theme="dark"] .agent-map {
 <h3 id="submission-gates">10.2 实验如何改变研究优先级</h3>
 <ol class="pub-gates">
 <li id="role-index-transport-result"><strong>降本优先做资格解析，精确排序给各组共用。</strong> 企业 80 条开发需求中，检索 P95 从 33–34 ms 降到约 7 ms，完整请求只快了 14–15 ms（约 0.9%），资格解析 P95 仍约 1.3 秒。<span id="verification-boundary-result">已有整请求轻量门控只跳过 11／80 次强解析，且 P95 上升；按条款缩小复核批次又改变了 2／80 条需求的资格集合。</span> <span id="facet-slot-transfer"><span id="selective-verification-tradeoff">先固定全块复核为参考，在硬条件明确时试轻量路径，其余回退。验收同时核对资格原句、本人引文与推荐变化，计入全部回退后再比较客户端 P95。</span></span> <a href="#exact-ranking-latency">排序实测</a> · <a id="role-index-budget-result" href="#enterprise-cross-precision-result">资格复算对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/ebd5512978da4dbd0798f093caf5d6c0ae1be81b/benchmarks/enterprise-qualification-student-v1">轻量门控</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/3782e7771e01ffdc097639a77c8253bb0a63a1ea/benchmarks/enterprise-fallback-batch-geometry-v1">条款复核诊断</a></li>
-<li><strong>公开库先减少无效复核，再扩大补证。</strong> PLOS 诊断中 26／36 个正例停在职责置信度门槛，扩锚点未增加正确候选。冻结 4B 复核在新论文组多找回一条正确证明，完整库客户端 P95 约从 17 ms 升到 80 ms。保留轻量首查，把 4B 作为质量对照。下一轮配平复核预算，分别验收自然缺证、新措辞和缺源错荐。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/bcaf99bf73d48c9ffa6ebec59bc1fcaa9038fcba/benchmarks/plos-role-anchor-audit-v1">漏荐归因</a> · <a href="#frozen-role-recheck">前瞻回环实测</a></li>
+<li><strong>把联合提名的主张限定在开放主题。</strong> 线索指向具体论文时，共享角色索引的顺序路径找全 39 条正确证明。联合路径在等出榜时降到 36 条，缺源错荐由 8 升至 50。开放主题的长文主张须在同元数据、同读取数、同出榜风险下胜过顺序路径。冻结复核仅作为质量对照。 <a href="#matched-contributor-reads">同预算强对照</a> · <a href="#frozen-role-recheck">复核工作量与延迟</a></li>
 <li><strong>暂缓扩大候选和训练多步调度。</strong> 49 个 TREC 主题配平读取与核验上限后，固定候选调度得到 10 个有据名额，联合计划得到 8 个，有据 P@5 差值的 95% 区间为 −5.71 至 +2.45 个百分点。CoF 等出榜下也未增加已标注相关名额。先验证单次动作能否换入有本人证据的专家，再决定训练更复杂的策略。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0691cf5af0bbd6b85a840453baa1d7330b7add5f/benchmarks/trec-joint-owner-source-plan-v1">TREC 对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/652be2af1853e5e50a1e37ed5cb1cded42017477/benchmarks/cof-relevance-weighted-routing-v1">CoF 对照</a></li>
 <li id="enterprise-first-round-boundary"><strong>企业盲审先判资格，再定位漏荐。</strong> <span id="enterprise-qualification-depth">已有单例仅修正资格解析就改变了是否出榜；</span><span id="fixed-slot-transfer">固定预算换证未改变既有结果。</span> <span id="publication-evidence-figures">55 条首轮未荐需求中，10 条找到了题名一致的全文，仍待核查能否证明资格。</span> <span id="owner-bound-publication-test">盲审先区分既往资格、当前工况和未来交付，再记录专家是否召回、库内是否有证、证据是否读到、判定是否正确。</span> <a href="https://github.com/LaiwenAI/expert-find-agent/tree/dedb20236ae8ebf531d0105b0cce619ede5485f7/benchmarks/enterprise-recheck-causal-audit-v1">资格干预</a> · <a href="#enterprise-fulltext-stage-result">全文覆盖</a></li>
 </ol>
