@@ -242,7 +242,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 .verifier-grid .metric-value{display:grid;grid-template-columns:minmax(0,1fr) 4em;align-items:center;gap:6px}
 .verifier-grid .metric-value strong{text-align:right;font-variant-numeric:tabular-nums}
 .resident-load-grid .metric-value{grid-template-columns:minmax(0,1fr) max-content}
-#resident-role-load-result{scroll-margin-top:72px}
+#resident-role-load-result,#goja-binding-result{scroll-margin-top:72px}
 .verifier-grid .metric-value i{background:var(--accent)}
 #shared-source-confirmation-result,#role-field-stage-result{scroll-margin-top:72px}
 #role-field-stage-result .verifier-grid{grid-template-columns:minmax(66px,.9fr) repeat(3,minmax(0,1fr))}
@@ -322,7 +322,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T15:53:17+08:00">2026-11-21 15:53:17</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T16:26:28+08:00">2026-11-21 16:26:28</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -377,7 +377,7 @@ html[data-theme="dark"] .agent-map {
     <strong class="map-zone-title">首次查询 · 单次会话内决策</strong>
     <div class="map-stage">
       <strong>① 需求解析</strong>
-      <div class="map-row map-row-three"><div class="map-node">主题与工况</div><div class="map-node">个人职责</div><div class="map-node">既往硬资格</div></div>
+      <div class="map-row map-row-three"><div class="map-node">主题与工况</div><div class="map-node">个人职责</div><div class="map-branch"><b>既往资格</b><small>条件提名 → 对象绑定</small></div></div>
     </div>
     <span class="map-down" aria-hidden="true">↓</span>
     <div class="map-stage">
@@ -418,7 +418,7 @@ html[data-theme="dark"] .agent-map {
 </figure>
 <p>明确双源查询以固定同人配对为基线。公开验证路径一次编码主题和职责，用轻量职责头配合作者声明查证。职责仍有歧义时比较同源定向复核。候选或来源不足时再试验扩召回或补读。企业硬资格继续按原句独立核验。 <a href="#resident-role-load-result">首查负载对照</a></p>
 <h3 id="demand-taxonomy">4.2 需求理解（Demand Understanding，RQ1）</h3>
-<p>将需求转为技术方向、硬约束、软偏好及可追溯的原文片段。在查询入口归一可识别的职责，供候选提名并在各来源复用。原文条件单独保留，自动选中的职责原句继续等待独立核验。只有结构化输入已明确职责和附加要求的边界时，完整声明才可直接确认职责项。归一分歧、句内工况或资格条件保留未决，并按原文逐项检查。解析与召回各自读取完整需求，核验时汇合资格和候选。资格边界仍用整块独立复核。区分现有工况、既往资质和未来交付。资格有歧义时保留合理解释。若回答一个争议条件会改变可返回的人选，再对照先问与先扩搜。未澄清时，只返回在各解释下均有证据支持的人选。</p>
+<p>将需求转为技术方向、硬约束、软偏好及原文定位。职责在查询入口归一，供提名与核验复用。资格条件分别记录条件原句、作用对象及所需证据，区分现有工况、既往资质与未来交付。条件提名与对象绑定使用独立预算。以完整段落复核为基线，比较结构明确时的局部核验和歧义时的全段复核。若澄清会改变可推荐人选，比较先澄清和先扩搜。未澄清时，只返回各合理解释下均有证据支持的人选。 <a href="#goja-binding-result">条件绑定实验</a></p>
 
 <h3 id="expertise-transfer">4.3 多源证据索引与能力迁移（Evidence Indexing and Expertise Transfer，RQ2）</h3>
 <p>按「专家 → 能力 → 来源 → 原文」组织论文、专利和项目证据。关键词与向量召回先确定候选，再计算来源融合排名。来源线索与任务片段可在同一批中编码，任务向量供字段核验；按来源能否定位分层评估合批及按需编码。将来源定位和篇内选证分别评测。入库保留来源标识、可用版本号和原文片段指纹。在线优先读登记版本。只有标题片段时，结合作者、年份或摘要定位；版本或书目信息冲突时保留未决。版本对齐后，再比较同源浅检索与 PageIndex 式导航。名称不完整或有冲突时保留普通召回入口。分别测自动实体抽取下的来源命中、候选覆盖和完整证据。索引分别记录论文与画像的关联、共同署名和可核验的个人职责。项目分工、专利发明人字段和明确指向本人的原文另建职责索引。索引区分来源登记的身份与在原文中可定位的具体职责，支持首轮候选排序、同源证据定位及按需全库补召回。画像声明接受单独核验。专利清单按原有分句提取编号，分别核对登记版本、发明人名单和候选人身份。编号、姓名或共同作者可提名待核验来源。已选论文有 PDF 指针时优先检查原文版本、作者与贡献声明。只有独立归属证据通过核验，才能将职责纳入本人索引。只有来源明确界定了本人和职责的完整范围，才能据此跳过该条不满足的证据。字段缺失、身份未对齐或只有画像线索时保留核验。</p>
@@ -505,6 +505,21 @@ html[data-theme="dark"] .agent-map {
 <div role="row" style="display:contents"><span role="rowheader">扩展集 · 17.3／秒</span><span role="cell" class="metric-value"><span class="latency-track" aria-hidden="true"><i style="--bar:96.3%;background:var(--muted)"></i></span><strong>152–157</strong></span><span role="cell" class="metric-value"><span class="latency-track" aria-hidden="true"><i style="--bar:26.4%"></i></span><strong>42–43</strong></span></div>
 </div>
 <p>较高负载（33.7–38.3 请求／秒）时，4B 路径约处理 29 请求／秒，融合路径跟上到达率，P95 从 2.78–3.13 秒降至 64–73 毫秒。融合前后，同一职责头的来源、职责和人选输出一致。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/29e2a55708695cb02d848bb7e943d76d2a7a9ee8/benchmarks/elife-resident-role-service-v1">服务负载与跨出版方复验</a> · <a href="experiments.html#batched-source-role-proof">PLOS 合批对照</a></p>
+</figure>
+<figure class="research-roadmap latency-figure" id="goja-binding-result">
+<figcaption>公开招聘文本的条件绑定与预算</figcaption>
+<p>GOJA 留出集包含 186 条广告、318 个经验锚点和 561 条人工标注关系。下表从原始文本开始，每个保留锚点最多确认一条关系。</p>
+<div class="plan-table" tabindex="0" role="region" aria-label="GOJA 条件提名和绑定预算">
+<table class="study-table">
+<thead><tr><th scope="col">条件提名</th><th scope="col">覆盖锚点</th><th scope="col">绑定数</th><th scope="col">正确关系</th></tr></thead>
+<tbody>
+<tr><th scope="row">普通词边界</th><td>224</td><td>263</td><td>82</td></tr>
+<tr><th scope="row">补词内边界</th><td>267</td><td>340</td><td>112</td></tr>
+<tr><th scope="row">补词内边界 · 同预算</th><td>267</td><td>263</td><td>79</td></tr>
+</tbody>
+</table>
+</div>
+<p>扩展生成的候选增加 9.3%。配平每条广告的绑定预算后，关系召回差值为 −0.53 个百分点，95% 区间为 −1.76 至 +0.55。另一个给定候选片段的对照中，结构排序与加入向量相似度的排序均命中 147／150。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c6f4009dee101be70e195f5960e04fe783aa72dd/benchmarks/goja-anchor-candidate-expansion-v1">预算对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/b4bc730e49d37e857bc7aa33b6ec0fbb81d80b2d/benchmarks/goja-experience-binding-v1">向量消融</a></p>
 </figure>
 <figure class="research-roadmap latency-figure" id="shared-source-confirmation-result">
 <figcaption>图 5. 同源复用对核验质量与延迟的影响</figcaption>
@@ -777,6 +792,7 @@ html[data-theme="dark"] .agent-map {
 <tr id="role-index-transport-result"><th scope="row">能否保留输出并提速</th><td>80 条企业开发需求上，预热串行 P95 从 2.15 降至 1.14 秒，资格、排序和引文一致。<span id="verification-boundary-result">独立 eLife 结构化留出集上，轻量级联复现 4B 核验输出，负载回放 P95 降 20%–25%。</span></td><td id="facet-slot-transfer"><span id="selective-verification-tradeoff">将同输出提速并入共享执行底座。长文还需证明完整策略相对该底座的质量及客户端成本收益。</span> <a id="role-index-budget-result" href="#enterprise-cross-precision-result">企业开发对照</a> · <a href="#paired-role-stage-result">公开负载回放</a></td></tr>
 <tr><th scope="row">多读来源能否补回职责证据</th><td>两组 eLife 关键词任务中，固定同人配对读两篇，在预先提供正确职责时分别取得 39／51 和 52／72 条严格双源证明，已覆盖受限候选池内可达证明。用自然语言识别职责时，轻量交叉熵分类头为 30／51 和 37／72，4B 为 29／51 和 39／72。轻量路径的错误出榜分别为 4 次和 1 次，4B 为 4 次和 8 次。</td><td>固定同人配对保留作强基线。轻量职责头已完成服务实测，质量非劣仍待验证。优先用独立措辞检查职责错判，再决定复核范围。 <a href="#resident-role-load-result">负载与证据对照</a> <a href="https://github.com/LaiwenAI/expert-find-agent/tree/394c90bd8912c7b5487759fe7e96e3d20f1cfa4e/benchmarks/elife-role-feedback-reads-v1">两组职责与读源对照</a></td></tr>
 <tr><th scope="row">自适应调度是否有增量</th><td>49 个 TREC 主题的留出回放中，共享候选池及逐主题上限。贪心策略相对复用启发式，支持的专家名额从 9 到 10，独立查询—文档读取从 103 到 80，专家级核验从 285 到 266。有据 P@5 差值为 +0.41 个百分点，95% 区间为 −1.63 至 +3.67。另有 1 个新增名额未达到该基准的二级相关性标准。多步策略未进一步增加有据名额。</td><td>调度有节省逻辑读取的迹象。质量增量与真实时延仍需验证。固定策略继续作为主基线，多步训练取决于后续是否复现增量。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/96989d89e797db14704cc9943db905f6d9f3871a/benchmarks/trec-coverage-scheduler-v1">同上限对照</a></td></tr>
+<tr><th scope="row">条件扩展能否同预算增质</th><td>GOJA 招聘文本中，词内边界补全提高了候选覆盖。配平送去绑定的数量后，关系命中增益未复现。给定标注候选时也未观察到加入向量的增益。</td><td>拆开报告候选覆盖和绑定质量。在同一绑定预算下验证哪些新增候选值得核验。GOJA 使用招聘文本的人工关系标签，企业硬资格归属与推荐质量仍由独立盲审判定。 <a href="#goja-binding-result">条件绑定对照</a></td></tr>
 <tr id="enterprise-first-round-boundary"><th scope="row">企业错漏荐应先审什么</th><td><span id="enterprise-qualification-depth">80 条开发需求中，两种资格复核布局都丢失了原有的同一条暂准推荐。单独切换一条新增资格的解析标签即可使该推荐消失或恢复。</span> <span id="fixed-slot-transfer">此前在同等预算下换证，人选和引文均无变化。</span> <span id="publication-evidence-figures">在 55 条首轮未荐需求中，10 条找到题名一致的论文全文。</span></td><td id="owner-bound-publication-test">先盲审会改变推荐的需求条款，确认其属于既往硬资格、当前工况还是交付要求。再区分漏召合格者、库内缺原文、证据未读及原文核验错误。切换模型标签能定位输出变化，条款与人选的正误由人工独立判定。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/dedb20236ae8ebf531d0105b0cce619ede5485f7/benchmarks/enterprise-recheck-causal-audit-v1">资格干预</a> · <a href="#enterprise-fulltext-stage-result">全文覆盖</a></td></tr>
 </tbody>
 </table>
