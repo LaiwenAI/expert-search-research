@@ -322,7 +322,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T13:03:06+08:00">2026-11-21 13:03:06</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T13:35:17+08:00">2026-11-21 13:35:17</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -761,7 +761,7 @@ html[data-theme="dark"] .agent-map {
   </svg>
 </figure>
 <p>职责索引记录本人、职责和原文位置。指定来源且声明完整时，对每种合理解释分别求同一人的职责交集。各解释共有的人可直接推荐，各解释都无匹配时才确认该来源无匹配。开放搜索在同一核验预算内比较主题候选和职责新增候选。首轮以标题摘要为默认。实验路径在完整职责声明排除来源时，才复用同一查询向量扫描标题索引，补齐空出的位置。保留仍可核验的原候选，合并后只核验一批。声明缺失或有歧义的来源仍可核验。发现新候选后，分别核对主题相关性、本人职责和硬约束，再决定是否推荐。仅排除前排来源的规则保留作对照。职责提名与扩库分别验收。 <a href="#role-field-stage-result">职责缺位补查</a> · <a href="#matched-read-role-result">等读取量复验</a></p>
-<p>双来源场景共享一次模型核验额度。已定位两篇来源时，先查同人职责组合，优先使用驻留向量和线性头，必要时调用 4B。缺少来源对且额度未用时，试验路径按同一作者联结候选论文，经校准的来源门槛后，再由 4B 核验两项职责。结构化请求回放采用逐请求编码。无需 4B 的请求先返回，已排队的单条和双条职责核验可以共用一次 4B 调用。调度与搜索策略分别对照。 <a href="#mixed-role-dispatch-result">证据与负载对照</a></p>
+<p>双来源场景共享一次模型核验额度。已定位两篇来源时，先查同人职责组合，优先使用驻留向量和线性头，必要时调用 4B。缺少来源对且额度未用时，试验路径按同一作者联结候选论文，经校准的来源门槛后，再由 4B 核验两项职责。结构化请求回放采用逐请求编码。无需 4B 的请求先返回，已排队的单条和双条职责核验可以共用一次 4B 调用。调度与搜索策略分别对照。扩大留出集已发现缺源时仍出榜，来源回退保持为试验路径。 <a href="#mixed-role-dispatch-result">证据与负载对照</a></p>
 <h3 id="demand-taxonomy">4.2 需求理解（Demand Understanding，RQ1）</h3>
 <p>将需求转为技术方向、硬约束、软偏好及可追溯的原文片段。在查询入口归一可识别的职责，供候选提名并在各来源复用。原文条件单独保留，自动选中的职责原句继续等待独立核验。只有结构化输入已明确职责和附加要求的边界时，完整声明才可直接确认职责项。归一分歧、句内工况或资格条件保留未决，并按原文逐项检查。解析与召回各自读取完整需求，核验时汇合资格和候选。资格边界仍用整块独立复核。区分现有工况、既往资质和未来交付。资格有歧义时保留合理解释。若回答一个争议条件会改变可返回的人选，再对照先问与先扩搜。未澄清时，只返回在各解释下均有证据支持的人选。</p>
 
@@ -1050,6 +1050,18 @@ html[data-theme="dark"] .agent-map {
 </tbody></table></div>
 <p>约 66.5 请求／秒，每轮将 48 条不同的结构化请求各回放 8 次，调度前后的证据逐条一致。开发组在约 64 请求／秒时也逐条复现证据，两条路径的 P95 较各自串行版本下降 14%–21%。约 30–31 请求／秒时，两组 P95 变化均在 4% 以内。查询向量合批在重复请求上出现证据变化，因此本对照逐请求编码。以相同调度比较搜索策略，校准回退多 1 条严格命中，P95 仍较高。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/666ee6370d8aefc57092e994bec075bddc26ca8b/benchmarks/elife-mixed-role-dispatch-v1">调度试验与复现</a></p>
 
+
+<div class="plan-table" id="extended-role-holdout-result" tabindex="0" role="region" aria-label="扩大留出集的命中与缺源风险">
+<table class="study-table">
+<caption>扩大 eLife 留出集 · 关键词命中与缺源风险</caption>
+<thead><tr><th scope="col">搜索路径</th><th scope="col">证据齐全<br>严格命中／72 正例</th><th scope="col">证据齐全<br>不合证据要求的出榜</th><th scope="col">移除一篇目标论文<br>仍出榜／288 次</th></tr></thead>
+<tbody>
+<tr><th scope="row">轻量级联</th><td>41</td><td>1</td><td>1</td></tr>
+<tr><th scope="row">级联＋向量来源回退</th><td>45</td><td>5</td><td>6</td></tr>
+<tr><th scope="row">级联＋校准回退</th><td>46</td><td>4</td><td>16</td></tr>
+</tbody></table></div>
+<p>以 DOI、标题与作者筛除重叠后，留出集有 1,010 篇论文、72 对关联论文，形成 55 个关联组。校准回退的关键词严格命中增量为 5 条，按组配对区间为 +1.5 至 +12.7 个百分点。关键词串行 P95 约从 28 ms 增至 29–30 ms。摘要请求没有新增严格命中。缺源测试从同一批请求构造，统计上按关联组处理。该对照判断原始目标证据能否复现。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/ed964285dd3f62ea291023f1d93ed9cb7f633437/benchmarks/elife-extended-role-holdout-v1">留出清单、判据与复现</a></p>
+
 <h2>8. 研究实施与开源（Implementation and Release）</h2>
 <figure class="research-roadmap">
 <figcaption>图 15. 研究阶段与交付依赖</figcaption>
@@ -1097,7 +1109,7 @@ html[data-theme="dark"] .agent-map {
 <thead><tr><th scope="col">证据</th><th scope="col">结果</th><th scope="col">对论文主张的含义</th></tr></thead>
 <tbody>
 <tr id="role-index-transport-result"><th scope="row">同输出降时延</th><td>80 条企业开发需求，预热串行 P95 从 2.15 秒降至 1.14 秒，推荐及引文等输出一致。<span id="verification-boundary-result">独立 eLife 结构化留出集上，线性头级联逐条复现 4B 的输出，约 55 请求／秒下客户端 P95 降 20%–25%。</span></td><td id="facet-slot-transfer"><span id="selective-verification-tradeoff">把这两项优化加入各对照组的共享底座，隔离索引和策略的贡献。</span> <a id="role-index-budget-result" href="#enterprise-cross-precision-result">企业开发对照</a> · <a href="#paired-role-stage-result">公开留出回放</a></td></tr>
-<tr><th scope="row">联合回退与执行调度</th><td>校准来源门槛后再核验职责，eLife 留出集关键词严格命中保留在 11／12，原回退观察到的 1 条错荐降为 0。混合调度逐条保持证据，并降低两条路径在较高负载下的 P95。</td><td>把调度作为可共用的服务优化，在相同调度下比较回退与级联。此时回退仍多命中 1 条，尾延迟也仍较高。需要新留出风险样本和企业原始需求盲审。 <a href="#mixed-role-dispatch-result">等调度对照</a></td></tr>
+<tr><th scope="row">联合回退的质量与风险</th><td>扩大留出集上，校准回退将关键词严格命中从 41／72 增至 46／72，不合证据要求的出榜从 1 条增至 4 条。移除目标论文后，仍出榜 16 次，轻量级联为 1 次。</td><td>轻量级联作为共享底座。回退保留为实验路径，优先验证能否在身份不可确认时维持弃答，再验收企业首查。混合调度的收益按相同策略比较。 <a href="#extended-role-holdout-result">扩大留出集</a> · <a href="#mixed-role-dispatch-result">等调度对照</a></td></tr>
 <tr id="enterprise-first-round-boundary"><th scope="row">企业质量瓶颈</th><td><span id="fixed-slot-transfer">80 条开发需求等预算换证，人选和引文均无变化。</span> <span id="enterprise-qualification-depth">25 条诊断中，澄清资格解释使模型暂准从 2 升至 16 条。</span> <span id="publication-evidence-figures">55 条未推荐请求中仅回读到 10 条题名匹配的全文。</span></td><td id="owner-bound-publication-test">由盲审判定首个失败环节，分别统计漏召、原文缺失、资格误判和本人归属误判，再决定优先改索引、读源还是核验。 <a href="#enterprise-fulltext-stage-result">全文覆盖</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/119a65bd955fdbf0f8231673a821c8cbc1a8734e/benchmarks/enterprise-qualification-scope-depth-v1">资格诊断</a></td></tr>
 </tbody>
 </table>
