@@ -194,6 +194,7 @@ html[data-theme="dark"] .evo-panel-change strong{color:#8ec9be}
 @media(max-width:600px){.foundation-paths{grid-template-columns:1fr}}
 
 .plan-table{overflow-x:auto;margin:18px 0 24px;overscroll-behavior-inline:contain}
+#paired-role-stage-result{scroll-margin-top:78px}
 .plan-table:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
 .study-table{margin:0;min-width:460px}
 .study-table caption,.research-roadmap figcaption{caption-side:top;text-align:left;color:var(--ink);font-weight:650;font-size:14px;padding:0 0 9px}
@@ -318,7 +319,7 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T09:58:10+08:00">2026-11-21 09:58:10</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向专家检索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-21T10:32:15+08:00">2026-11-21 10:32:15</time></p></header>
 <h2>1. 研究背景（Background）</h2>
 <p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
 <p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
@@ -571,23 +572,27 @@ html[data-theme="dark"] .agent-map {
           <rect class="diagram-key" x="26" y="176" width="122" height="15" rx="3"/>
           <text class="diagram-text diagram-label" x="87" y="183.5">按作者提名第二篇</text>
           <rect class="diagram-key" x="171" y="176" width="122" height="15" rx="3"/>
-          <text class="diagram-text diagram-label" x="232" y="183.5">固定来源 · 选一项</text>
-          <path class="diagram-wire" d="M87 191V197M232 191V197"/>
+          <text class="diagram-text diagram-label" x="232" y="183.5">固定来源 · 判断职责缺口</text>
+          <path class="diagram-wire" d="M87 191V197M232 191V194H199.5V197"/>
+          <path class="diagram-wire diagram-dashed" d="M232 194H263.5V197"/>
           <rect class="diagram-node" x="26" y="197" width="122" height="15" rx="3"/>
           <text class="diagram-text diagram-label" x="87" y="204.5">静态职责能组证？</text>
-          <rect class="diagram-node" x="171" y="197" width="122" height="15" rx="3"/>
-          <text class="diagram-text diagram-label" x="232" y="204.5">能补齐本人证据？</text>
-          <path class="diagram-wire" d="M87 212V216H57V221M232 212V216H200V221"/>
-          <path class="diagram-wire diagram-dashed" d="M87 216H122V221M232 216H265V221"/>
+          <rect class="diagram-node" x="171" y="197" width="57" height="15" rx="3"/>
+          <text class="diagram-text diagram-label" x="199.5" y="204.5">单条可补齐</text>
+          <rect class="diagram-key diagram-dashed" x="234" y="197" width="59" height="15" rx="3"/>
+          <text class="diagram-text diagram-label" x="263.5" y="204.5">双条合批</text>
+          <path class="diagram-wire" d="M87 212V216H57V221M199.5 212V221"/>
+          <path class="diagram-wire diagram-dashed" d="M87 216H122V221M263.5 212V221"/>
           <rect class="diagram-pass" x="26" y="221" width="71" height="15" rx="3"/>
           <text class="diagram-text diagram-label" x="61.5" y="228.5">0.6B 查弱侧</text>
           <rect class="diagram-warn" x="101" y="221" width="47" height="15" rx="3"/>
           <text class="diagram-text diagram-label" x="124.5" y="228.5">跳过</text>
-          <rect class="diagram-pass" x="171" y="221" width="65" height="15" rx="3"/>
-          <text class="diagram-text diagram-label" x="203.5" y="228.5">4B 判职责</text>
-          <rect class="diagram-warn" x="242" y="221" width="51" height="15" rx="3"/>
-          <text class="diagram-text diagram-label" x="267.5" y="228.5">跳过</text>
-          <path class="diagram-branch" d="M61.5 236V245H313M203.5 236V245"/>
+          <rect class="diagram-pass" x="171" y="221" width="57" height="15" rx="3"/>
+          <text class="diagram-text diagram-label" x="199.5" y="228.5">4B 单条</text>
+          <rect class="diagram-pass diagram-dashed" x="234" y="221" width="59" height="15" rx="3"/>
+          <text class="diagram-text diagram-label" x="263.5" y="228.5">4B 同批</text>
+          <path class="diagram-branch" d="M61.5 236V245H313M199.5 236V245"/>
+          <path class="diagram-branch diagram-dashed" d="M263.5 236V245"/>
           <path class="diagram-wire diagram-return" d="M313 245V80H307"/>
         </g>
       </g>
@@ -755,7 +760,7 @@ html[data-theme="dark"] .agent-map {
   </svg>
 </figure>
 <p>职责索引记录本人、职责和原文位置。指定来源且声明完整时，对每种合理解释分别求同一人的职责交集。各解释共有的人可直接推荐，各解释都无匹配时才确认该来源无匹配。开放搜索在同一核验预算内比较主题候选和职责新增候选。首轮以标题摘要为默认。实验路径在完整职责声明排除来源时，才复用同一查询向量扫描标题索引，补齐空出的位置。保留仍可核验的原候选，合并后只核验一批。声明缺失或有歧义的来源仍可核验。发现新候选后，分别核对主题相关性、本人职责和硬约束，再决定是否推荐。仅排除前排来源的规则保留作对照。职责提名与扩库分别验收。 <a href="#role-field-stage-result">职责缺位补查</a> · <a href="#matched-read-role-result">等读取量复验</a></p>
-<p>双来源场景优先检验共享一次复核的路径。首批未定位两份来源时，用作者关联提名第二篇。只有在固定候选和静态职责下已有可出榜的同人组合，才用开源 0.6B 模型核验较弱一侧的主题和来源。两份来源已定位时，可由开源 4B 模型复核一项职责，再用独立职责表示检查。任何检查失败保留待证。另以静态向量、固定复核和允许两次调用作对照。<a href="#role-prompt-service-result">预算与服务对照</a></p>
+<p>双来源场景优先检验共享一次复核的路径。首批未定位两份来源时，用作者关联提名第二篇。只有在固定候选和静态职责下已有可出榜的同人组合，才用开源 0.6B 模型核验较弱一侧的主题和来源。两份来源已定位时，按职责缺口选择单条复核或双条同批判定。候选职责是每条原文的备选解释。语义判定只读请求和职责定义，出榜仍须两份原文分别支持同一人的对应职责。保留保守门槛与单条基线，在独立来源及持续负载下复验。 <a href="#role-prompt-service-result">服务对照</a> · <a href="#paired-role-stage-result">双职责对照</a></p>
 <h3 id="demand-taxonomy">4.2 需求理解（Demand Understanding，RQ1）</h3>
 <p>将需求转为技术方向、硬约束、软偏好及可追溯的原文片段。在查询入口归一可识别的职责，供候选提名并在各来源复用。原文条件单独保留，自动选中的职责原句继续等待独立核验。只有结构化输入已明确职责和附加要求的边界时，完整声明才可直接确认职责项。归一分歧、句内工况或资格条件保留未决，并按原文逐项检查。解析与召回各自读取完整需求，核验时汇合资格和候选。资格边界仍用整块独立复核。区分现有工况、既往资质和未来交付。资格有歧义时保留合理解释。若回答一个争议条件会改变可返回的人选，再对照先问与先扩搜。未澄清时，只返回在各解释下均有证据支持的人选。</p>
 
@@ -1019,6 +1024,18 @@ html[data-theme="dark"] .agent-map {
 <p>预检让来源调用从 86 降至 24 次，单次复核的已发证据逐条一致。该回放均保留目标论文，13 组论文配对重复构造了多个请求。<a href="experiments.html#shared-verification-budget-evidence">服务回放与缺篇对照</a></p>
 </figure>
 
+<div class="plan-table" id="paired-role-stage-result" tabindex="0" role="region" aria-label="双职责判定的质量与调用次数">
+<table class="study-table">
+<caption>双职责判定的质量与调用次数</caption>
+<thead><tr><th scope="col">路径</th><th scope="col">关键词<br>正确／错误</th><th scope="col">摘要片段<br>正确／错误</th><th scope="col">职责前向次数<br>关键词／摘要</th></tr></thead>
+<tbody>
+<tr><th scope="row">单条基线</th><td>15／0</td><td>17／0</td><td>10／12</td></tr>
+<tr><th scope="row">串行双判定（两次）</th><td>21／1</td><td>23／1</td><td>56／72</td></tr>
+<tr><th scope="row">双条同批（一次）</th><td>21／1</td><td>23／1</td><td>28／36</td></tr>
+<tr><th scope="row">按需同批＋一致性</th><td>17／0</td><td>19／0</td><td>28／37</td></tr>
+</tbody></table></div>
+<p>三套公开语料，27 组论文对。两种线索均复用同一批 27 个正例和 27 个职责互换对照。摘要片段已选对 27 组来源，单条路径的 10 个漏荐中有 9 个来自将备选职责作为联合要求。合批减少双判定的前向次数，输入 token 数与串行双判定相同。按需一致性在同一批样本上探索得出，待新样本及 HTTP 负载验收。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/dfb7e98f752ca54fb319313cfabd8db669036174/benchmarks/source-role-factorial-diagnosis-v1">阶段归因</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/a43457cfd7cf66d84bf92123c3a7f9ae61152536/benchmarks/paired-role-verification-v1">完整结果</a></p>
+
 <h2>8. 研究实施与开源（Implementation and Release）</h2>
 <figure class="research-roadmap">
 <figcaption>图 15. 研究阶段与交付依赖</figcaption>
@@ -1057,7 +1074,8 @@ html[data-theme="dark"] .agent-map {
 <ul class="pub-gates">
 <li id="role-index-transport-result"><strong>同输出提速已有两组依据。</strong> 企业开发集 80 条需求在 52,667 条来源上的预热串行 P95 从 2.15 降至 1.14 秒，出榜人选与证据一致。<span id="verification-boundary-result">固定单次复核的 eLife HTTP 回放中，预检将来源调用从 86 降至 24 次，P95 从 392–405 降至 156–158 毫秒，证据逐条一致。</span> <span id="selective-verification-tradeoff">后者提前给了结构化条件，并保留目标论文。两项结果分别作为共享工程底座和固定策略消融。</span> <a id="role-index-budget-result" href="#enterprise-cross-precision-result">企业首查</a> · <a href="#role-prompt-service-result">服务回放</a></li>
 <li id="facet-slot-transfer"><strong>状态决策还需赢过快而强的固定策略。</strong> eLife 预检版相对静态向量多找回 30 个严格正例（89／198 对 59／198），但 P95 更高（156–158 对 54–56 毫秒）。RELISH 在相同观察错误数下，两种策略均覆盖 30／100 个强相关请求，动态核验的局部 P95 约为向量检索的三倍。后续用多档预算找交叉点，分别计量补召、补读和重判职责的收益。 <a href="#role-prompt-service-result">eLife 质量与时延</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/af197e7930c8edcff78ee8ec2b64f8c303523730/benchmarks/relish-strict-risk-v1">RELISH 严格风险对照</a></li>
-<li><strong>完整首查要从原始需求开始计时和计错。</strong> 受控 eLife 有引号改写中，开源 Qwen3-4B 的单步配对在先列主题、再逆序指代的句式上答对 110／132，在职责先行的句式上答对 0／132。下一轮用独立措辞测试条件抽取、配对、找人到出榜，把解析时延和误绑定造成的错荐计入首查；用人工条件作诊断上界。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/718054a2f0181f3b95dd8876e7410350efb40f65/benchmarks/prose-budgeted-source-role-v1">条件配对实验</a></li>
+<li><strong>把配对错误和职责判断错误分开。</strong> 更换论文和措辞后，显式倒序指代经校验找回 4–5 个严格正例，观察到的错荐从 3 降到 0。间接指代仍未恢复。原始需求组计入抽取、指代和回退时间，另用人工给定片段拆解漏召、选错来源和职责误判。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/8f92931f0d2aac9467e9c91393ceb789f3a9b1df/benchmarks/transfer-source-role-resolution-v1">未见论文与措辞对照</a></li>
+<li><strong>双职责合批是首查候选策略。</strong> 27 个正例中，关键词严格命中由 15 增至 21，摘要片段由 17 增至 23，两种输入各新增一次错荐。按需合批加一致性各净增两个正例，观察到零错荐，模型调用仍多于单条基线。先在未见论文对上复验，再做同负载的客户端 P95 与成功成本比较。 <a href="#paired-role-stage-result">结果与适用范围</a></li>
 <li id="enterprise-first-round-boundary"><strong>企业质量需要人工拆解失败原因。</strong> <span id="fixed-slot-transfer">80 条开发请求的等预算换证未改变人选与引文。</span> <span id="enterprise-qualification-depth">改写资格解释后模型暂准从 2／25 升至 16／25，</span><span id="publication-evidence-figures">55 条未推荐请求回读只取得 10 条题名匹配全文。</span> <span id="owner-bound-publication-test">盲审按首个失败环节区分漏召、原文缺失、资格误解和本人归属错误，判定应修索引、读源还是判定策略。</span> <a href="#enterprise-fulltext-stage-result">全文覆盖</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/119a65bd955fdbf0f8231673a821c8cbc1a8734e/benchmarks/enterprise-qualification-scope-depth-v1">资格深读</a></li>
 </ul>
 
