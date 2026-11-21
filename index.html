@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>教授搜索</title><style>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>面向教授搜索的高效证据搜索与持续优化</title><style>
 :root{--ink:#18212b;--muted:#63707b;--line:#dce2e7;--soft:#f5f7f8;--accent:#345a70}*{box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;color:var(--ink);background:#fff;line-height:1.75;margin:0}main{max-width:940px;margin:0 auto;padding:64px 52px 100px}header{border-bottom:2px solid #263846;padding-bottom:28px;margin-bottom:35px}h1{font-size:28px;line-height:1.42;letter-spacing:-.5px;margin:0 0 13px}header .en{color:#586672;font-size:14px;line-height:1.5}h2{font-size:20px;margin:46px 0 18px;padding-bottom:9px;border-bottom:1px solid var(--line)}h3{font-size:16px;margin:25px 0 10px}p{margin:10px 0 14px}ol{padding-left:24px;margin:12px 0 20px}li{padding-left:4px;margin:6px 0}strong{font-weight:650}.lead{font-weight:600;border-left:3px solid #536b7a;padding:8px 16px;margin:22px 0;background:#f7f9fa}.english-question{font-size:15px;font-weight:600;color:#3c5261}.figure{border:1px solid var(--line);border-radius:10px;margin:22px 0 28px;padding:19px 18px 12px}.fig-title{font-size:13px;font-weight:650;margin-bottom:14px}.fig-caption{font-size:12px;text-align:center;color:var(--muted);margin-top:11px}.pipeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;align-items:stretch}.pipe{border:1px solid #aab5bd;background:#f7f9fa;border-radius:7px;text-align:center;padding:12px 6px;font-size:13px;font-weight:600;position:relative}.pipe small{display:block;font-size:10px;color:#66737d;font-weight:400;margin-top:3px}.pipe:not(:last-child):after{content:'→';position:absolute;right:-15px;top:30%;color:#7d8991}.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:13px 0}.trio span{border:1px solid #c4cdd4;background:#f7f9fa;border-radius:6px;text-align:center;padding:8px;font-size:12px}.arrow{text-align:center;color:#76848d;font-size:22px;line-height:1}.centerbox{border:1px solid #aab5bd;background:#f7f9fa;border-radius:7px;text-align:center;padding:10px;font-weight:600;font-size:13px}table{border-collapse:collapse;width:100%;font-size:13px;margin:17px 0 25px;table-layout:auto}th,td{border-bottom:1px solid #dce2e7;text-align:left;padding:10px 11px;vertical-align:top}th{background:#f1f4f6;font-weight:650}tr:nth-child(even) td{background:#fafbfc}a{color:#255f84;text-decoration:none}a:hover{text-decoration:underline}.refs{font-size:12.5px;line-height:1.65}.refs li{margin:8px 0}.note{font-size:12px;color:#64717b}.svgloop{display:block;width:100%;max-width:650px;margin:auto;height:auto}.end{margin-top:35px;padding-top:20px;border-top:1px solid var(--line);color:#52616d;font-size:13px}@media(max-width:700px){main{padding:28px 19px 70px}h1{font-size:23px}h2{font-size:18px}.pipeline{grid-template-columns:1fr}.pipe:not(:last-child):after{content:'↓';right:50%;top:auto;bottom:-22px}.pipe{margin-bottom:8px}table{font-size:12px}th,td{padding:7px 6px}.figure{padding:13px 9px}.svgloop{min-width:0}}@media print{@page{size:A4;margin:18mm 16mm}main{padding:0;max-width:none}h2,h3{break-after:avoid}.figure,table{break-inside:avoid}a{color:inherit}body{font-size:10pt}h1{font-size:20pt}h2{font-size:14pt}h3{font-size:11pt}}
 
 /* 阅读交互增强：保留学术排版，避免浮夸卡片 */
@@ -321,7 +321,7 @@ html[data-theme="dark"] .agent-map {
 @media print{.reader-toolbar,.reader-backtop{display:none!important}.reading-shell{padding-top:0!important}}
 </style></head><body><div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
 <div class="reader-toolbar" role="navigation" aria-label="阅读工具">
-<div class="reader-brand">教授搜索 · 科研计划</div>
+<div class="reader-brand">教授检索 · 科研计划</div>
 <div class="reader-controls">
 <button class="reader-btn" id="mobile-toc-trigger" type="button" aria-controls="mobile-toc" aria-expanded="false">☰ 目录</button>
 <span class="reader-meta" id="reading-meta">阅读进度 0%</span>
@@ -330,10 +330,10 @@ html[data-theme="dark"] .agent-map {
 <button class="reader-btn" type="button" id="print-page" aria-label="打印或保存PDF">⎙ <span class="hide-small">打印</span></button>
 </div></div>
 <div class="mobile-toc" id="mobile-toc" role="dialog" aria-modal="true" aria-label="章节目录" aria-hidden="true"><div class="mobile-toc-panel"><div class="mobile-toc-header"><strong>章节目录</strong><button class="reader-btn" type="button" id="close-toc">关闭 ×</button></div><nav class="mobile-chapter-nav" id="mobile-chapter-nav"></nav></div></div>
-<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>教授搜索</h1><div class="en">Professor Search</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-22T00:42:43+08:00">2026-11-22 00:42:43</time></p></header>
+<div class="reading-shell"><aside class="reader-aside" aria-label="章节目录"><div class="aside-head">CONTENTS · 目录</div><nav class="chapter-nav" id="chapter-nav"></nav></aside><main><header><h1>面向教授搜索的高效证据搜索与持续优化</h1><div class="en">Efficient Evidence-Based Expert Search with Optional Continual Improvement</div><p class="note"><a href="experiments.html">实验记录与复现</a></p><p class="last-updated">最近更新时间：<time datetime="2026-11-22T00:45:09+08:00">2026-11-22 00:45:09</time></p></header>
 <h2>1. 研究背景（Background）</h2>
-<p>专家检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
-<p>与传统文档检索不同，专家检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，专家检索面临以下主要挑战：</p>
+<p>教授检索（Expert Search / Expert Finding）旨在根据用户的自然语言需求，从大规模候选人集合中发现、检索并排序最合适的领域专家，广泛应用于校企合作、技术转移、科研合作和人才匹配等场景。</p>
+<p>与传统文档检索不同，教授检索不仅需要发现相关信息，更需要以已有教师画像为基础，综合论文、专利、科研项目等多源证据，判断专家与具体需求的匹配程度，并给出可核验的推荐理由。结合经典 Expert Finding 研究及近期 Agentic Search、反馈学习与成本优化工作，教授检索面临以下主要挑战：</p>
 <ol class="research-challenges">
 <li><strong>需求差异与语义鸿沟（Demand Heterogeneity &amp; Semantic Gap）</strong>：企业需求不仅任务类型不同，明确程度、约束数量、知识跨度和所需检索推理也存在差异。例如“找一位研究计算机视觉的教授”可以直接检索，而涉及复杂工艺条件或跨学科问题的需求可能需要澄清、拆解和多轮搜索；不能对所有查询套用同一种推理流程。</li>
 <li><strong>多源异构证据融合（Heterogeneous Evidence Fusion）</strong>：论文、专利和科研项目分别反映专家的不同能力，单项成果与需求相关并不意味着专家整体适合；需要根据具体需求融合多源证据，评估专家的技术适配程度与实际贡献。<a class="inline-ref" href="https://doi.org/10.1145/1148170.1148181" target="_blank" rel="noopener noreferrer">[1]</a><a class="inline-ref" href="https://arxiv.org/abs/2412.18004" target="_blank" rel="noopener noreferrer">[16]</a></li>
@@ -357,8 +357,8 @@ html[data-theme="dark"] .agent-map {
 <li><strong>RQ5：检索质量与计算效率的联合进化（Joint Quality–Efficiency Evolution）</strong>：如何联合优化专家匹配质量、证据支持度和总计算成本，通过经验积累、策略训练、评估及版本发布，使不同需求类型上的收益持续存在，而非仅改进单次查询？<a class="inline-ref" href="https://arxiv.org/abs/2508.03680" target="_blank" rel="noopener noreferrer">[8]</a></li>
 </ol>
 <h2>3. 研究目标（Research Objectives）</h2>
-<p><strong>主线与研究假设：</strong>构建无需用户历史反馈即可运行的高效、低成本且有证据支持的专家搜索框架，结合公开与企业数据检验其相对强基线的质量—成本表现。探索开源决策模型、向量模型训练、层次索引和可选教师蒸馏；在线／离线反馈驱动的持续优化作为次要贡献，单独验证。</p>
-<p>围绕上述五个科研问题，本研究以可独立运行的专家检索 Agent 为基础，拟实现以下目标：</p>
+<p><strong>主线与研究假设：</strong>构建无需用户历史反馈即可运行的高效、低成本且有证据支持的教授检索框架，结合公开与企业数据检验其相对强基线的质量—成本表现。探索开源决策模型、向量模型训练、层次索引和可选教师蒸馏；在线／离线反馈驱动的持续优化作为次要贡献，单独验证。</p>
+<p>围绕上述五个科研问题，本研究以可独立运行的教授检索 Agent 为基础，拟实现以下目标：</p>
 <ol class="research-challenges">
 <li><strong>需求分层理解与准确召回（对应 RQ1）</strong>：构建任务类型、技术方向、约束、明确度和知识跨度的结构化表示，使简单查询可直接匹配，复杂场景能准确拆解并召回相关专家。</li>
 <li><strong>专家能力评估与多源匹配（对应 RQ2）</strong>：利用已有教师画像综合论文、专利、项目、近期研究与个人成果贡献信号，区分方向相关性和实际技术适配性，提升专家级排序及约束满足程度。</li>
@@ -371,7 +371,7 @@ html[data-theme="dark"] .agent-map {
 <h3 id="foundation-title">4.1 初始搜索框架（Initial Search Framework，RQ1–RQ3）</h3>
 <p>默认首查先提名，再按固定预算读取并核验本人证据。指定来源先核对来源身份，开放主题先用静态职责索引配对。只有未读材料无法改变人选与引文时，才提前停止。证据不全时返回已证结果与缺口。</p>
 <figure class="agent-map" id="base-agent-architecture" aria-labelledby="agent-map-title">
-  <figcaption id="agent-map-title">图 1. 首查专家检索智能体 <span>首查默认路径 · 虚线框为单独验收的后续学习</span></figcaption>
+  <figcaption id="agent-map-title">图 1. 首查教授检索智能体 <span>首查默认路径 · 虚线框为单独验收的后续学习</span></figcaption>
   <div class="map-zone">
     <strong class="map-zone-title">离线证据底座</strong>
     <div class="map-index">
@@ -480,7 +480,7 @@ html[data-theme="dark"] .agent-map {
 </table></div>
 
 <h2>6. 预期贡献（Expected Contributions）</h2>
-<p><strong>主要贡献。</strong>构建无需历史反馈的高效专家搜索框架。预索引本人职责线索，在固定首轮核验预算内改善候选与证据选择，再根据逐人逐约束的核验状态控制后续搜索。</p>
+<p><strong>主要贡献。</strong>构建无需历史反馈的高效教授检索框架。预索引本人职责线索，在固定首轮核验预算内改善候选与证据选择，再根据逐人逐约束的核验状态控制后续搜索。</p>
 <p><strong>次要贡献。</strong>验证在线与离线迭代的独立增益。配套构建受控合成数据与评测，量化硬约束误放和个人贡献归属。</p>
 
 <h2>7. 实验与评价（Evaluation）</h2>
@@ -764,7 +764,7 @@ html[data-theme="dark"] .agent-map {
 <tr id="cross-domain-short-read-result"><th scope="row">短预算状态选证的迁移</th><td>MuSiQue 六段预算下，图传播、静态学习排序和状态选证找齐 182、223、239／768 条。冻结权重迁移到 HotpotQA，四段预算下为 578、558、627／768。QASPER 给定论文、六段预算时，稠密排序找齐 26／128 条，状态选证为 15／128。</td><td>跨文档短预算保留状态选证候选，已定位单篇资料时保留固定排序。公开问答衡量证据完整性。企业首查仍需核验本人归属和资格。 <a href="experiments.html#short-read-policy-transfer">独立迁移与反例</a></td></tr>
 <tr><th scope="row">QASPER 多段选证</th><td>137 道多段证据题中，固定重排 16 与 32 段均完整命中 43 题。在相同 16 段候选上，轻量联合选证完整命中 51 题，新增 13 题、损失 5 题，选择阶段 P95 为 0.58 ms。 <a href="experiments.html#qasper-set-repair">选证对照</a></td><td>固定浅深度作为强基线。验证轻量联合选证能否扩展到跨来源约束，并复核丢失的原有证据。</td></tr>
 <tr id="omission-risk-result"><th scope="row">缺证风险</th><td>HoVer 回算对照中，同样误放 94／948 条时，SciFact 微调比冻结模型多保留 24–25／1,200 条完整支持。收紧至约 5% 时，该收益消失。 <a href="experiments.html#omission-risk-transfer">缺证校准</a></td><td>冻结模型作为强基线；在目标场景独立校准，外部测试的风险门槛提前固定。</td></tr>
-<tr><th scope="row">专家搜索中的二次核验</th><td>CoF KDD／SciRepEval 的按需 4B 复核将完整 P95 从 263／264 ms 增至 613／589 ms，带引用正例从 15／27 降至 8／18。 <a href="experiments.html#cof-typed-cost">完整对照</a></td><td>保留轻量核验基线。按相同引用覆盖和误放门槛检验高成本复核的价值。</td></tr>
+<tr><th scope="row">教授检索中的二次核验</th><td>CoF KDD／SciRepEval 的按需 4B 复核将完整 P95 从 263／264 ms 增至 613／589 ms，带引用正例从 15／27 降至 8／18。 <a href="experiments.html#cof-typed-cost">完整对照</a></td><td>保留轻量核验基线。按相同引用覆盖和误放门槛检验高成本复核的价值。</td></tr>
 <tr id="community-witness-result"><th scope="row">作者与准确引文</th><td>Cross Validated 的 68 条查询中，向量检索前五位命中已知作者 63 条，同时引对采纳答案为 59 条。等预算补读已有作者多找到 3 条已知答案，核验后最终命中不变。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/649d94f59103abe64b6f20e926960774b5a19b84/benchmarks/crossvalidated-witness-retrieval-v1">基准与标签</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/85f23b4e849db76b044ecf0e8276594410b563e9/benchmarks/crossvalidated-matched-rescue-v1">补读对照</a></td><td>指令对照配平引文总量后，Cross Validated 的留出集净增 1 条，MathOverflow 净增 0 条。其他引文保留为未标注，先做独立评审再比较精度。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/38f7c887e51ece216e971ce7035f4a7654a2c8bb/benchmarks/community-witness-matched-issuance-v1">等输出量对照</a></td></tr>
 <tr id="owner-budget-result"><th scope="row">按作者组织取证</th><td>给定来源与结构化字段，固定核验器和两次读取预算，按同一作者组织取证找回 34／59 条正例，来源轮询为 28／59；两者各误荐 1／59 条。 <a href="experiments.html#candidate-role-and-owner-routing">同预算对照</a></td><td>在来源开放与专家池扩大的条件下复测，保留轮询作强对照。</td></tr>
 <tr id="followup-coverage-result"><th scope="row">等预算取证决策</th><td>CoF 四组共 240 条查询。SIGIR、KDD、SciRepEval、NIPS 在对齐引用数量后，学习策略相对「优先补足已有支持」增加的带引用正例依次为 +2、−1、+1、0。</td><td>保留规则基线。联合报告覆盖与错荐，将来源误判和本人职责误判分开。 <a href="experiments.html#matched-evidence-routing">阶段对照</a></td></tr>
