@@ -990,53 +990,31 @@ html[data-theme="dark"] .agent-map {
 </ul>
 <section class="publication-potential" id="publication-potential">
 <h2>10. 论文创新度与顶会发表潜力（Novelty &amp; Publication Potential）</h2>
-<p class="pub-conclusion"><strong>判断：有可检验的方法创新，长文投稿取决于首查能否提高有据匹配质量。</strong>核心贡献是在没有历史反馈时，首查就能以较低成本找到满足硬条件、且有原文支持其本人贡献的专家。企业开发集已显示同输出提速，尚缺独立盲审证明有据匹配提升。以 SIGIR 长文为目标，优先验证检索表示与低成本取证的独立作用。持续迭代作为次要贡献。 <a href="https://sigir2027.org/pages/submit-full.html">SIGIR 2027 长文征稿</a></p>
+<p class="pub-conclusion"><strong>优先验证的长文主张是首查质量—成本曲线能否改善。</strong> 在没有用户历史反馈时，系统应能用更少的读取与推理找到有原文支持的合格专家。现有工作已证明开发集首查可以同输出提速，也表明按人取证能改善局部排序。独立企业盲审与同资源强基线对比仍决定能否主张整体改善。以 SIGIR 长文为目标，持续迭代单独验收。 <a href="https://sigir2027.org/pages/submit-full.html">SIGIR 长文征稿</a></p>
 
-<h3 id="expert-evidence-precedent">10.1 创新主张与最接近的工作</h3>
-<p><strong>主假设。</strong>用绑定专家身份、资格条件和本人职责的原文索引，在首轮同时提名专家和可用证据。对多条件需求，在读取前利用已知归属和来源约束筛除无法构成同人证据的组合，仅对仍有可能补齐的条件追加读取。比如同时要求工艺验证和主持试产时，论文支持前一项，项目中的同事职责只能排除误荐。检验这一设计能否在等成本下多找回确有本人证据的人。</p>
-<div class="plan-table" tabindex="0" role="region" aria-label="创新主张与对照">
-<table class="study-table">
-<caption>表 4. 区分方法创新、实现和训练手段</caption>
-<thead><tr><th scope="col">方法设计</th><th scope="col">创新判断与检验</th></tr></thead>
-<tbody>
-<tr><th scope="row">本人职责索引与首轮联合提名</th><td>最有潜力的主贡献。RATE 已有紧凑专家画像，MERIT 已有逐条件匹配与向量蒸馏。比较相同字段与预算下的专家画像排序、来源检索后归并作者、先提名再取证。检验身份绑定与跨源组证是否各自提高有据 P@5。 <a href="https://aclanthology.org/2026.acl-long.2035/">RATE</a> · <a href="https://aclanthology.org/2026.emnlp-main.2227/">MERIT</a></td></tr>
-<tr><th scope="row">按证据缺口选择动作</th><td>有条件的方法贡献。证据集合选择与低成本候选探查已有先例。共享索引与核验器后，对照固定单批、等预算扩人和学习后固定排序，检验根据本人证据状态决定扩人、补证或停止的净增益。 <a href="https://aclanthology.org/2025.acl-long.861/">SetR</a> · <a href="https://doi.org/10.1145/564691.564731">Minimal Probing</a></td></tr>
-<tr><th scope="row">页内定位与轻量模型</th><td>PageIndex 式树作为篇内定位对照，比较页向量、树定位和正文过滤的证据命中及成本。开源决策模型和向量微调作为实现候选，沿用同一数据及预算衡量独立增益。论文的新意落在可验证的首查机制及效果。 <a href="https://github.com/VectifyAI/PageIndex">PageIndex</a></td></tr>
-</tbody></table></div>
+<h3 id="expert-evidence-precedent">10.1 方法新意在哪里</h3>
+<p><strong>核心机制是把「谁满足哪条条件、原文在哪里」作为首轮检索和后续决策共用的状态。</strong> 建索引时把可核验的专家身份、本人职责和来源位置绑定。首轮按条件并行找人和定位证据，再按本人合并跨来源线索。比如论文证实专家做过工艺验证，试产项目却由同事主持，此时主持条件仍待证。智能体根据缺口选择扩人、补读或停止。资料缺失的候选保留为待核验，预算耗尽时只出示已获支持的结果。</p>
+<p><strong>最接近的对照。</strong> RATE 已用紧凑专家画像做高效排序，MERIT 已有逐条件适配判断与向量蒸馏。它们界定了首轮提名必须超过的基线。BEAR 已研究预算内的跨文档选证。我们的额外假设是，本人身份、职责和来源的联合状态可以在读源前排除无效组合，并让剩余预算多找回有据专家。PageIndex 式定位、开源决策模型和向量微调用于验证这套机制的实现成本。 <a href="https://aclanthology.org/2026.acl-long.2035/">RATE</a> · <a href="https://aclanthology.org/2026.emnlp-main.2227/">MERIT</a> · <a href="https://aclanthology.org/2026.emnlp-main.1348/">BEAR</a> · <a href="https://github.com/VectifyAI/PageIndex">PageIndex</a></p>
 
-<h3 id="submission-gates">10.2 实验支持哪些判断</h3>
-<div class="plan-table" tabindex="0" role="region" aria-label="实验结果与结论的适用范围">
-<table class="study-table">
-<caption>表 5. 证据、适用范围与研究取舍</caption>
-<thead><tr><th scope="col">研究判断</th><th scope="col">关键证据</th><th scope="col">实验取舍</th></tr></thead>
-<tbody>
-<tr><th scope="row">首查同输出提速已复现</th><td id="role-index-transport-result">80 条企业开发请求、52,667 条来源。本地首查 P95 从 2.15 降至 1.14 秒，资格、排序、引文和未决状态一致。 <a id="role-index-budget-result" href="#enterprise-cross-precision-result">首查与负载对照</a></td><td><span id="verification-boundary-result">所有对照共用快速实现。</span> <span id="selective-verification-tradeoff">用独立盲审测质量，另用持续负载测排队与回退成本。</span></td></tr>
-<tr><th scope="row">结构剪枝可行，证据页命中需单独验收</th><td>三份来源须互异时，职责载荷从 6,114 B 降至 68 B，读源计划与穷举一致，完整本地 P95 约省 0.2 ms。19 项评审认可的长文档条件中，混合提名只核验两页，与向量四页各出示 9 个已知证据页，局部 P95 约 27 和 38 ms。 <a href="experiments.html#multi-condition-proof-evidence">结构与证据页对照</a></td><td>同人跨源索引测资格和归属。篇内证据页另测可达与给定原文后的判定，遇到缺字段时计入完整回退成本。</td></tr>
-<tr><th scope="row">通用核验尚无稳定净收益</th><td>CrossPage 的 110 条多条件请求中，最多放出 10 个部分匹配时，整句向量保留 18 个完整标注文档，最好的核验路径保留 10 个。RELISH 来源隔离留出集上，两候选保序核验比纯向量多 2 个强相关结果，配对 95% 区间为 −8 至 +12 个百分点。 <a href="experiments.html#verification-order-ablation">排序与出榜对照</a></td><td>保留低成本排序作为强基线。冻结候选与原文，验证针对条件训练的核验器能否在相同错荐风险下多保留有据结果。</td></tr>
-<tr><th scope="row">按人选证改善排序，出榜门槛仍受来源影响</th><td>54 篇工程论文的角色标签与可见声明一致。改写请求中，本人选证使 Frontiers 的正确配对排序从 185／294 增至 255／294，Sensors 从 95／137 增至 105／137。冻结门槛迁移到 Frontiers 时，接受未获该项署名的合作者从 15 增至 41。 <a href="experiments.html#author-scoped-verification-transfer">跨出版商对照</a></td><td>本人选证作为首查候选机制，按格式冻结和复验出榜门槛。只有开放候选下的有据 P@5 和错荐满足验收门槛，才能支撑论文的质量主张。</td></tr>
-<tr id="enterprise-first-round-boundary"><th scope="row">企业质量优先定位资格和归属错误</th><td><span id="fixed-slot-transfer">80 条开发请求的等预算换证未改变人选与引文。</span> <span id="enterprise-qualification-depth">另 25 条中，替换资格解释使模型暂准从 2 增至 16。</span> <span id="publication-evidence-figures">55 条首轮未推荐请求回读得到 10 条题名匹配全文，仅 1 条贡献声明出现候选姓名。</span> <a href="#enterprise-fulltext-stage-result">全文覆盖</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/119a65bd955fdbf0f8231673a821c8cbc1a8734e/benchmarks/enterprise-qualification-scope-depth-v1">资格深读</a></td><td id="owner-bound-publication-test">盲审依次区分资格错解、候选漏召、原文缺失、归属错误和核验误判。姓名出现与模型暂准只作诊断。 <a href="#clarification-order-result">澄清对照</a></td></tr>
-<tr id="facet-slot-transfer"><th scope="row">动态决策暂未超过低成本强基线</th><td>Unix &amp; Linux 等五读对照中，固定扩人找回 99 条已知证据，同人补读 91 条。RELISH 将部分相关也计作不合格后，在相同不合格数下，学习后按需核验与纯向量均找回 30／100 条强相关结果，局部 P95 分别约 28 和 9 ms。 <a href="experiments.html#community-first-query-evidence">归属与预算对照</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/af197e7930c8edcff78ee8ec2b64f8c303523730/benchmarks/relish-strict-risk-v1">严格风险对照</a></td><td>默认采用便宜的静态路径。只有识别出原文可达、且追加动作可能补齐本人硬条件时，才继续验证动态回退。</td></tr>
-</tbody></table></div>
+<h3 id="submission-gates">10.2 已有证据改变了哪些研究决策</h3>
+<ul class="pub-gates">
+<li id="role-index-transport-result"><strong>把实现提速纳入所有基线。</strong> 80 条企业开发需求、52,667 条来源的预热串行首查，P95 从 2.15 降至 1.14 秒，资格、排序、引文与未决状态均一致。<span id="verification-boundary-result">这个结果支持复用快速实现。</span> <span id="selective-verification-tradeoff">匹配质量由盲审判定，服务提速由持续负载验收。</span> <a id="role-index-budget-result" href="#enterprise-cross-precision-result">首查与负载结果</a></li>
+<li><strong>分开检验找对来源与理解本人职责。</strong> 53 篇开放工程论文的跨篇测试中，给定正确职责，按作者连接让关键词检索找齐 15／15 个正例，但在 60 个缺篇对照中发生 5 次替代出榜。加入来源锚点后找齐 10／15 个正例，观察到 0 次替代。给定正确论文，冻结的两个单职责门槛分别只找齐 1／15 和 4／15 个双职责正例。样本来自四组论文。下一步优先验证来源与职责联合核验，并单列缺篇、换职责和错作者三种错误。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/a0992eb85429180769cda764d29417f9271296c9/benchmarks/engineering-cross-source-search-v1">跨论文对照</a></li>
+<li id="facet-slot-transfer"><strong>强静态策略是动态决策的默认对照。</strong> RELISH 严格风险对照中，同一不合格数下，动态核验与纯向量均找回 30／100 个强相关结果，局部 P95 约为 28 和 9 毫秒。优先测哪些证据缺口能通过追加读取弥补，再决定是否升级开源决策模型。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/af197e7930c8edcff78ee8ec2b64f8c303523730/benchmarks/relish-strict-risk-v1">严格风险对照</a></li>
+<li id="enterprise-first-round-boundary"><strong>企业盲审先区分漏召、缺证与错判。</strong> <span id="fixed-slot-transfer">80 条开发请求的等预算换证未改变人选与引文。</span> <span id="enterprise-qualification-depth">25 条请求试改资格解释后，模型暂准由 2 增至 16。</span> <span id="publication-evidence-figures">55 条未推荐请求的回读只获得 10 条题名匹配全文。</span> <span id="owner-bound-publication-test">因此优先人工复核资格解释、原文可达性和本人归属。</span> <a href="#enterprise-fulltext-stage-result">全文覆盖</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/119a65bd955fdbf0f8231673a821c8cbc1a8734e/benchmarks/enterprise-qualification-scope-depth-v1">资格深读</a></li>
+</ul>
 
-<h3 id="submission-decision">10.3 验证顺序与投稿门槛</h3>
+<h3 id="submission-decision">10.3 什么实验结果足以投稿</h3>
 <ol class="pub-gates">
-<li><strong>定位质量瓶颈。</strong>在开发集依次提供人工确认的资格、候选、原文和核验标签，量化各阶段可补回的有据名额。两名评审独立核查相关性、全部硬条件和本人贡献，分歧交第三人裁决。直接适配与能力迁移分报，迁移须有原文支持可复用能力。</li>
-<li><strong>分开诊断实验与主验收。</strong>已冻结的 123 组企业对照只检验全库取证相对短名单取证的增量，初始短名单相同，每条最多补两段。先用两组输出审计门槛是否可达，再用盲审分析争议证据。完整框架另在独立样本比较普通来源索引与本人职责索引各搭配强静态策略和状态决策，得到两项独立贡献及交互效果。公开数据用于复验候选、归属及多条件证据定位，真实企业盲审评定专家适配。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0585b7b54babc28b1a2ce4dc756e7729d75fcbad/benchmarks/enterprise-sealed-first-query-v1">冻结的补证协议</a></li>
-<li><strong>冻结质量、风险和成本口径。</strong>主指标为有据 P@5，五个名额作分母，空位计零。以现有冻结协议的门槛为主实验设计起点，同预算质量增益的配对 95% 区间下界须超过 +2 个百分点。同质量降本须通过 −1 个百分点非劣界，并通过覆盖率下界 ≥60% 与已推荐组不合格风险上界 ≤5% 的联合门槛，未决已推荐组计入风险。预算匹配须核对实际调用与读源量。在同硬件、同持续到达负载下测客户端 P95 和单位有据成功成本，计入排队、回退和索引摊销。根据目标覆盖率与风险门槛先确定样本量。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c10d66ce7e0272fb2f69c1cf277728997d3bc003/benchmarks/enterprise-gate-design-audit-v1">样本量审计</a></li>
+<li><strong>隔离两项主效应。</strong> 以普通来源索引和本人职责索引，各搭配强静态策略和状态决策，做四组交叉对照。固定数据快照、编码器与核验器。等预算对照匹配实读量和推理预算，等质量对照允许各方法在开发集选择可行的预算。另与稠密或混合检索加重排、RATE 式画像排序和 MERIT 式适配检索比较。分别替换为人工确认的候选、来源与职责标签，定位质量损失。CoF 复验开放候选召回，CRediT 复验身份和职责归属，独立企业盲审判定真实适配。解析与核验模型在所有组享有相同的缓存和批处理优化。</li>
+<li><strong>先完成冻结诊断，再做完整首查验收。</strong> 已冻结的 123 组企业案例只比较全库与短名单补证，采用同一初始短名单与两段补读上限。门槛审计显示，零组不合格或未决时，至少需 85 组出榜才可能通过覆盖和风险联合门槛。只出现一组时至少需 110 组出榜。保留冻结判据和区间，另用独立样本、按预期争议率与风险估算完整验证所需样本量。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/0585b7b54babc28b1a2ce4dc756e7729d75fcbad/benchmarks/enterprise-sealed-first-query-v1">冻结协议</a> · <a href="https://github.com/LaiwenAI/expert-find-agent/tree/c10d66ce7e0272fb2f69c1cf277728997d3bc003/benchmarks/enterprise-gate-design-audit-v1">样本量审计</a></li>
+<li><strong>用配对区间判断等预算质量和等质量成本。</strong> 有据 P@5 的每个名额须同时满足相关性、适用硬条件和本人原文归属，空位计零。双人盲审并由第三人仲裁，直接适配与能力迁移分报。设计以已冻结协议为起点，等预算质量增益的配对 95% 区间下界须超过 +2 个百分点。同质量降本先过 −1 个百分点非劣界、覆盖率下界 ≥60% 和出榜组不合格风险上界 ≤5%，已出榜未决组计入风险。随后在相同硬件与持续负载下比较客户端 P95 和单位有据成功成本，并报告差值区间，计入排队、回退及索引摊销。</li>
 </ol>
-<div class="plan-table" tabindex="0" role="region" aria-label="实验结果对应的投稿主张">
-<table class="study-table">
-<caption>表 6. 哪些结果足以支撑哪项论文主张</caption>
-<thead><tr><th scope="col">验收结果</th><th scope="col">论文主张</th></tr></thead>
-<tbody>
-<tr><th scope="row">等预算质量上升，同质量成本下降</th><td>公开复验与企业盲审均支持后，以首查质量—成本曲线改善作为长文主张。动态策略通过独立消融后，可作为 Agentic IR 方法贡献。</td></tr>
-<tr><th scope="row">同质量降本，且覆盖与风险达标</th><td>主张同质量下的首查效率提升。若收益集中在同人跨源任务，明确论文适用范围，报告缺原文和身份待定时的回退成本。</td></tr>
-<tr><th scope="row">仅组件提速，或主效应仍不明确</th><td>暂缓以整体首查效果为主张的长文投稿。保留组件收益和失败分析，优先验证最主要的质量瓶颈。</td></tr>
-</tbody></table></div>
+<p><strong>投稿判断。</strong> 公开机制复验与独立企业盲审支持等预算增质、同质量降本，才主张通用首查框架改善质量—成本曲线。若只通过同质量降本验收，主张限定为首查效率，并注明适用场景。若只有组件收益或质量区间仍不明确，暂缓以整体首查方法为主张的长文投稿。状态决策须在独立消融中胜过最强静态策略，才单独计为 Agent 方法贡献。</p>
 
-<h3 id="submission-contributions">10.4 次要贡献与开源交付</h3>
-<p><strong>持续迭代。</strong>首查框架冻结后，在等反馈预算下比较冻结、在线、离线和联合更新，测未见需求收益、旧任务退化和更新总成本。开源小决策模型先比规则与监督微调，确认多步动作有额外收益后再比较离线强化学习。</p>
-<p><strong>数据与评价。</strong>以授权需求与专家画像构造只改本人、职责或资格一项的反事实样本，对照等量普通改写，检验能否降低独立真实盲审中的错荐。分报有据 P@5、硬条件误收、错归属与未决率。开源首查方法、合成代码、可发布数据及含公开数据和对照方法的基准。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7894ae6b86a280f4eff116f195198db218257396/benchmarks/owner-scope-counterfactual-v1">单因素反事实对照</a></p>
+<h3 id="submission-contributions">10.4 次要贡献与开源验收</h3>
+<p><strong>持续迭代。</strong> 冻结首查框架后，以等反馈预算比较冻结、在线、离线与联合更新，报告未见需求收益、旧任务退化和更新成本。开源决策模型先比规则和监督微调，确认多步决策有效后再试离线强化学习。</p>
+<p><strong>数据和评价。</strong> 基于授权需求和画像构造只改变本人、职责或资格一项的反事实。以等量普通改写为对照，检验其是否降低未见企业需求的错荐。以匹配盲审和常规排序指标为参照，检验有据 P@5 及错误分项能否识别硬约束误收和错归属。发布搜索框架、合成代码、可公开数据，以及含公开任务和基线的基准。 <a href="https://github.com/LaiwenAI/expert-find-agent/tree/7894ae6b86a280f4eff116f195198db218257396/benchmarks/owner-scope-counterfactual-v1">单因素反事实对照</a></p>
 </section>
 <section id="academic-discussion" class="academic-discussion" aria-labelledby="discussion-title">
 <h2 id="discussion-title">11. 学术讨论与反馈（Academic Discussion）</h2>
